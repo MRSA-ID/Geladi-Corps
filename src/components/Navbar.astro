@@ -1,0 +1,30 @@
+---
+import { Image } from "astro:assets";
+import { ArrowUpRight, ChevronDown } from "@lucide/astro";
+import logo from "@assets/images/logo/logo-G-black-transparent.png"
+---
+
+<nav class="bg-white flex rounded-3xl w-max mx-auto gap-5 items-center py-2.5 px-3.5 ">
+ <div class="relative overflow-hidden w-6 h-6">
+  <Image
+   src={logo}
+   alt="logo galedi corps"
+   width={500}
+   height={500}
+   class="w-full absolute object-cover"
+  />
+ </div>
+ <ul class="flex font-inter items-center gap-4">
+  <hr class="h-4 w-px bg-primary_onyx"/>
+  <li>About us</li>
+  <li class="flex items-center gap-0.5">Ecosystem <ChevronDown class="size-3"/></li>
+  <li class="flex items-center gap-0.5">Brands <ChevronDown class="size-3"/></li>
+  <li>Leadership</li>
+  <li>Contact</li>
+  <li>Newsroom</li>
+ </ul>
+ <button class="flex font-testsohne cursor-pointer bg-secondary_sage gap-px text-primary_bone_white px-2.5 py-[5px] rounded-[10px]">
+  <span class="text-base font-light">Get in touch</span>
+  <ArrowUpRight class="size-6 stroke-1" />
+ </button>
+</nav>
