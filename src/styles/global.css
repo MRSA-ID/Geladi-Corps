@@ -1,1 +1,173 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap");
+
+@font-face {
+	font-family: "Test Söhne";
+	src: url("../assets/fonts/TestSohne-Leicht.woff") format("woff");
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Test Söhne";
+	src: url("../assets/fonts/TestSohne-Buch.woff") format("woff");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Test Söhne";
+	src: url("../assets/fonts/TestSohne-Dreiviertelfett.woff") format("woff");
+	font-weight: 600;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Test Söhne";
+	src: url("../assets/fonts/TestSohne-Kraftig.woff") format("woff");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Test Söhne";
+	src: url("../assets/fonts/TestSohne-LeichtKursiv.woff") format("woff");
+	font-weight: 300;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Test Söhne";
+	src: url("../assets/fonts/TestSohne-BuchKursiv.woff") format("woff");
+	font-weight: 400;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Test Söhne";
+	src: url("../assets/fonts/TestSohne-KraftigKursiv.woff") format("woff");
+	font-weight: 700;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Canela";
+	src: url("../assets/fonts/Canela-Bold-Trial.woff") format("woff");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
 @import "tailwindcss";
+@import "swiper/css";
+@import "swiper/css/autoplay";
+
+@theme {
+	--font-canela: "Canela", serif;
+	--font-testsohne: "Test Söhne", sans-serif;
+	--font-inter: "Inter", sans-serif;
+
+	--color-primary_onyx: #1e1e1b;
+	--color-primary_bone_white: #f7f3ee;
+	--color-primary_limestone: #e8e1d8;
+	--color-secondary_sage: #8a9a87;
+	--color-secondary_olive: #5f6957;
+	--color-secondary_clay: #b68a72;
+	--color-secondary_sand: #cdbca8;
+	--color-secondary_bronze: #a97744;
+	--color-secondary_terracotta: #b76d4e;
+	--color-secondary_dust_rose: #c4a79a;
+	--color-secondary_warm_taupe: #a89b8c;
+	--color-secondary_muted_ocean: #7b9195;
+	--color-secondary_deep_moss: #4d5b4b;
+	--color-digital-neutrals-50: #faf8f5;
+	--color-digital-neutrals-100: #f3efea;
+	--color-digital-neutrals-200: #e5dfd7;
+	--color-digital-neutrals-300: #cbc5bc;
+	--color-digital-neutrals-400: #a9a49b;
+	--color-digital-neutrals-500: #87837b;
+	--color-digital-neutrals-600: #66635d;
+	--color-digital-neutrals-700: #4b4a46;
+	--color-digital-neutrals-800: #333330;
+	--color-digital-neutrals-900: #1e1e1b;
+	--color-digital-neutrals-950: #121212;
+}
+
+@keyframes marquee {
+	0% {
+		transform: translate3d(0, 0, 0);
+	}
+	100% {
+		transform: translate3d(calc(-100% - 3rem), 0, 0);
+	}
+}
+
+@media (min-width: 640px) {
+	@keyframes marquee {
+		0% {
+			transform: translate3d(0, 0, 0);
+		}
+		100% {
+			transform: translate3d(calc(-100% - 4rem), 0, 0);
+		}
+	}
+}
+
+.animate-marquee {
+	display: flex;
+	flex-shrink: 0;
+	animation: marquee 30s linear infinite;
+	will-change: transform;
+}
+
+.marquee-container:hover .animate-marquee {
+	animation-play-state: paused;
+}
+
+.edge-fade-mask {
+	mask-image: linear-gradient(
+		to right,
+		transparent 0%,
+		black 8%,
+		black 92%,
+		transparent 100%
+	);
+	-webkit-mask-image: linear-gradient(
+		to right,
+		transparent 0%,
+		black 8%,
+		black 92%,
+		transparent 100%
+	);
+}
+
+.edge-fade-mask-sm {
+	mask-image: linear-gradient(
+		to right,
+		transparent,
+		black 5%,
+		black 95%,
+		transparent
+	);
+	-webkit-mask-image: linear-gradient(
+		to right,
+		transparent,
+		black 5%,
+		black 95%,
+		transparent
+	);
+}
+
+.swiper-filmstrip {
+	overflow: visible !important;
+}
+
+.swiper-filmstrip .swiper-wrapper {
+	align-items: flex-end;
+}
