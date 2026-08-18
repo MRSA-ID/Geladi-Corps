@@ -1,0 +1,276 @@
+---
+import { Image } from "astro:assets";
+
+import BrandsArkaloka from "@assets/images/brands/brands_arkaloka.png"
+import BrandsDusantaraid from "@assets/images/brands/brands_dusantaraid_package.jpg"
+import BrandsSakaParfumery from "@assets/images/brands/brands_saka_parfumery.png"
+import BrandsSakaAmbient from "@assets/images/brands/brands_saka_ambient.png"
+import BrandsSafeeyaUmroh from "@assets/images/brands/brands_safeeyaumroh.jpg"
+import BrandsMeetcationAsia from "@assets/images/brands/brands_meetcation_asia.png"
+import BrandsMeetcationEurope from "@assets/images/brands/brands_meetcation_europe.png"
+import BrandsMeetcationNewZealand from "@assets/images/brands/brands_meetcation_newzealand.png"
+import BrandsMeetcationUsa from "@assets/images/brands/brands_meetcation_usa.png"
+
+import ounce from "@assets/images/logo_brands/8ounce_logo_color.png"
+import meetcation from "@assets/images/logo_brands/meetcation_logo_color.png"
+import nirmala from "@assets/images/logo_brands/nirmala_logo_only_color.png"
+import whiff from "@assets/images/logo_brands/whiff_logo_color.png"
+import saka from "@assets/images/logo_brands/saka_logo_color.png"
+import arkaloka from "@assets/images/logo_brands/arkaloka_logo_color.png"
+import dusantara from "@assets/images/logo_brands/dusantara_logo.png"
+import safeeya from "@assets/images/logo_brands/safeeyaumroh_logo_color.png"
+import noomadbook from "@assets/images/logo_brands/nomadbookid_logo_color.png"
+
+interface SlideItem {
+	src: ImageMetadata;
+	alt: string;
+	heightClass?: string;
+	offsetClass?: string;
+	objectPositionClass?: string;
+}
+
+interface LogoItem {
+	name: string;
+	src: ImageMetadata;
+	alt: string;
+}
+
+interface Props {
+	kicker?: string;
+	title?: string;
+	description?: string;
+	primaryCta?: {
+		text: string;
+		href: string;
+	};
+	secondaryCta?: {
+		text: string;
+		href: string;
+	};
+	slides?: SlideItem[];
+	logos?: LogoItem[];
+}
+
+const defaultSlides: SlideItem[] = [
+	{
+		src: BrandsArkaloka,
+		alt: "Brand Arlaloka ",
+		heightClass: "h-88 sm:h-96 md:h-[430px]",
+		offsetClass: "translate-y-0 hover:-translate-y-8",
+		objectPositionClass:'object-top'
+	},
+	{
+		src: BrandsDusantaraid,
+		alt: "Brand Dusantara package",
+		heightClass: "h-96 sm:h-[440px] md:h-[480px]",
+		offsetClass: "translate-y-0 hover:-translate-y-8",
+	},
+	{
+		src: BrandsSakaParfumery,
+		alt: "Brand Saka Parfumery",
+		heightClass: "h-80 sm:h-88 md:h-[390px]",
+		offsetClass: "translate-y-6 hover:-translate-y-8",
+		objectPositionClass:"object-left"
+	},
+	{
+		src: BrandsSakaAmbient,
+		alt: "Brand Saka Ambient",
+		heightClass: "h-88 sm:h-96 md:h-[430px]",
+		offsetClass: "translate-y-2 hover:-translate-y-8",
+		objectPositionClass:"object-left"
+	},
+	{
+		src: BrandsSafeeyaUmroh,
+		alt: "Brand Safeeya Umroh",
+		heightClass: "h-72 sm:h-80 md:h-96",
+		offsetClass: "translate-y-10 hover:-translate-y-6",
+	},
+	{
+		src: BrandsMeetcationAsia,
+		alt: "Brand Meetcation Asia",
+		heightClass: "h-88 sm:h-[420px] md:h-[460px]",
+		offsetClass: "translate-y-4 hover:-translate-y-8",
+		objectPositionClass:'object-top'
+	},
+	{
+		src: BrandsMeetcationEurope,
+		alt: "Brand Meetcation Europe",
+		heightClass: "h-80 sm:h-92 md:h-[400px]",
+		offsetClass: "translate-y-6 hover:-translate-y-8",
+		objectPositionClass:'object-top'
+	},
+	{
+		src: BrandsMeetcationNewZealand,
+		alt: "Brand Meetcation New Zealand",
+		heightClass: "h-96 sm:h-[450px] md:h-[490px]",
+		offsetClass: "translate-y-0 hover:-translate-y-8",
+		objectPositionClass:"object-left"
+	},
+	{
+		src: BrandsMeetcationUsa,
+		alt: "Brand Meetcation Usa",
+		heightClass: "h-72 sm:h-84 md:h-96",
+		offsetClass: "translate-y-8 hover:-translate-y-6",
+	} 
+];
+
+const defaultLogos: LogoItem[] = [
+	{ name: "8ounce", src: ounce, alt:"nomadbookid logo color" },
+	{ name: "meetcation", src: meetcation, alt:"meetcation logo color" },
+	{ name: "nirmala project", src: nirmala, alt:"nirmala logo color" },
+	{ name: "whiff", src: whiff, alt:"whiff logo color" },
+	{ name: "saka", src: saka, alt:"saka logo color" },
+	{ name: "arkaloka", src: arkaloka, alt:"arkaloka logo color" },
+	{ name: "dusantara", src: dusantara, alt:"dusantara logo color" },
+	{ name: "safeeya umroh", src: safeeya, alt:"safeeya umroh logo color" },
+	{ name: "noomadbook", src: noomadbook, alt:"noomadbook logo color" },
+
+];
+
+const {
+	title = "Blocks Built\nWith Shadcn & Tailwind.",
+	slides = defaultSlides,
+	logos = defaultLogos,
+} = Astro.props;
+---
+<!--  -->
+<section class="relative pt-20 pb-0 sm:pt-24 md:pt-48 font-testsohne overflow-hidden bg-primary_limestone  text-neutral-900 antialiased">
+	<div class="pointer-events-none absolute inset-x-0 top-0 h-96 bg-radial from-neutral-200/40 via-transparent to-transparent opacity-70"></div>
+
+	<div class="relative mx-auto max-w-6xl px-4 text-center sm:px-6 lg:px-8">
+
+		<h1 class="mx-auto font-canela max-w-5xl text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-secondary_deep_moss leading-[1.12] whitespace-pre-line">
+			Synergy Driving Ecosystems, Carving Sustainable Value
+		</h1>
+
+			<p class="mx-auto mt-6 max-w-3xl text-base sm:text-lg font-normal text-secondary_deep_moss">
+				9 commercial brands and 3 digital media platforms spanning Fragrance & Personal Care, Travel & Hospitality, Experiential Events & Industrial Creative, and Human Capital Consulting.
+			</p>
+
+
+		<div class="marquee-container relative mt-4 sm:mt-8 overflow-hidden py-4 select-none">
+			<div class="edge-fade-mask relative flex w-full overflow-hidden gap-12 sm:gap-16">
+				<div class="animate-marquee flex shrink-0 min-w-full items-center justify-around gap-12 sm:gap-16">
+					{logos.map((logo) => (
+						<div class="flex items-center justify-center shrink-0">
+							<Image
+								src={logo.src}
+								alt={logo.alt}
+								height={150}
+								densities={[1, 2]}
+								format="webp"
+								quality={95}
+								loading="eager"
+								decoding="async"
+								class="w-auto max-w-[150px] object-contain transition-transform duration-300 hover:scale-105"
+							/>
+						</div>
+					))}
+				</div>
+
+				<div class="animate-marquee flex shrink-0 min-w-full items-center justify-around gap-12 sm:gap-16" aria-hidden="true">
+					{logos.map((logo) => (
+						<div class="flex items-center justify-center shrink-0">
+							<Image
+								src={logo.src}
+								alt={logo.alt}
+								height={150}
+								densities={[1, 2]}
+								format="webp"
+								quality={95}
+								loading="eager"
+								decoding="async"
+								class="w-auto max-w-[150px] object-contain transition-transform duration-300 hover:scale-105"
+							/>
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="relative mt-8 sm:mt-12 w-full pb-0">
+
+		<div class="swiper-container swiper-hero-filmstrip overflow-hidden">
+			<div class="swiper-wrapper flex items-end">
+				{slides.map((slide) => (
+					<div class="swiper-slide !h-auto flex items-end justify-center translate-y-18">
+						<div
+							class:list={[
+								"group relative w-full overflow-hidden rounded-t-[1.75rem] sm:rounded-t-3xl border border-neutral-300/80 bg-neutral-200/50 shadow-sm transition-transform duration-500 ease-out cursor-grab active:cursor-grabbing",
+								slide.heightClass || "h-80 sm:h-96",
+								slide.offsetClass || "hover:-translate-y-18",
+							]}
+						>
+							<Image
+								src={slide.src}
+								alt={slide.alt}
+								width={1200}
+								height={1000}
+								class:list={["h-full w-full object-cover select-none pointer-events-none transition-transform duration-700 group-hover:scale-105",
+								slide.objectPositionClass
+								]}
+								loading="eager"
+								decoding="async"
+							/>
+							<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	import Swiper from "swiper";
+	import { Autoplay } from "swiper/modules";
+
+	function initHeroSwiper() {
+		const swiperEl = document.querySelector(".swiper-hero-filmstrip");
+		if (!swiperEl) return;
+
+		if ((swiperEl as any).swiper) {
+			(swiperEl as any).swiper.destroy(true, true);
+		}
+
+		new Swiper(".swiper-hero-filmstrip", {
+			modules: [Autoplay],
+			loop: true,
+			speed: 1200,
+			spaceBetween: 16,
+			slidesPerView: 1.5,
+			centeredSlides: false,
+			autoplay: {
+				delay: 2400,
+				disableOnInteraction: false,
+				pauseOnMouseEnter: false,
+			},
+			breakpoints: {
+				480: {
+					slidesPerView: 2.2,
+					spaceBetween: 16,
+				},
+				640: {
+					slidesPerView: 3,
+					spaceBetween: 18,
+				},
+				840: {
+					slidesPerView: 4,
+					spaceBetween: 20,
+				},
+				1024: {
+					slidesPerView: 5,
+					spaceBetween: 20,
+				},
+			},
+		});
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initHeroSwiper);
+	} else {
+		initHeroSwiper();
+	}
+	document.addEventListener("astro:page-load", initHeroSwiper);
+</script>
