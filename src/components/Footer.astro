@@ -7,86 +7,472 @@ import { ChevronRight, Mail, MapPin } from "@lucide/astro";
 const optimizedBg = await getImage({ src: backgroundCta });
 ---
 
-<footer class="bg-white min-h-screen px-5 py-6">
- <div 
-  style={`background-image: url(${optimizedBg.src});`}
-  class="font-testsohne w-full h-full min-h-[650px]  bg-cover bg-bottom bg-no-repeat flex flex-col justify-center items-center text-primary_bone_white gap-[25px] px-5 py-[30px] rounded-[20px]">
-  <h1 class="font-semibold text-7xl text-center">More than premium <br/> Made to matter</h1>
-  <span class="font-light text-2xl text-center max-w-[500px]">Different businesses. Different people. One shared direction.</span>
-  <button class="cursor-pointer max-w-[200px] w-full flex justify-center items-center bg-white rounded-[20px] text-digital-neutrals-600 px-[15px] py-2 gap-1">
-   <span class="text-2xl">Contact</span>
-   <ChevronRight class="size-8 stroke-digital-neutrals-600" />
-  </button>
- </div>
+<footer class="bg-white px-5 sm:px-8 py-8 flex flex-col gap-12 sm:gap-16 font-testsohne overflow-hidden">
+	<!-- CTA Banner with Apple/Emil Tactile Feedback & Scroll Reveal -->
+	<div
+		id="footer-cta-banner"
+		style={`background-image: url(${optimizedBg.src});`}
+		class="group relative w-full min-h-[560px] sm:min-h-[640px] bg-cover bg-bottom bg-no-repeat flex flex-col justify-center items-center text-primary_bone_white gap-6 px-6 py-16 sm:py-20 rounded-3xl shadow-xl overflow-hidden"
+	>
+		<!-- Subtle Ambient Gradient -->
+		<div
+			class="pointer-events-none absolute inset-0 bg-black/10 transition-opacity duration-500 group-hover:bg-black/5"
+		>
+		</div>
 
- <div class="font-testsohne text-primary_onyx w-full grid grid-cols-5 justify-items-center px-5 py-[30px]">
-  <div class="flex flex-col gap-2.5 justify-self-start">
-   <div class="flex items-center gap-2.5">
-    <Mail class="size-7 stroke-primary_onyx" />
-    <div class="flex flex-col text-sm">
-     <span class="font-normal">Let's talk.</span>
-     <span class="font-light">info@galedicorps.com</span>
-    </div>
-   </div>
-   <div class="flex items-center gap-2.5">
-    <MapPin class="size-7 stroke-primary_onyx" />
-    <div class="flex flex-col text-sm">
-     <p class="font-light">Jl. KH. Wahid Hasyim No. 77, <br/> Menteng, Jakarta Pusat.</p>
-    </div>
-   </div>
-  </div>
+		<div class="relative z-10 flex flex-col items-center gap-6 text-center max-w-[900px]">
+			<h2
+				class="footer-cta-title font-semibold text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[1.05]"
+			>
+				More than premium <br /> Made to matter
+			</h2>
+			<p class="footer-cta-desc font-light text-xl sm:text-2xl text-primary_bone_white/90 max-w-[540px] leading-relaxed">
+				Different businesses. Different people. One shared direction.
+			</p>
+			<a
+				id="footer-cta-btn"
+				href="mailto:info@galedicorps.com"
+				class="footer-cta-btn group/btn cursor-pointer inline-flex justify-center items-center bg-white rounded-full text-digital-neutrals-800 px-8 py-3.5 gap-2 shadow-lg hover:shadow-2xl hover:bg-[#faf8f5] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 ease-out select-none mt-2"
+			>
+				<span class="text-xl sm:text-2xl font-medium">Contact</span>
+				<ChevronRight
+					class="size-6 sm:size-7 stroke-digital-neutrals-800 stroke-[2] transition-transform duration-300 ease-out group-hover/btn:translate-x-1.5"
+				/>
+			</a>
+		</div>
+	</div>
 
-  <div class="flex flex-col gap-2.5">
-   <h4 class="font-semibold text-base">Explore</h4>
-   <div class="font-light grid grid-rows-7 gap-[5px]">
-    <span>About Us</span>
-    <span>Vision & Mission</span>
-    <span>Our Values</span>
-    <span>Our Ecosystem</span>
-    <span>Our Brands</span>
-    <span>Leadership & <br/>Governance</span>
-    <span>News</span>
-   </div>
-  </div>
+	<!-- Navigation & Contact Columns Grid with Staggered Scroll Reveal -->
+	<div
+		id="footer-nav-grid"
+		class="font-testsohne text-primary_onyx w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 lg:gap-8 px-4 py-8"
+	>
+		<!-- Column 1: Contact Information -->
+		<div class="footer-nav-col flex flex-col gap-6 justify-self-start sm:col-span-2 md:col-span-1">
+			<a
+				href="mailto:info@galedicorps.com"
+				class="group flex items-start gap-3.5 text-primary_onyx transition-colors duration-200 hover:text-secondary_olive w-max"
+			>
+				<div
+					class="size-10 rounded-full bg-neutral-100 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-secondary_olive/10 shrink-0"
+				>
+					<Mail
+						class="size-5 stroke-primary_onyx transition-colors duration-200 group-hover:stroke-secondary_olive"
+					/>
+				</div>
+				<div class="flex flex-col text-sm">
+					<span class="font-medium text-base">Let's talk.</span>
+					<span
+						class="font-light text-neutral-600 group-hover:text-secondary_olive transition-colors duration-200"
+						>info@galedicorps.com</span
+					>
+				</div>
+			</a>
 
-  <div class="flex flex-col gap-2.5">
-   <h4 class="font-semibold text-base">Businesses</h4>
-   <div class="font-light grid grid-rows-4 gap-[5px]">
-    <span>Fragrance & <br/>Personal Care</span>
-    <span>Travel & <br/>Hospitality</span>
-    <span>Events & Creative</span>
-    <span>Human Capital</span>
-   </div>
-  </div>
+			<div class="group flex items-start gap-3.5 text-primary_onyx">
+				<div
+					class="size-10 rounded-full bg-neutral-100 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-secondary_olive/10 shrink-0"
+				>
+					<MapPin
+						class="size-5 stroke-primary_onyx transition-colors duration-200 group-hover:stroke-secondary_olive"
+					/>
+				</div>
+				<div class="flex flex-col text-sm">
+					<p class="font-light text-neutral-600 leading-relaxed">
+						Jl. KH. Wahid Hasyim No. 77, <br /> Menteng, Jakarta Pusat.
+					</p>
+				</div>
+			</div>
+		</div>
 
-  <div class="flex flex-col gap-2.5">
-   <h4 class="font-semibold text-base">Connect</h4>
-   <div class="font-light grid grid-rows-3 gap-[5px]">
-    <span>Contact</span>
-    <span>Partnerships</span>
-    <span>Business Inquiries</span>
-   </div>
-  </div>
+		<!-- Column 2: Explore -->
+		<div class="footer-nav-col flex flex-col gap-3.5">
+			<h4 class="font-semibold text-base text-primary_onyx tracking-tight">Explore</h4>
+			<div class="flex flex-col gap-2 font-light text-sm sm:text-[15px] text-neutral-600">
+				<a
+					href="#about"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>About Us</a
+				>
+				<a
+					href="#vision"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Vision & Mission</a
+				>
+				<a
+					href="#values"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Our Values</a
+				>
+				<a
+					href="#ecosystem"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Our Ecosystem</a
+				>
+				<a
+					href="#brands"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Our Brands</a
+				>
+				<a
+					href="#leadership"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Leadership & Governance</a
+				>
+				<a
+					href="#newsroom"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>News</a
+				>
+			</div>
+		</div>
 
-  <div class="flex flex-col gap-2.5">
-   <h4 class="font-semibold text-base">Follow us</h4>
-   <div class="font-light grid grid-rows-3 gap-[5px]">
-    <span>Facebook</span>
-    <span>Instagram</span>
-    <span>Linkedin</span>
-   </div>
-  </div>
+		<!-- Column 3: Businesses -->
+		<div class="footer-nav-col flex flex-col gap-3.5">
+			<h4 class="font-semibold text-base text-primary_onyx tracking-tight">Businesses</h4>
+			<div class="flex flex-col gap-2 font-light text-sm sm:text-[15px] text-neutral-600">
+				<a
+					href="#brands"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Fragrance & Personal Care</a
+				>
+				<a
+					href="#brands"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Travel & Hospitality</a
+				>
+				<a
+					href="#brands"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Events & Creative</a
+				>
+				<a
+					href="#brands"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Human Capital</a
+				>
+			</div>
+		</div>
 
- </div>
+		<!-- Column 4: Connect -->
+		<div class="footer-nav-col flex flex-col gap-3.5">
+			<h4 class="font-semibold text-base text-primary_onyx tracking-tight">Connect</h4>
+			<div class="flex flex-col gap-2 font-light text-sm sm:text-[15px] text-neutral-600">
+				<a
+					href="mailto:info@galedicorps.com"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Contact</a
+				>
+				<a
+					href="mailto:partnerships@galedicorps.com"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Partnerships</a
+				>
+				<a
+					href="mailto:inquiry@galedicorps.com"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Business Inquiries</a
+				>
+			</div>
+		</div>
 
- <div class="flex flex-col justify-center">
-  <GeladiCorps />
-  <div class="flex justify-between w-full">
-   <span>© 2026 Galedi Corp. All rights reserved</span>
-   <div>
-    <span>Made by </span>
-    <a href="https://www.instagram.com/snr66._/">SNR</a>
-   </div>
-  </div>
- </div>
+		<!-- Column 5: Follow Us -->
+		<div class="footer-nav-col flex flex-col gap-3.5">
+			<h4 class="font-semibold text-base text-primary_onyx tracking-tight">Follow us</h4>
+			<div class="flex flex-col gap-2 font-light text-sm sm:text-[15px] text-neutral-600">
+				<a
+					href="#"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Facebook</a
+				>
+				<a
+					href="https://www.instagram.com/whiff.media/"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>Instagram</a
+				>
+				<a
+					href="#"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="transition-all duration-200 hover:text-secondary_olive hover:translate-x-1 w-max"
+					>LinkedIn</a
+				>
+			</div>
+		</div>
+	</div>
+
+	<!-- Big Brand Logo with Natural Alphabet Stagger Reveal and Dynamic Proximity Wave -->
+	<div class="w-full flex flex-col items-center justify-center gap-8">
+		<div
+			class="geladicorps-logo-wrapper w-full flex justify-center py-4 select-none cursor-pointer"
+		>
+			<GeladiCorps class="w-full h-auto text-primary_onyx" />
+		</div>
+		<div
+			id="footer-bottom-bar"
+			class="flex flex-col sm:flex-row justify-between items-center w-full gap-4 text-xs sm:text-sm text-neutral-500 pb-2"
+		>
+			<span>© 2026 Galedi Corp. All rights reserved</span>
+			<div class="flex items-center gap-1">
+				<span>Made by</span>
+				<a
+					href="https://www.instagram.com/snr66._/"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="group/author relative font-medium text-primary_onyx hover:text-secondary_olive transition-colors duration-200 inline-block"
+				>
+					SNR
+					<span
+						class="absolute bottom-0 left-0 w-0 h-px bg-secondary_olive group-hover/author:w-full transition-all duration-300"
+					></span>
+				</a>
+			</div>
+		</div>
+	</div>
 </footer>
+
+<script>
+	import gsap from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+	function initFooterAnimations() {
+		gsap.registerPlugin(ScrollTrigger);
+
+		// Respect user's accessibility preferences
+		const prefersReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)"
+		).matches;
+
+		// Clean up previous triggers on view-transition / hot reload
+		ScrollTrigger.getAll().forEach((trigger) => {
+			if (trigger.vars.id?.startsWith("footer-")) {
+				trigger.kill();
+			}
+		});
+
+		if (prefersReducedMotion) {
+			gsap.set(
+				[
+					"#footer-cta-banner",
+					".footer-cta-title",
+					".footer-cta-desc",
+					".footer-cta-btn",
+					".footer-nav-col",
+					"#footer-bottom-bar",
+				],
+				{ autoAlpha: 1, y: 0, scale: 1 }
+			);
+			return;
+		}
+
+		// 1. CTA Banner Scroll Reveal Sequence
+		const ctaBanner = document.querySelector("#footer-cta-banner");
+		if (ctaBanner) {
+			gsap.set(ctaBanner, { autoAlpha: 0, scale: 0.97 });
+			gsap.set(".footer-cta-title", { autoAlpha: 0, y: 35 });
+			gsap.set(".footer-cta-desc", { autoAlpha: 0, y: 25 });
+			gsap.set(".footer-cta-btn", { autoAlpha: 0, scale: 0.92 });
+
+			const ctaTl = gsap.timeline({
+				scrollTrigger: {
+					id: "footer-cta-reveal",
+					trigger: ctaBanner,
+					start: "top 85%",
+					once: true,
+				},
+			});
+
+			ctaTl
+				.to(ctaBanner, {
+					autoAlpha: 1,
+					scale: 1,
+					duration: 0.7,
+					ease: "power3.out",
+				})
+				.to(
+					".footer-cta-title",
+					{
+						autoAlpha: 1,
+						y: 0,
+						duration: 0.7,
+						ease: "power3.out",
+					},
+					"-=0.5"
+				)
+				.to(
+					".footer-cta-desc",
+					{
+						autoAlpha: 1,
+						y: 0,
+						duration: 0.6,
+						ease: "power3.out",
+					},
+					"-=0.5"
+				)
+				.to(
+					".footer-cta-btn",
+					{
+						autoAlpha: 1,
+						scale: 1,
+						duration: 0.5,
+						ease: "back.out(1.4)",
+					},
+					"-=0.4"
+				);
+		}
+
+		// 2. 5-Column Navigation Staggered Scroll Reveal
+		const navGrid = document.querySelector("#footer-nav-grid");
+		const navCols = document.querySelectorAll(".footer-nav-col");
+		if (navGrid && navCols.length > 0) {
+			gsap.set(navCols, { autoAlpha: 0, y: 30 });
+
+			gsap.to(navCols, {
+				autoAlpha: 1,
+				y: 0,
+				duration: 0.65,
+				ease: "power3.out",
+				stagger: 0.08, // Staggered from left to right (Col 1 to 5)
+				scrollTrigger: {
+					id: "footer-nav-reveal",
+					trigger: navGrid,
+					start: "top 88%",
+					once: true,
+				},
+			});
+		}
+
+		// 3. Bottom Copyright & Author Bar Reveal
+		const bottomBar = document.querySelector("#footer-bottom-bar");
+		if (bottomBar) {
+			gsap.set(bottomBar, { autoAlpha: 0, y: 15 });
+
+			gsap.to(bottomBar, {
+				autoAlpha: 1,
+				y: 0,
+				duration: 0.55,
+				ease: "power2.out",
+				scrollTrigger: {
+					id: "footer-bottom-reveal",
+					trigger: bottomBar,
+					start: "top 99%",
+					once: true,
+				},
+			});
+		}
+
+		// 4. GeladiCorps SVG Logo Alphabet Reveal & Dynamic Proximity Wave
+		const logoWrapper = document.querySelector(
+			".geladicorps-logo-wrapper"
+		) as HTMLElement;
+		if (!logoWrapper) return;
+
+		const chars = Array.from(
+			logoWrapper.querySelectorAll<SVGGraphicsElement>("#line-0 path")
+		);
+		if (!chars || chars.length === 0) return;
+
+		const totalChars = chars.length;
+
+		gsap.set(chars, {
+			autoAlpha: 0,
+			y: 35,
+			scale: 0.92,
+			transformOrigin: "50% 100%",
+		});
+
+		let revealComplete = false;
+		gsap.to(chars, {
+			autoAlpha: 1,
+			y: 0,
+			scale: 1,
+			duration: 0.75,
+			ease: "power3.out",
+			stagger: 0.045,
+			scrollTrigger: {
+				id: "footer-logo-reveal",
+				trigger: logoWrapper,
+				start: "top 90%",
+				once: true,
+			},
+			onComplete: () => {
+				revealComplete = true;
+			},
+		});
+
+		const maxLift = -22;
+		const maxScale = 1.12;
+		const influenceRadius = 0.28;
+
+		function handlePointerMove(e: PointerEvent) {
+			const rect = logoWrapper.getBoundingClientRect();
+			if (rect.width === 0) return;
+
+			const normX = gsap.utils.clamp(
+				0,
+				1,
+				(e.clientX - rect.left) / rect.width
+			);
+
+			chars.forEach((char, idx) => {
+				const charNormX = (idx + 0.5) / totalChars;
+				const distance = Math.abs(normX - charNormX);
+
+				if (distance < influenceRadius) {
+					const factor = Math.cos(
+						(distance / influenceRadius) * (Math.PI / 2)
+					);
+					const targetY = maxLift * factor;
+					const targetScale = 1 + (maxScale - 1) * factor;
+
+					gsap.to(char, {
+						y: targetY,
+						scale: targetScale,
+						autoAlpha: 1,
+						duration: 0.22,
+						ease: "power2.out",
+						overwrite: "auto",
+					});
+				} else {
+					gsap.to(char, {
+						y: 0,
+						scale: 1,
+						autoAlpha: 1,
+						duration: 0.35,
+						ease: "power2.out",
+						overwrite: "auto",
+					});
+				}
+			});
+		}
+
+		function handlePointerLeave() {
+			gsap.to(chars, {
+				y: 0,
+				scale: 1,
+				autoAlpha: 1,
+				duration: 0.45,
+				ease: "power3.out",
+				stagger: {
+					each: 0.02,
+					from: "center",
+				},
+				overwrite: "auto",
+			});
+		}
+
+		logoWrapper.addEventListener("pointermove", handlePointerMove);
+		logoWrapper.addEventListener("pointerleave", handlePointerLeave);
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initFooterAnimations);
+	} else {
+		initFooterAnimations();
+	}
+	document.addEventListener("astro:page-load", initFooterAnimations);
+</script>
