@@ -1,0 +1,135 @@
+---
+import { Image } from "astro:assets";
+import coFounder1 from "@assets/images/member_color/1.png";
+import coFounder2 from "@assets/images/member_color/2.png";
+import coFounder3 from "@assets/images/member_color/4.png";
+import coFounder4 from "@assets/images/member_color/3.png";
+
+interface TeamMember {
+	name: string;
+	role: string;
+	image: ImageMetadata;
+}
+
+const teamMembers: TeamMember[] = [
+	{
+		name: "Gracia Vega Setiawan, S.E., M.M",
+		role: "Co-Founder",
+		image: coFounder1,
+	},
+	{
+		name: "Gracia Christie Setiawan, S.M",
+		role: "Co-Founder",
+		image: coFounder2,
+	},
+	{
+		name: "Gracia Audy Setiawan, S.Ikom",
+		role: "Co-Founder",
+		image: coFounder3,
+	},
+	{
+		name: "Firta Tirta Damayanti, S.M.",
+		role: "Co-Founder Saka",
+		image: coFounder4,
+	},
+];
+---
+
+<section class="bg-primary_limestone py-20 sm:py-28 md:py-32 px-5 font-testsohne overflow-hidden">
+	<div class="w-full flex flex-col gap-10 sm:gap-14">
+		<!-- Section Header -->
+		<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+			<h2 class="font-canela text-5xl sm:text-6xl md:text-7xl text-secondary_olive font-normal tracking-tight">
+				Leadership & Governance
+			</h2>
+		</div>
+
+		<!-- Swiper Team Carousel -->
+		<div class="relative w-full">
+			<div class="swiper-container swiper-team overflow-hidden">
+				<div class="swiper-wrapper flex items-stretch">
+					{teamMembers.map((member) => (
+						<div class="swiper-slide !h-auto">
+							<div class="group relative w-full h-[460px] sm:h-[500px] md:h-[540px] overflow-hidden rounded-2xl sm:rounded-3xl bg-primary_bone_white border border-black/5 transition-all duration-500 cursor-grab active:cursor-grabbing">
+								{/* Photo */}
+								<Image
+									src={member.image}
+									alt={member.name}
+									width={600}
+									height={800}
+									format="webp"
+									quality={90}
+									densities={[1, 2]}
+									loading="lazy"
+									decoding="async"
+									class="h-full w-full object-cover object-top filter grayscale contrast-[1.03] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
+								/>
+
+								{/* Gradient Overlay at Bottom */}
+								<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-secondary_deep_moss/95 via-secondary_deep_moss/45 to-transparent transition-opacity duration-500"></div>
+
+								{/* Member Details */}
+								<div class="absolute inset-x-0 bottom-0 p-6 sm:p-7 flex flex-col gap-1 text-primary_bone_white z-10">
+									<h3 class="font-medium text-lg sm:text-xl md:text-[22px] leading-snug tracking-tight text-white transition-transform duration-300 group-hover:-translate-y-0.5">
+										{member.name}
+									</h3>
+									<p class="font-light text-xs sm:text-sm md:text-[15px] text-primary_bone_white/85">
+										{member.role}
+									</p>
+								</div>
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	import Swiper from "swiper";
+	import { Navigation, Autoplay } from "swiper/modules";
+
+	function initTeamSwiper() {
+		const swiperEl = document.querySelector(".swiper-team");
+		if (!swiperEl) return;
+
+		// Destroy existing instance if re-initialized
+		if ((swiperEl as any).swiper) {
+			(swiperEl as any).swiper.destroy(true, true);
+		}
+
+		new Swiper(".swiper-team", {
+			modules: [Navigation, Autoplay],
+			slidesPerView: 1.15,
+			spaceBetween: 14,
+			grabCursor: true,
+			speed: 600,
+			breakpoints: {
+				480: {
+					slidesPerView: 1.6,
+					spaceBetween: 16,
+				},
+				640: {
+					slidesPerView: 2.2,
+					spaceBetween: 16,
+				},
+				768: {
+					slidesPerView: 3.2,
+					spaceBetween: 18,
+				},
+				1024: {
+					slidesPerView: 4,
+					spaceBetween: 20,
+				},
+			},
+		});
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initTeamSwiper);
+	} else {
+		initTeamSwiper();
+	}
+	document.addEventListener("astro:page-load", initTeamSwiper);
+</script>
