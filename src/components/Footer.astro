@@ -1,0 +1,92 @@
+---
+import { getImage } from "astro:assets";
+import backgroundCta from "@assets/images/background_olive.avif";
+import GeladiCorps from "@assets/GeladiCorps.svg";
+import { ChevronRight, Mail, MapPin } from "@lucide/astro";
+
+const optimizedBg = await getImage({ src: backgroundCta });
+---
+
+<footer class="bg-white min-h-screen px-5 py-6">
+ <div 
+  style={`background-image: url(${optimizedBg.src});`}
+  class="font-testsohne w-full h-full min-h-[650px]  bg-cover bg-bottom bg-no-repeat flex flex-col justify-center items-center text-primary_bone_white gap-[25px] px-5 py-[30px] rounded-[20px]">
+  <h1 class="font-semibold text-7xl text-center">More than premium <br/> Made to matter</h1>
+  <span class="font-light text-2xl text-center max-w-[500px]">Different businesses. Different people. One shared direction.</span>
+  <button class="cursor-pointer max-w-[200px] w-full flex justify-center items-center bg-white rounded-[20px] text-digital-neutrals-600 px-[15px] py-2 gap-1">
+   <span class="text-2xl">Contact</span>
+   <ChevronRight class="size-8 stroke-digital-neutrals-600" />
+  </button>
+ </div>
+
+ <div class="font-testsohne text-primary_onyx w-full grid grid-cols-5 justify-items-center px-5 py-[30px]">
+  <div class="flex flex-col gap-2.5 justify-self-start">
+   <div class="flex items-center gap-2.5">
+    <Mail class="size-7 stroke-primary_onyx" />
+    <div class="flex flex-col text-sm">
+     <span class="font-normal">Let's talk.</span>
+     <span class="font-light">info@galedicorps.com</span>
+    </div>
+   </div>
+   <div class="flex items-center gap-2.5">
+    <MapPin class="size-7 stroke-primary_onyx" />
+    <div class="flex flex-col text-sm">
+     <p class="font-light">Jl. KH. Wahid Hasyim No. 77, <br/> Menteng, Jakarta Pusat.</p>
+    </div>
+   </div>
+  </div>
+
+  <div class="flex flex-col gap-2.5">
+   <h4 class="font-semibold text-base">Explore</h4>
+   <div class="font-light grid grid-rows-7 gap-[5px]">
+    <span>About Us</span>
+    <span>Vision & Mission</span>
+    <span>Our Values</span>
+    <span>Our Ecosystem</span>
+    <span>Our Brands</span>
+    <span>Leadership & <br/>Governance</span>
+    <span>News</span>
+   </div>
+  </div>
+
+  <div class="flex flex-col gap-2.5">
+   <h4 class="font-semibold text-base">Businesses</h4>
+   <div class="font-light grid grid-rows-4 gap-[5px]">
+    <span>Fragrance & <br/>Personal Care</span>
+    <span>Travel & <br/>Hospitality</span>
+    <span>Events & Creative</span>
+    <span>Human Capital</span>
+   </div>
+  </div>
+
+  <div class="flex flex-col gap-2.5">
+   <h4 class="font-semibold text-base">Connect</h4>
+   <div class="font-light grid grid-rows-3 gap-[5px]">
+    <span>Contact</span>
+    <span>Partnerships</span>
+    <span>Business Inquiries</span>
+   </div>
+  </div>
+
+  <div class="flex flex-col gap-2.5">
+   <h4 class="font-semibold text-base">Follow us</h4>
+   <div class="font-light grid grid-rows-3 gap-[5px]">
+    <span>Facebook</span>
+    <span>Instagram</span>
+    <span>Linkedin</span>
+   </div>
+  </div>
+
+ </div>
+
+ <div class="flex flex-col justify-center">
+  <GeladiCorps />
+  <div class="flex justify-between w-full">
+   <span>© 2026 Galedi Corp. All rights reserved</span>
+   <div>
+    <span>Made by </span>
+    <a href="https://www.instagram.com/snr66._/">SNR</a>
+   </div>
+  </div>
+ </div>
+</footer>

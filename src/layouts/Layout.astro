@@ -1,6 +1,7 @@
 ---
 import Navbar from "@components/Navbar.astro";
 import "../styles/global.css";
+import Footer from "@components/Footer.astro";
 
 interface Props {
 	title?: string;
@@ -28,7 +29,8 @@ const {
 		<div class="fixed top-3 z-50 left-0 right-0">
 			<Navbar />
 		</div>
-		<slot />
+			<slot />
+		<Footer />
 	</body>
 </html>
 
