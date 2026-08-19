@@ -1,0 +1,60 @@
+---
+import { Image } from "astro:assets"
+import background1 from "@assets/images/galedicorps_lifestyle.jpg"
+import background2 from "@assets/images/eyewear_lifestyle.jpg"
+---
+
+<section class="font-testsohne py-40 px-5 w-full min-h-362.5">
+ <div class="w-full grid grid-cols-3 gap-5">
+  <div class="bg-secondary_terracotta h-full rounded-[10px] p-5">
+   <h2 class="font-semibold text-7xl text-primary_limestone leading-snug">Our <br/> Ecosystem</h2>
+  </div>
+  <Image src={background1} alt="background galedi corps lifestyle parfume" width={1000} height={667} quality={75} format="avif" class="col-span-2 h-[450px] w-full object-cover object-[50%_75%] rounded-[10px]" />
+
+  <div class="bg-[#4E84B7] h-full min-h-[450px] rounded-[10px] p-5 grid grid-rows-[0.5fr_1fr_0.5fr] text-primary_limestone gap-2.5">
+   <h2 class="font-semibold text-3xl">Lifestyle, Fragrance & <br/> Personal Care</h2>
+   <p class="font-semibold text-2xl text-justify tracking-wider">From personal fragrance, personal care and ambient scent to wellness products, international markets, and fragrance media</p>
+   <div class="font-inter grid grid-cols-3 gap-2.5 place-content-center">
+    <span class="text-center w-full py-1.25 text-[#4E84B7] bg-primary_bone_white rounded-full h-max">fragrance</span>
+    <span class="text-center w-full py-1.25 text-[#4E84B7] bg-primary_bone_white rounded-full h-max">personal care</span>
+    <span class="text-center w-full py-1.25 text-[#4E84B7] bg-primary_bone_white rounded-full h-max">international</span>
+    <span class="text-center w-full py-1.25 text-[#4E84B7] bg-primary_bone_white rounded-full h-max col-end-4">scent branding</span>
+   </div>
+  </div>
+  <div class="bg-[#594EB7] h-full min-h-[450px] rounded-[10px] p-5 grid grid-rows-[0.5fr_1fr_0.5fr] text-primary_limestone gap-2.5">
+   <h2 class="font-semibold text-3xl">Travel & Hospitality</h2>
+   <p class="font-semibold text-2xl text-justify tracking-wider">From leisure and corporate travel to pilgrimage, hospitality, and digital platforms for travelers.</p>
+   <div class="font-inter grid grid-cols-3 gap-2.5 place-content-center">
+    <span class="text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max">leisure travel</span>
+    <span class="text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max">corporate travel</span>
+    <span class="text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max">hospitality</span>
+    <span class="text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max col-end-3">travel experiences</span>
+    <span class="text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max col-end-4">digital</span>
+   </div>
+  </div>
+  <div class="bg-[#EB642A] h-full min-h-[450px] rounded-[10px] p-5 grid grid-rows-[0.5fr_1fr_0.5fr] text-primary_limestone gap-2.5">
+   <h2 class="font-semibold text-3xl">Events & Industrial <br/> Creative</h2>
+   <p class="font-semibold text-2xl text-justify tracking-wider">From MICE and exhibitions to custom packaging, printing, and physical brand experiences.</p>
+   <div class="font-inter grid grid-cols-3 gap-2.5 place-content-center">
+    <span class="text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max">mice</span>
+    <span class="text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max">packaging</span>
+    <span class="text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max">events</span>
+    <span class="text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max">exhibitions</span>
+    <span class="text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max">creative production</span>
+    <span class="text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max">print</span>
+   </div>
+  </div>
+
+  <Image src={background2} alt="background galedi corps lifestyle parfume" width={1000} height={1000} quality={75} format="avif" class="col-span-2 h-[450px] w-full object-cover rounded-[10px]" />
+  <div class="bg-[#EBE52A] h-full min-h-[450px] rounded-[10px] p-5 grid grid-rows-[0.5fr_1fr_0.5fr] text-digital-neutrals-800 gap-2.5">
+   <h2 class="font-semibold text-3xl">Human Capital & Strategic Consulting</h2>
+   <p class="font-semibold text-2xl text-justify tracking-wider">Through HR consulting, corporate training, and human development for organizations and individuals</p>
+   <div class="font-inter grid grid-cols-3 gap-2.5 place-content-center">
+    <span class="text-center w-full py-1.25 text-primary_bone_white bg-digital-neutrals-700 rounded-full h-max col-start-2">corporate training</span>
+    <span class="text-center w-full py-1.25 text-primary_bone_white bg-digital-neutrals-700 rounded-full h-max col-start-3">hr consulting</span>
+    <span class="text-center w-full py-1.25 text-primary_bone_white bg-digital-neutrals-700 rounded-full h-max">human development</span>
+    <span class="text-center w-full py-1.25 text-primary_bone_white bg-digital-neutrals-700 rounded-full h-max col-start-2 col-span-2">organization development</span>
+   </div>
+  </div>
+ </div>
+</section>
