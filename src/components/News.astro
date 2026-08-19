@@ -1,0 +1,253 @@
+---
+import { Image } from "astro:assets";
+import whiffMedia from "@assets/images/logo_brands/whiff_logo.png";
+import ounceId from "@assets/images/logo_brands/8ounce_logo.png";
+import nomadbookId from "@assets/images/logo_brands_black/nomadbookid_logo_black.png";
+
+import newsWhiff from "@assets/images/news/whiff_news_sakaparfumery.jpg";
+import newsNomadbookid from "@assets/images/news/nomadbook_news_tamarinhoteljakarta.jpg";
+import news8ounce from "@assets/images/news/8ounceid_news_kesehatan_mental.jpg";
+import { ArrowUpRight } from "@lucide/astro";
+
+interface MediaItem {
+	name: string;
+	logo: ImageMetadata;
+}
+
+interface NewsItem {
+	title: string;
+	thumbnail: ImageMetadata;
+	logo: ImageMetadata;
+	date: string;
+	link: string;
+	objectPositionClass?: string;
+}
+
+const brandsMedia: MediaItem[] = [
+	{ name: "Whiff Media brands media partner", logo: whiffMedia },
+	{ name: "ounceId brands consulting", logo: ounceId },
+	{ name: "Nomadbook Id brands consulting", logo: nomadbookId },
+];
+
+const newsMedia: NewsItem[] = [
+	{
+		title:
+			"Last weekend with SAKA Downtown Series 2.0 x Andreas Prasetya good scents, good pipel, and a launch worth staying out for.",
+		thumbnail: newsWhiff,
+		logo: whiffMedia,
+		date: "14/26",
+		link: "https://www.instagram.com/whiff.media/",
+		objectPositionClass: "object-center",
+	},
+	{
+		title:
+			"Heritage, hospitality, dan lokasi strategis — semua ada di Tamarin Hotel Jakarta",
+		thumbnail: newsNomadbookid,
+		logo: nomadbookId,
+		date: "25/25",
+		link: "https://www.nomadbookid.com/",
+		objectPositionClass: "object-top",
+	},
+	{
+		title:
+			"Workplace yang sehat bukan hanya bebas dari risiko fisik, tapi juga mampu menjaga kesehatan mental setiap orang di dalamnya.",
+		thumbnail: news8ounce,
+		logo: ounceId,
+		date: "04/26",
+		link: "http://nirmalaofficial.com/8OUNCE/",
+		objectPositionClass: "object-top",
+	},
+];
+---
+
+<section
+	id="newsroom-section"
+	class="relative bg-white font-testsohne min-h-screen py-24 sm:py-32 px-5 sm:px-8 lg:px-12 overflow-hidden"
+>
+	<!-- Floating Custom Follower Cursor Badge with ArrowUpRight Icon -->
+	<div
+		id="news-cursor-badge"
+		class="pointer-events-none fixed top-0 left-0 z-50 hidden lg:flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-primary_onyx text-primary_bone_white shadow-2xl opacity-0 scale-75 transition-[opacity,transform] duration-200 ease-out"
+	>
+		<ArrowUpRight class="size-7 stroke-[2]" />
+	</div>
+
+	<div class="w-full flex flex-col">
+		<!-- Section Header -->
+		<div
+			class="w-full flex flex-col md:flex-row md:items-center justify-between gap-8 pb-16 sm:pb-24"
+		>
+			<h1
+				class="font-semibold text-5xl sm:text-6xl md:text-7xl text-primary_onyx tracking-tight"
+			>
+				Newsroom
+			</h1>
+			<div class="flex flex-wrap gap-4 sm:gap-6 justify-end">
+				{
+					brandsMedia.map((media) => (
+						<Image
+							src={media.logo}
+							alt={media.name}
+							width={350}
+							height={150}
+							format="webp"
+							quality={95}
+							densities={[1, 2]}
+							loading="lazy"
+							decoding="async"
+							class="size-[140px] sm:size-[150px] object-contain select-none"
+						/>
+					))
+				}
+			</div>
+		</div>
+
+		<!-- News Items List -->
+		<div class="flex flex-col w-full">
+			{
+				newsMedia.map((media, idx) => (
+					<a
+						id={"container_news_" + idx}
+						href={media.link}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="news-container-item group block w-full border-t border-primary_onyx pt-8 pb-12 sm:pb-16 transition-colors duration-300 lg:cursor-none select-none"
+					>
+						<div class="w-full grid grid-cols-1 lg:grid-cols-[0.75fr_1fr_0.25fr] gap-6 sm:gap-8 lg:gap-[25px] items-start">
+							{/* Thumbnail Image Container */}
+							<div class="h-[360px] sm:h-[440px] lg:h-[500px] w-full overflow-hidden bg-neutral-100">
+								<Image
+									src={media.thumbnail}
+									alt={media.title}
+									width={1080}
+									height={1400}
+									format="webp"
+									quality={90}
+									densities={[1, 2]}
+									loading="lazy"
+									decoding="async"
+									class:list={[
+										"h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105",
+										media.objectPositionClass || "object-center",
+									]}
+								/>
+							</div>
+
+							{/* News Info & Partner Brand Logo */}
+							<div class="font-normal flex flex-col justify-between h-full min-h-[220px] lg:min-h-[480px] py-1">
+								<h2 class="text-2xl sm:text-3xl lg:text-4xl text-primary_onyx leading-snug font-normal transition-colors duration-300 ">
+									{media.title}
+								</h2>
+								<div class="flex gap-4 items-center mt-auto pt-6">
+									<Image
+										src={media.logo}
+										alt={"logo brands media partner"}
+										width={350}
+										height={100}
+										format="webp"
+										quality={90}
+										class="w-[70px] sm:w-[80px] h-[70px] sm:h-[80px] object-contain select-none"
+									/>
+									<span class="text-base sm:text-lg text-primary_onyx tracking-wider">
+										{media.date}
+									</span>
+								</div>
+							</div>
+
+							{/* Action Indicator Icon */}
+							<div class="hidden lg:flex justify-end pt-2">
+								<div class="p-1 rounded-full flex items-center justify-center transition-all duration-300 group-hover:border-primary_onyx group-hover:bg-primary_onyx group-hover:text-primary_bone_white">
+									<ArrowUpRight class="size-[72px] stroke-[1.5] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+								</div>
+							</div>
+						</div>
+					</a>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<script>
+	function initNewsCursor() {
+		// Only enable custom floating cursor on devices with fine pointer and hover capability
+		if (
+			!window.matchMedia("(hover: hover) and (pointer: fine)").matches ||
+			window.innerWidth < 1024
+		) {
+			return;
+		}
+
+		const badge = document.getElementById("news-cursor-badge");
+		const newsItems = document.querySelectorAll(".news-container-item");
+		if (!badge || newsItems.length === 0) return;
+
+		let mouseX = 0;
+		let mouseY = 0;
+		let currentX = 0;
+		let currentY = 0;
+		let isHovering = false;
+		let isPressed = false;
+		let rafId: number | null = null;
+
+		function updateCursor() {
+			if (isHovering) {
+				// Smooth physics interpolation (LERP: 0.18 for responsiveness with silky settle)
+				currentX += (mouseX - currentX) * 0.18;
+				currentY += (mouseY - currentY) * 0.18;
+
+				const scale = isPressed ? 0.9 : 1.0;
+				badge!.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%) scale(${scale})`;
+			}
+			rafId = requestAnimationFrame(updateCursor);
+		}
+
+		function onPointerMove(e: PointerEvent) {
+			mouseX = e.clientX;
+			mouseY = e.clientY;
+			if (!isHovering) {
+				currentX = mouseX;
+				currentY = mouseY;
+			}
+		}
+
+		function onPointerDown() {
+			isPressed = true;
+			badge!.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%) scale(0.9)`;
+		}
+
+		function onPointerUp() {
+			isPressed = false;
+			badge!.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%) scale(1.0)`;
+		}
+
+		window.addEventListener("pointermove", onPointerMove, { passive: true });
+		window.addEventListener("pointerdown", onPointerDown, { passive: true });
+		window.addEventListener("pointerup", onPointerUp, { passive: true });
+
+		newsItems.forEach((item) => {
+			item.addEventListener("mouseenter", () => {
+				isHovering = true;
+				badge.classList.remove("opacity-0", "scale-75");
+				badge.classList.add("opacity-100", "scale-100");
+			});
+
+			item.addEventListener("mouseleave", () => {
+				isHovering = false;
+				badge.classList.remove("opacity-100", "scale-100");
+				badge.classList.add("opacity-0", "scale-75");
+			});
+		});
+
+		if (!rafId) {
+			rafId = requestAnimationFrame(updateCursor);
+		}
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initNewsCursor);
+	} else {
+		initNewsCursor();
+	}
+	document.addEventListener("astro:page-load", initNewsCursor);
+</script>
