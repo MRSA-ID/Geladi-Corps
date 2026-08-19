@@ -1,0 +1,22 @@
+---
+import { Dot } from "@lucide/astro";
+import MissionCards from "./MissionCards";
+
+---
+
+<section class="flex flex-col gap-44 bg-primary_limestone py-32 px-5 font-testsohne">
+ <div class="grid grid-cols-2 w-full text-primary_onyx  "> 
+  <div class="flex flex-col gap-2.5 max-w-[500px] w-full">
+   <div class="flex bg-secondary_sage px-[15px] py-[7px] text-primary_bone_white items-center w-max gap-0.5 rounded-[20px]">
+    <Dot class="size-6 stroke-10" />
+    <span class="text-2xl">Our Vision & Mission</span>
+   </div>
+   <h2 class="text-5xl font-semibold">Building businesses for long-term value</h2>
+  </div>
+  <div class="place-self-center max-w-[720px]">
+   <p class="text-3xl font-semibold leading-snug text-justify">To be a leading multi-industry holding group that builds lasting value through cross-industry collaboration, practical innovation, and world-class operational standards.</p>
+  </div>
+ </div>
+
+ <MissionCards client:visible />
+</section>
