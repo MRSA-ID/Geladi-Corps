@@ -64,7 +64,7 @@ const brands = [
 ];
 ---
 
-<header class="md:relative w-full md:max-w-[1200px] md:mx-auto flex flex-col items-center select-none font-inter sm:px-4">
+<header id="navbar-container" class="fixed top-3 z-50 left-0 right-0 w-full md:max-w-[1200px] md:mx-auto flex flex-col items-center select-none font-inter sm:px-4 will-change-transform pointer-events-auto">
 	<!-- 1. Mobile Top Bar (Clean & Unwrapped: Standalone Logo on Left, Menu Button on Right) -->
 	<div class="md:hidden group w-full flex items-center justify-end px-2 sm:px-4 py-1 gap-0.5">
 		<!-- Standalone Logo Button -->
@@ -267,12 +267,13 @@ const brands = [
 			}
 		</div>
 	</div>
+</header>
 
-	<!-- 5. Fullscreen Mobile Navigation Menu Overlay (Matching Reference Screenshot) -->
-	<div
-		id="mobile-fullscreen-menu"
-		class="fixed inset-0 z-100 bg-[#f7f3ee] text-primary_onyx flex flex-col justify-between p-6 sm:p-8 overflow-y-auto opacity-0 pointer-events-none -translate-y-3 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] md:hidden"
-	>
+<!-- 5. Fullscreen Mobile Navigation Menu Overlay (Independent Root Viewport Level) -->
+<div
+	id="mobile-fullscreen-menu"
+	class="fixed inset-0 z-[100] min-h-dvh w-screen bg-[#f7f3ee] text-primary_onyx flex flex-col justify-between p-6 sm:p-8 overflow-y-auto opacity-0 pointer-events-none -translate-y-3 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] md:hidden"
+>
 		<div class="flex flex-col w-full max-w-lg mx-auto">
 			<!-- Top Bar: Close Button | Brand Logo | Action -->
 			<div class="flex items-center justify-between pb-6 border-b border-black/10">
@@ -446,9 +447,10 @@ const brands = [
 			<span>Luxury Holding</span>
 		</div>
 	</div>
-</header>
 
 <script>
+	import { stopLenis, startLenis } from "../scripts/lenis";
+
 	function initNavbar() {
 		// --- 1. Desktop Mega Menus ---
 		const ecoTrigger = document.getElementById("nav-ecosystem-trigger");
@@ -588,6 +590,7 @@ const brands = [
 		const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
 
 		function openMobileMenu() {
+			stopLenis();
 			mobileMenu?.classList.remove(
 				"opacity-0",
 				"pointer-events-none",
@@ -613,6 +616,7 @@ const brands = [
 				"translate-y-0"
 			);
 			document.body.style.overflow = "";
+			startLenis();
 		}
 
 		openBtn?.addEventListener("click", openMobileMenu);
