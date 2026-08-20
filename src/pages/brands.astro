@@ -1,0 +1,652 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+import { ArrowUpRight, Sparkles } from "@lucide/astro";
+
+// Showcase Photography Assets
+import fragranceImg from "@assets/images/galedicorps_lifestyle.jpg";
+import travelImg from "@assets/images/gladicorps-travel.jpg";
+import eventsImg from "@assets/images/galedicorps-events.jpg";
+import humanCapitalImg from "@assets/images/galedicorps-human-capital.jpg";
+import mediaImg from "@assets/images/eyewear_lifestyle.jpg";
+
+// Brand Showcase Images for Image Trail
+import sakaParfumeryImg from "@assets/images/brands/brands_saka_parfumery.png";
+import meetcationEuropeImg from "@assets/images/brands/brands_meetcation_europe.png";
+import safeeyaUmrohImg from "@assets/images/brands/brands_safeeyaumroh.jpg";
+import arkalokaImg from "@assets/images/brands/brands_arkaloka.png";
+import dusantaraPkgImg from "@assets/images/brands/brands_dusantaraid_package.jpg";
+import sakaAmbientImg from "@assets/images/brands/brands_saka_ambient.png";
+
+// Brand Logo Assets
+import sakaLogo from "@assets/images/logo_brands/saka_logo_color.png";
+import meetcationLogo from "@assets/images/logo_brands/meetcation_logo_color.png";
+import safeeyaLogo from "@assets/images/logo_brands/safeeyaumroh_logo_color.png";
+import arkalokaLogo from "@assets/images/logo_brands/arkaloka_logo_color.png";
+import nirmalaLogo from "@assets/images/logo_brands/nirmala_logo_only_color.png";
+import dusantaraLogo from "@assets/images/logo_brands/dusantara_logo.png";
+import ounceLogo from "@assets/images/logo_brands/8ounce_logo_color.png";
+import nomadbookLogo from "@assets/images/logo_brands/nomadbookid_logo_color.png";
+import whiffLogo from "@assets/images/logo_brands/whiff_logo_color.png";
+
+interface BrandEntity {
+	name: string;
+	tagline: string;
+	logo: ImageMetadata;
+	link: string;
+	tags: string[];
+}
+
+interface CategoryPillar {
+	number: string;
+	title: string;
+}
+
+interface EcosystemCategory {
+	id: string;
+	categoryNumber: string;
+	title: string;
+	kicker: string;
+	pillars: CategoryPillar[];
+	description: string;
+	capabilities: string[];
+	brands: BrandEntity[];
+	showcaseImage: ImageMetadata;
+	showcaseAlt: string;
+	bgClass: string;
+	accentClass: string;
+}
+
+const trailImages = [
+	{ src: sakaParfumeryImg, alt: "Saka Perfumery Artisanal Fragrance" },
+	{ src: meetcationEuropeImg, alt: "Meetcation Curated Travel" },
+	{ src: dusantaraPkgImg, alt: "Dusantara Luxury Packaging" },
+	{ src: arkalokaImg, alt: "Arkaloka Boutique Hospitality" },
+	{ src: fragranceImg, alt: "Galedi Olfactory Lifestyle" },
+	{ src: safeeyaUmrohImg, alt: "Safeeya Umroh Pilgrimage" },
+	{ src: eventsImg, alt: "Nirmala Project Event Production" },
+	{ src: sakaAmbientImg, alt: "Saka Ambient Scenting" },
+	{ src: humanCapitalImg, alt: "8ounce Human Capital & Consulting" },
+	{ src: mediaImg, alt: "Whiff & Nomadbook Media Lifestyle" },
+];
+
+const categories: EcosystemCategory[] = [
+	{
+		id: "fragrance",
+		categoryNumber: "01",
+		title: "Fragrance & Personal Care",
+		kicker: "Olfactory Craft & Lifestyle Wellness",
+		pillars: [
+			{ number: "01", title: "perfumery" },
+			{ number: "02", title: "remedy & care" },
+			{ number: "03", title: "ambient & export" },
+		],
+		description:
+			"From artisanal fine fragrances and therapeutic wellness formulations to corporate ambient scenting and international export markets, our fragrance ecosystem sets the standard for olfactory excellence.",
+		capabilities: [
+			"Fine Fragrance",
+			"Aromatherapy & Remedy",
+			"Ambient Scenting",
+			"OEM & Private Label",
+			"Global Export",
+		],
+		brands: [
+			{
+				name: "Saka Perfumery",
+				tagline: "Fine fragrance & artisanal Eau de Parfum",
+				logo: sakaLogo,
+				link: "https://sakaparfumery.com",
+				tags: ["Fine Fragrance", "Artisanal"],
+			},
+			{
+				name: "Saka Remedy",
+				tagline: "Holistic wellness & aromatherapy solutions",
+				logo: sakaLogo,
+				link: "https://www.instagram.com/saka.remedy/",
+				tags: ["Aromatherapy", "Personal Care"],
+			},
+			{
+				name: "Saka Ambient",
+				tagline: "Hotel & commercial ambient scent branding",
+				logo: sakaLogo,
+				link: "https://www.instagram.com/saka.ambient/",
+				tags: ["Scent Branding", "Diffusers"],
+			},
+			{
+				name: "Saka International",
+				tagline: "Global distribution & Southeast Asia export",
+				logo: sakaLogo,
+				link: "https://sakaparfumery.com",
+				tags: ["Global Market", "Export"],
+			},
+		],
+		showcaseImage: fragranceImg,
+		showcaseAlt: "Galedi Corps Fragrance and Lifestyle Showcase",
+		bgClass: "bg-white",
+		accentClass: "text-secondary_olive",
+	},
+	{
+		id: "travel",
+		categoryNumber: "02",
+		title: "Travel & Hospitality",
+		kicker: "Journeys, Pilgrimage & Curated Stays",
+		pillars: [
+			{ number: "01", title: "leisure & corporate" },
+			{ number: "02", title: "pilgrimage & umroh" },
+			{ number: "03", title: "hospitality stays" },
+		],
+		description:
+			"Curating seamless travel experiences, specialized executive retreats, tailored pilgrimage journeys, and boutique hospitality properties across Indonesia and premier global destinations.",
+		capabilities: [
+			"Corporate Retreats",
+			"VIP Leisure Travel",
+			"Umroh & Hajj Services",
+			"Boutique Stays & Villas",
+			"MICE Logistics",
+		],
+		brands: [
+			{
+				name: "Meetcation",
+				tagline: "Corporate retreats, MICE & curated leisure travel",
+				logo: meetcationLogo,
+				link: "https://www.instagram.com/meetcation.id/",
+				tags: ["Corporate Travel", "MICE"],
+			},
+			{
+				name: "Safeeya Umroh",
+				tagline: "Trusted Umroh & Hajj pilgrimage management",
+				logo: safeeyaLogo,
+				link: "https://www.instagram.com/safeeyaumroh/",
+				tags: ["Pilgrimage", "Spiritual Travel"],
+			},
+			{
+				name: "Arkaloka",
+				tagline: "Boutique hospitality properties & stays",
+				logo: arkalokaLogo,
+				link: "https://www.instagram.com/arkaloka.id/",
+				tags: ["Hospitality", "Villas & Stays"],
+			},
+		],
+		showcaseImage: travelImg,
+		showcaseAlt: "Galedi Corps Travel and Hospitality Showcase",
+		bgClass: "bg-white",
+		accentClass: "text-[#4E84B7]",
+	},
+	{
+		id: "events",
+		categoryNumber: "03",
+		title: "Events & Creative",
+		kicker: "Physical Activations & Custom Packaging",
+		pillars: [
+			{ number: "01", title: "event production" },
+			{ number: "02", title: "bespoke packaging" },
+			{ number: "03", title: "brand activations" },
+		],
+		description:
+			"Transforming brand visions into impactful physical realities through high-level event production, experiential brand activations, and premium bespoke packaging fabrication.",
+		capabilities: [
+			"MICE & Exhibitions",
+			"Brand Activations",
+			"Luxury Box Packaging",
+			"Offset Printing",
+			"Creative Production",
+		],
+		brands: [
+			{
+				name: "Nirmala Project",
+				tagline: "Experiential event management & MICE production",
+				logo: nirmalaLogo,
+				link: "http://nirmalaofficial.com",
+				tags: ["Event Production", "MICE"],
+			},
+			{
+				name: "Dusantara Heritage",
+				tagline: "Luxury packaging fabrication & printing",
+				logo: dusantaraLogo,
+				link: "https://www.instagram.com/dusantara.id/",
+				tags: ["Custom Packaging", "Printing"],
+			},
+		],
+		showcaseImage: eventsImg,
+		showcaseAlt: "Galedi Corps Events and Creative Showcase",
+		bgClass: "bg-white",
+		accentClass: "text-[#EB642A]",
+	},
+	{
+		id: "consulting",
+		categoryNumber: "04",
+		title: "Human Capital & Consulting",
+		kicker: "Workforce Strategy & Executive Development",
+		pillars: [
+			{ number: "01", title: "hr advisory" },
+			{ number: "02", title: "executive training" },
+			{ number: "03", title: "org transformation" },
+		],
+		description:
+			"Empowering enterprise organizations and leadership talent with forward-thinking human resources consulting, executive leadership development, and strategic organizational transformation.",
+		capabilities: [
+			"Organizational Design",
+			"Executive Coaching",
+			"Talent Development",
+			"Corporate Wellness",
+			"HR Advisory",
+		],
+		brands: [
+			{
+				name: "8ounceid",
+				tagline: "Human capital consulting & corporate leadership training",
+				logo: ounceLogo,
+				link: "http://nirmalaofficial.com/8OUNCE/",
+				tags: ["HR Consulting", "Corporate Training"],
+			},
+		],
+		showcaseImage: humanCapitalImg,
+		showcaseAlt: "Galedi Corps Human Capital and Consulting Showcase",
+		bgClass: "bg-white",
+		accentClass: "text-secondary_deep_moss",
+	},
+	{
+		id: "media",
+		categoryNumber: "05",
+		title: "Media Platforms",
+		kicker: "Cultural Journalism & Digital Storytelling",
+		pillars: [
+			{ number: "01", title: "travel culture" },
+			{ number: "02", title: "fragrance media" },
+			{ number: "03", title: "digital publishing" },
+		],
+		description:
+			"Connecting communities and amplifying industry narratives through curated digital media platforms specializing in travel, hospitality, fragrance culture, and lifestyle journalism.",
+		capabilities: [
+			"Digital Journalism",
+			"Editorial Storytelling",
+			"Travel Guides",
+			"Scent Reviews",
+			"Content Production",
+		],
+		brands: [
+			{
+				name: "Nomadbookid",
+				tagline: "Digital travel & hospitality lifestyle platform",
+				logo: nomadbookLogo,
+				link: "https://www.nomadbookid.com/",
+				tags: ["Travel Media", "Hospitality Guides"],
+			},
+			{
+				name: "Whiff Media",
+				tagline: "Premier fragrance culture & lifestyle publication",
+				logo: whiffLogo,
+				link: "https://www.instagram.com/whiff.media/",
+				tags: ["Fragrance Journalism", "Scent Culture"],
+			},
+		],
+		showcaseImage: mediaImg,
+		showcaseAlt: "Galedi Corps Media Platforms Showcase",
+		bgClass: "bg-white",
+		accentClass: "text-secondary_olive",
+	},
+];
+---
+
+<Layout
+	title="Our Brands & Ecosystem | Galedi Corps"
+	description="Explore the comprehensive brand portfolio and multi-industry ecosystem of Galedi Corps across fragrance, travel, events, consulting, and media."
+>
+	<main class="w-full pb-[40vh] bg-white relative font-testsohne text-primary_onyx overflow-visible">
+		<!-- Hero Section with Interactive Cursor Image Trail -->
+		<section
+			id="hero-brands"
+			class="w-full min-h-screen flex flex-col justify-center px-5 sm:px-10 lg:px-16 pt-28 sm:pt-36 pb-12 relative overflow-hidden select-none cursor-default"
+		>
+			<!-- 1. Cursor Image Trail Container -->
+			<div
+				id="image-trail-container"
+				class="absolute inset-0 pointer-events-none z-30 overflow-hidden"
+				aria-hidden="true"
+			>
+				{
+					trailImages.map((img) => (
+						<div class="trail-item absolute top-0 left-0 w-44 sm:w-56 md:w-64 aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-black/10 bg-neutral-100 opacity-0 pointer-events-none select-none will-change-transform will-change-opacity -translate-x-1/2 -translate-y-1/2">
+							<Image
+								src={img.src}
+								alt={img.alt}
+								width={400}
+								height={300}
+								format="webp"
+								quality={85}
+								class="w-full h-full object-cover object-center pointer-events-none"
+							/>
+						</div>
+					))
+				}
+			</div>
+
+			<!-- 2. Hero Content (Elevated above trail for readability & interactivity) -->
+			<div class="flex flex-col gap-6 relative z-20 pointer-events-auto">
+				<div class="flex flex-col gap-8 items-center justify-center">
+					<div class="text-center">
+						<h1 class="text-5xl sm:text-7xl md:text-8xl lg:text-[96px] font-semibold text-primary_onyx tracking-tight leading-[0.98]">
+							Our Ecosystem <br class="hidden sm:inline" />& Brands
+						</h1>
+					</div>
+					<div class="lg:pl-4 text-center">
+						<p class="text-base max-w-2xl sm:text-lg md:text-xl text-neutral-600 font-light leading-relaxed">
+							A multi-industry holding group managing 9 commercial brands and 2 digital media platforms across 5 core strategic industry sectors.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Stacked Pinned Header Cards Container -->
+		<div id="stacked-cards-container" class="w-full relative pt-[10vh] pb-[60vh] bg-white">
+			{
+				categories.map((category, idx) => (
+					<div class="card-track w-full mb-[40vh] last:mb-0">
+						<section
+							id={`category-${category.id}`}
+							data-card-index={idx}
+							class={`stacked-card w-full relative rounded-none flex flex-col pt-0 pb-6 px-0 select-none border-black/10 ${category.bgClass}`}
+						>
+							<!-- 1. Sticky Card Top Header Bar (Height: 52px desktop / 46px mobile) -->
+							<div
+								class="card-header-bar w-full px-5 sm:px-10 lg:px-16 flex items-center justify-between border-b border-black/10 bg-white shrink-0 z-20 box-border gap-4"
+							>
+								<div class="flex items-center gap-3 shrink-0 whitespace-nowrap">
+									<span class="text-xs sm:text-sm font-semibold uppercase tracking-widest text-neutral-500">
+										Pillar {category.categoryNumber}
+									</span>
+									<span class="w-1.5 h-1.5 rounded-full bg-neutral-300"></span>
+									<span class="text-xs sm:text-sm font-medium text-neutral-600 hidden md:inline">
+										{category.kicker}
+									</span>
+								</div>
+								<h2 class="text-sm sm:text-base md:text-lg lg:text-xl font-semibold tracking-tight text-primary_onyx whitespace-nowrap truncate text-right">
+									{category.title}
+								</h2>
+							</div>
+
+							<!-- Card Body Container (Compact Natural Height) -->
+							<div class="w-full px-5 sm:px-10 lg:px-16 py-4 sm:py-5 overflow-visible">
+								<!-- 2. Numbered Sub-Pillars Horizontal Strip -->
+								<div class="pb-3 mb-10 border-b border-black/10 grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4 items-baseline">
+									{
+										category.pillars.map((pillar) => (
+											<div class="flex flex-col gap-0.5">
+												<span class="text-xs font-semibold text-neutral-400 tracking-wider">
+													{pillar.number}
+												</span>
+												<h3 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight leading-none text-primary_onyx capitalize">
+													{pillar.title}
+												</h3>
+											</div>
+										))
+									}
+								</div>
+
+								<!-- 3. Bottom 2-Column Content Grid: Left (Editorial + Brands) | Right (Showcase Image) -->
+								<div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
+									<!-- Left Column (lg:col-span-7): Editorial + Brand Links Grid -->
+									<div class="lg:col-span-7 flex flex-col justify-around gap-12">
+										<div>
+											<p class="text-xs sm:text-sm lg:text-base font-light leading-relaxed mb-3 text-justify text-neutral-700">
+												{category.description}
+											</p>
+
+											<!-- Capabilities Tags -->
+											<div class="flex flex-wrap gap-1.5 mb-3.5">
+												{
+													category.capabilities.map((cap) => (
+														<span class="px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-medium bg-black/5 border border-black/5 text-neutral-800">
+															{cap}
+														</span>
+													))
+												}
+											</div>
+										</div>
+
+										<!-- Brand Entities Directory Cards -->
+										<div class="flex flex-col gap-1.5">
+											<h4 class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-neutral-400">
+												Brand Entities & Official Links
+											</h4>
+											<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+												{
+													category.brands.map((brand) => (
+														<a
+															href={brand.link}
+															target="_blank"
+															rel="noopener noreferrer"
+															class={`group/brand bg-white hover:bg-neutral-50 text-primary_onyx rounded-none p-2.5 sm:p-3 border border-black/10 shadow-2xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] transition-all flex flex-col justify-between gap-1.5 cursor-pointer ${
+																category.brands.length === 1 ? "sm:col-span-2" : ""
+															}`}
+														>
+															<div class="flex items-center justify-between">
+																<div class="size-7 rounded-none bg-neutral-100 p-0.5 flex items-center justify-center overflow-hidden">
+																	<Image
+																		src={brand.logo}
+																		alt={brand.name}
+																		width={60}
+																		height={60}
+																		class="size-full object-contain"
+																	/>
+																</div>
+																<div class="size-5 rounded-full bg-neutral-100 group-hover/brand:bg-primary_onyx group-hover/brand:text-white flex items-center justify-center transition-colors">
+																	<ArrowUpRight class="size-3 stroke-[2]" />
+																</div>
+															</div>
+
+															<div class="flex flex-col">
+																<span class="font-semibold text-xs sm:text-sm tracking-tight text-primary_onyx group-hover/brand:text-secondary_olive transition-colors">
+																	{brand.name}
+																</span>
+																<span class="text-[10px] sm:text-[11px] text-neutral-500 font-light line-clamp-1">
+																	{brand.tagline}
+																</span>
+															</div>
+														</a>
+													))
+												}
+											</div>
+										</div>
+									</div>
+
+									<!-- Right Column (lg:col-span-5): Curated Visual Showcase -->
+									<div class="lg:col-span-5 flex items-center justify-center">
+										<div class="relative w-full max-h-[180px] sm:max-h-[220px] lg:max-h-[600px] aspect-[16/10] rounded-2xl overflow-hidden shadow-md group/img bg-neutral-100 border border-black/5 ">
+											<Image
+												src={category.showcaseImage}
+												alt={category.showcaseAlt}
+												width={900}
+												height={675}
+												format="webp"
+												quality={90}
+												densities={[1, 2]}
+												class="w-full h-full object-cover object-center group-hover/img:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
+											/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+				))
+			}
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.card-header-bar {
+		height: 52px;
+		min-height: 52px;
+		max-height: 52px;
+	}
+
+	@media (max-width: 768px) {
+		.card-header-bar {
+			height: 46px;
+			min-height: 46px;
+			max-height: 46px;
+		}
+	}
+</style>
+
+<script>
+	import gsap from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+	function initImageTrail() {
+		const hero = document.getElementById("hero-brands");
+		const trailContainer = document.getElementById("image-trail-container");
+		if (!hero || !trailContainer) return;
+
+		// Check reduced motion or non-hover devices
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !window.matchMedia("(hover: hover)").matches) {
+			return;
+		}
+
+		const trailItems = gsap.utils.toArray<HTMLElement>(".trail-item");
+		if (!trailItems.length) return;
+
+		let currentIdx = 0;
+		let lastPos = { x: 0, y: 0 };
+		const threshold = 80; // Distance in pixels traveled before spawning next image
+		let isInside = false;
+
+		const handleMouseEnter = (e: MouseEvent) => {
+			isInside = true;
+			const rect = hero.getBoundingClientRect();
+			lastPos = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+		};
+
+		const handleMouseLeave = () => {
+			isInside = false;
+		};
+
+		const handleMouseMove = (e: MouseEvent) => {
+			if (!isInside) return;
+			const rect = hero.getBoundingClientRect();
+			const x = e.clientX - rect.left;
+			const y = e.clientY - rect.top;
+
+			const distance = Math.hypot(x - lastPos.x, y - lastPos.y);
+			if (distance > threshold) {
+				lastPos = { x, y };
+				spawnTrailImage(x, y);
+			}
+		};
+
+		function spawnTrailImage(x: number, y: number) {
+			const item = trailItems[currentIdx];
+			currentIdx = (currentIdx + 1) % trailItems.length;
+
+			// Re-append to bring item to front
+			trailContainer?.appendChild(item);
+
+			const randomRot = gsap.utils.random(-8, 8);
+			const randomScale = gsap.utils.random(0.95, 1.05);
+
+			gsap.killTweensOf(item);
+
+			gsap.set(item, {
+				x: x,
+				y: y,
+				rotation: randomRot,
+				scale: 0.9,
+				opacity: 0,
+			});
+
+			const tl = gsap.timeline();
+			tl.to(item, {
+				opacity: 1,
+				scale: randomScale,
+				duration: 0.2,
+				ease: "power2.out",
+			}).to(item, {
+				opacity: 0,
+				scale: 0.85,
+				y: y - 20,
+				duration: 0.65,
+				ease: "power2.in",
+				delay: 0.15,
+			});
+		}
+
+		hero.addEventListener("mouseenter", handleMouseEnter);
+		hero.addEventListener("mouseleave", handleMouseLeave);
+		hero.addEventListener("mousemove", handleMouseMove);
+	}
+
+	function initGSAPPinningStack() {
+		gsap.registerPlugin(ScrollTrigger);
+
+		// Clean up existing triggers
+		ScrollTrigger.getAll().forEach((t) => {
+			if (t.vars.id?.startsWith("card-pin-")) {
+				t.kill();
+			}
+		});
+
+		const cards = gsap.utils.toArray<HTMLElement>(".stacked-card");
+		if (!cards.length) return;
+
+		const mm = gsap.matchMedia();
+
+		mm.add("(min-width: 769px)", () => {
+			const navHeight = 76;
+			const headerHeight = 52;
+
+			cards.forEach((card, idx) => {
+				const targetTop = navHeight + idx * headerHeight;
+
+				ScrollTrigger.create({
+					id: `card-pin-${idx}`,
+					trigger: card,
+					start: () => `top top+=${targetTop}`,
+					endTrigger: "#stacked-cards-container",
+					end: "bottom bottom",
+					pin: true,
+					pinSpacing: false,
+					anticipatePin: 1,
+					invalidateOnRefresh: true,
+				});
+			});
+		});
+
+		mm.add("(max-width: 768px)", () => {
+			const navHeight = 60;
+			const headerHeight = 46;
+
+			cards.forEach((card, idx) => {
+				const targetTop = navHeight + idx * headerHeight;
+
+				ScrollTrigger.create({
+					id: `card-pin-mobile-${idx}`,
+					trigger: card,
+					start: () => `top top+=${targetTop}`,
+					endTrigger: "#stacked-cards-container",
+					end: "bottom bottom",
+					pin: true,
+					pinSpacing: false,
+					anticipatePin: 1,
+					invalidateOnRefresh: true,
+				});
+			});
+		});
+
+		ScrollTrigger.refresh();
+	}
+
+	function initAll() {
+		initImageTrail();
+		initGSAPPinningStack();
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initAll);
+	} else {
+		initAll();
+	}
+	document.addEventListener("astro:page-load", initAll);
+</script>
