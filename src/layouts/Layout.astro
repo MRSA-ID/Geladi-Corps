@@ -29,8 +29,139 @@ const {
 		<div class="fixed top-3 z-50 left-0 right-0">
 			<Navbar />
 		</div>
-			<slot />
+		<slot />
 		<Footer />
+
+		<script>
+			import Lenis from "lenis";
+			import gsap from "gsap";
+			import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+			declare global {
+				interface Window {
+					lenis?: Lenis;
+				}
+			}
+
+			gsap.registerPlugin(ScrollTrigger);
+
+			let lenisInstance: Lenis | null = null;
+			let tickerCallback: ((time: number) => void) | null = null;
+
+			function scrollToHash(hash: string, duration: number = 1.2) {
+				if (!hash || !lenisInstance) return false;
+				try {
+					const target = document.querySelector(hash);
+					if (target) {
+						lenisInstance.scrollTo(target as HTMLElement, {
+							offset: -80,
+							duration: duration,
+							easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+						});
+						return true;
+					}
+				} catch {
+					// Invalid selector
+				}
+				return false;
+			}
+
+			function initSmoothScroll() {
+				// Clean up existing instance & ticker if already initialized
+				if (tickerCallback) {
+					gsap.ticker.remove(tickerCallback);
+					tickerCallback = null;
+				}
+				if (window.lenis) {
+					window.lenis.destroy();
+				}
+
+				lenisInstance = new Lenis({
+					duration: 1.2,
+					easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+					smoothWheel: true,
+					touchMultiplier: 1.5,
+					autoRaf: false,
+				});
+
+				window.lenis = lenisInstance;
+
+				// Synchronize Lenis scroll with GSAP ScrollTrigger
+				lenisInstance.on("scroll", () => {
+					ScrollTrigger.update();
+				});
+
+				// Drive Lenis through GSAP ticker for 100% synchronized animation loops
+				tickerCallback = (time: number) => {
+					lenisInstance?.raf(time * 1000);
+				};
+				gsap.ticker.add(tickerCallback);
+
+				// Disable lag smoothing in GSAP to prevent any jitter in scroll calculations
+				gsap.ticker.lagSmoothing(0);
+
+				// Handle Initial URL Hash Landing (e.g. user opens /brands#category-travel directly)
+				if (window.location.hash) {
+					// Slight delay to allow layout and ScrollTrigger positions to settle
+					setTimeout(() => {
+						scrollToHash(window.location.hash, 1.4);
+					}, 200);
+				}
+			}
+
+			// Global Event Delegation for all Same-Page Links
+			document.addEventListener("click", (e: MouseEvent) => {
+				const anchor = (e.target as HTMLElement)?.closest("a");
+				if (!anchor || !lenisInstance) return;
+
+				const href = anchor.getAttribute("href");
+				if (!href || href === "#") return;
+
+				try {
+					const targetUrl = new URL(anchor.href, window.location.href);
+					const currentUrl = new URL(window.location.href);
+
+					// Check if target is on the exact same page with a hash
+					const isSameOrigin = targetUrl.origin === currentUrl.origin;
+					const isSamePath =
+						targetUrl.pathname.replace(/\/$/, "") === currentUrl.pathname.replace(/\/$/, "");
+					const hasHash = Boolean(targetUrl.hash);
+
+					if (isSameOrigin && isSamePath && hasHash) {
+						const scrolled = scrollToHash(targetUrl.hash, 1.2);
+						if (scrolled) {
+							e.preventDefault();
+
+							// Close mobile menu if open
+							const mobileMenu = document.getElementById("mobile-menu");
+							if (mobileMenu && !mobileMenu.classList.contains("hidden")) {
+								const closeBtn = document.getElementById("mobile-menu-close-btn");
+								closeBtn?.click();
+							}
+
+							// Update URL hash in history without triggering browser jump
+							window.history.pushState(null, "", targetUrl.hash);
+						}
+					}
+				} catch {
+					// Fallback for non-standard URLs
+				}
+			});
+
+			// Handle browser Back / Forward navigation between same-page hashes
+			window.addEventListener("popstate", () => {
+				if (window.location.hash) {
+					scrollToHash(window.location.hash, 1.0);
+				}
+			});
+
+			if (document.readyState === "loading") {
+				document.addEventListener("DOMContentLoaded", initSmoothScroll);
+			} else {
+				initSmoothScroll();
+			}
+			document.addEventListener("astro:page-load", initSmoothScroll);
+		</script>
 	</body>
 </html>
 
@@ -39,6 +170,6 @@ const {
 	body {
 		margin: 0;
 		width: 100%;
-		height: 100%;
+		min-height: 100%;
 	}
 </style>

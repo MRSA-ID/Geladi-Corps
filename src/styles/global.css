@@ -67,6 +67,7 @@
 @import "tailwindcss";
 @import "swiper/css";
 @import "swiper/css/autoplay";
+@import "lenis/dist/lenis.css";
 
 @theme {
 	--font-canela: "Canela", serif;
@@ -179,7 +180,27 @@
 /* Base HTML Scroll Behavior */
 html {
 	scrollbar-gutter: stable;
-	scroll-behavior: smooth;
+}
+
+html.lenis,
+html.lenis body {
+	height: auto;
+}
+
+.lenis.lenis-smooth {
+	scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+	overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+	overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+	pointer-events: none;
 }
 
 /* Firefox-only standard scrollbar styling (never renders arrow buttons) */
