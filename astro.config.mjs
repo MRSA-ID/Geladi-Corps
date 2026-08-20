@@ -15,6 +15,15 @@ export default defineConfig({
 				"coolshapes-react": "coolshapes-react/dist/esm/coolshapes.js",
 			},
 		},
+		optimizeDeps: {
+			include: [
+				"coolshapes-react",
+				"lucide-react",
+				"react",
+				"react-dom",
+				"react/jsx-runtime",
+			],
+		},
 		ssr: {
 			noExternal: ["coolshapes-react"],
 		},
