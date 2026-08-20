@@ -192,6 +192,36 @@ export function initPageTransitions(): void {
 
 	// 1. Navigation Start: Prepare and play leave animation
 	document.addEventListener("astro:before-preparation", (event: any) => {
+		// Update dynamic watermark text based on destination
+		const targetUrl = event.to;
+		let watermarkLabel = "Home";
+
+		if (targetUrl) {
+			const pathname = (
+				typeof targetUrl === "string"
+					? new URL(targetUrl, window.location.href).pathname
+					: targetUrl.pathname
+			).replace(/\/$/, "");
+
+			if (pathname === "/connect" || pathname === "/contact") {
+				watermarkLabel = "Contact";
+			} else if (pathname === "/brands") {
+				watermarkLabel = "Brands";
+			} else if (pathname === "" || pathname === "/") {
+				watermarkLabel = "Home";
+			} else {
+				const segment = pathname.split("/").filter(Boolean)[0];
+				watermarkLabel = segment
+					? segment.charAt(0).toUpperCase() + segment.slice(1)
+					: "Home";
+			}
+		}
+
+		const watermarkTextEl = document.getElementById("page-transition-watermark-text");
+		if (watermarkTextEl) {
+			watermarkTextEl.textContent = watermarkLabel;
+		}
+
 		const originalLoader = event.loader;
 		event.loader = async () => {
 			closeActiveMenus();
