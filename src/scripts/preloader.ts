@@ -28,12 +28,12 @@ export function initPreloader(): void {
 	stopLenis();
 	document.body.style.overflow = "hidden";
 
-	const logoMark = preloader.querySelector(".preloader-logo");
-	const brandTitle = preloader.querySelector(".preloader-title");
-	const brandSubtitle = preloader.querySelector(".preloader-subtitle");
-	const progressBar = preloader.querySelector(".preloader-progress-bar");
-	const progressTrack = preloader.querySelector(".preloader-progress-track");
-	const curtain = preloader.querySelector(".preloader-curtain");
+	const counterContainer = document.getElementById("preloader-counter-container");
+	const counterVal = document.getElementById("preloader-counter-val");
+	const wordmarkContainer = document.getElementById("preloader-wordmark-container");
+	const wordmarkSvg = document.getElementById("preloader-wordmark-svg");
+	const chars = gsap.utils.toArray<SVGPathElement>(".preloader-char");
+	const curtainPath = document.getElementById("preloader-curtain-path");
 
 	const tl = gsap.timeline({
 		onComplete: () => {
@@ -56,48 +56,106 @@ export function initPreloader(): void {
 			preloader.remove();
 		}
 		startLenis();
-	}, 2000);
+	}, 3500);
 
-	// GSAP Animation Sequence
+	// 1. Initial State Setup
 	tl.set(preloader, { opacity: 1 })
-		.fromTo(
-			logoMark,
-			{ scale: 0.85, opacity: 0, y: 15 },
-			{ scale: 1, opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }
-		)
-		.fromTo(
-			[brandTitle, brandSubtitle],
-			{ opacity: 0, y: 10 },
-			{ opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: "power2.out" },
-			"-=0.25"
-		)
-		.fromTo(
-			progressTrack,
-			{ opacity: 0, scaleX: 0.5 },
-			{ opacity: 1, scaleX: 1, duration: 0.3, ease: "power2.out" },
-			"-=0.2"
-		)
-		.fromTo(
-			progressBar,
-			{ scaleX: 0 },
-			{ scaleX: 1, duration: 0.55, ease: "power2.inOut" },
-			"-=0.1"
-		)
+		.set(curtainPath, {
+			attr: { d: "M 0 0 V 100 Q 50 100 100 100 V 0 z" },
+		})
+		.set(counterContainer, {
+			opacity: 0,
+			y: 35,
+		})
+		.set(wordmarkContainer, {
+			opacity: 0,
+		})
+		.set(wordmarkSvg, {
+			opacity: 1,
+			y: 0,
+		})
+		.set(chars, {
+			opacity: 0,
+			y: 55,
+			scale: 0.88,
+			transformOrigin: "50% 100%",
+		});
+
+	// 2. Pure Minimalist Progress Counter In (from bottom offset)
+	tl.to(counterContainer, {
+		opacity: 1,
+		y: 0,
+		duration: 0.35,
+		ease: "power3.out",
+	});
+
+	// 3. Progress Ticker (0% to 100% - No progress bar)
+	const progressObj = { val: 0 };
+	tl.to(
+		progressObj,
+		{
+			val: 100,
+			duration: 0.75,
+			ease: "power2.inOut",
+			onUpdate: () => {
+				if (counterVal) counterVal.textContent = Math.round(progressObj.val).toString();
+			},
+		},
+		"-=0.15"
+	);
+
+	// 4. Progress Counter Exit (to bottom offset)
+	tl.to(counterContainer, {
+		opacity: 0,
+		y: 40,
+		duration: 0.25,
+		ease: "power2.in",
+	});
+
+	// 5. Step-by-Step Alphabet Reveal from Bottom Offset (G ➔ E ➔ L ➔ A ➔ D ➔ I ➔ C ➔ O ➔ R ➔ P ➔ S)
+	tl.set(wordmarkContainer, { opacity: 1 })
 		.to(
-			[logoMark, brandTitle, brandSubtitle, progressTrack],
-			{ opacity: 0, y: -15, duration: 0.3, ease: "power2.in" },
-			"+=0.1"
-		)
-		.to(
-			curtain || preloader,
+			chars,
 			{
-				yPercent: -100,
-				duration: 0.65,
-				ease: "power4.inOut",
-				onComplete: () => {
-					clearTimeout(emergencyTimeout);
-				},
+				opacity: 1,
+				y: 0,
+				scale: 1,
+				duration: 0.42,
+				stagger: 0.045,
+				ease: "power3.out",
 			},
 			"-=0.05"
 		);
+
+	// 6. Step-by-Step Wordmark Exit (Glides up and dissolves)
+	tl.to(
+		chars,
+		{
+			opacity: 0,
+			y: -25,
+			scale: 0.95,
+			duration: 0.25,
+			stagger: 0.015,
+			ease: "power2.in",
+		},
+		"+=0.25"
+	);
+
+	// 7. Liquid SVG Morphing Wave Curtain Exit
+	tl.to(
+		curtainPath,
+		{
+			attr: { d: "M 0 0 V 50 Q 50 0 100 50 V 0 z" },
+			duration: 0.32,
+			ease: "power2.in",
+		},
+		"-=0.1"
+	).to(curtainPath, {
+		attr: { d: "M 0 0 V 0 Q 50 0 100 0 V 0 z" },
+		duration: 0.28,
+		ease: "power3.out",
+		onComplete: () => {
+			clearTimeout(emergencyTimeout);
+		},
+	});
 }
