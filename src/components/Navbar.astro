@@ -1,30 +1,676 @@
 ---
 import { Image } from "astro:assets";
-import { ArrowUpRight, ChevronDown } from "@lucide/astro";
-import logo from "@assets/images/logo/logo-G-black-transparent.png"
+import { ArrowUpRight, ChevronDown, Menu } from "@lucide/astro";
+import logo from "@assets/images/logo/logo-G-black-transparent.png";
+
+// Ecosystem lifestyle images
+import lifestyleImg from "@assets/images/galedicorps_lifestyle.jpg";
+import travelImg from "@assets/images/gladicorps-travel.jpg";
+import eventsImg from "@assets/images/galedicorps-events.jpg";
+import humanCapitalImg from "@assets/images/galedicorps-human-capital.jpg";
+
+// Brand logos
+import saka from "@assets/images/logo_brands/saka_logo_color.png";
+import safeeya from "@assets/images/logo_brands/safeeyaumroh_logo_color.png";
+import ounce from "@assets/images/logo_brands/8ounce_logo_color.png";
+import arkaloka from "@assets/images/logo_brands/arkaloka_logo_color.png";
+import meetcation from "@assets/images/logo_brands/meetcation_logo_color.png";
+import dusantara from "@assets/images/logo_brands/dusantara_logo.png";
+import nirmala from "@assets/images/logo_brands/nirmala_logo_only_color.png";
+import noomadbook from "@assets/images/logo_brands/nomadbookid_logo_color.png";
+import whiff from "@assets/images/logo_brands/whiff_logo_color.png";
+
+const ecosystems = [
+	{
+		id: 1,
+		title: "Fragrance & Personal Care",
+		slug: "fragrance-personal-care",
+		image: lifestyleImg,
+		link: "#brands",
+	},
+	{
+		id: 2,
+		title: "Travel & Hospitality",
+		slug: "travel-hospitality",
+		image: travelImg,
+		link: "#brands",
+	},
+	{
+		id: 3,
+		title: "Events & Creative",
+		slug: "events-creative",
+		image: eventsImg,
+		link: "#brands",
+	},
+	{
+		id: 4,
+		title: "Human Capital & Consulting",
+		slug: "human-capital-consulting",
+		image: humanCapitalImg,
+		link: "#brands",
+	},
+];
+
+const brands = [
+	{ name: "Saka Perfumery", category: "Fragrance & Care", logo: saka, link: "#brands" },
+	{ name: "Safeeya Umroh", category: "Spiritual Travel", logo: safeeya, link: "#brands" },
+	{ name: "8ounce Consulting", category: "Human Capital", logo: ounce, link: "#brands" },
+	{ name: "Arkaloka Fine Fragrance", category: "Personal Care", logo: arkaloka, link: "#brands" },
+	{ name: "Meetcation Global", category: "Hospitality & Stay", logo: meetcation, link: "#brands" },
+	{ name: "Dusantara Heritage", category: "Travel & Heritage", logo: dusantara, link: "#brands" },
+	{ name: "Nirmala Project", category: "Events & Creative", logo: nirmala, link: "#brands" },
+	{ name: "Nomadbook Living", category: "Co-Living & Travel", logo: noomadbook, link: "#brands" },
+	{ name: "Whiff Media", category: "Media & Creative", logo: whiff, link: "#brands" },
+];
 ---
 
-<nav class="bg-white flex rounded-3xl w-max mx-auto gap-5 items-center py-2.5 px-3.5 ">
- <div class="relative overflow-hidden w-6 h-6">
-  <Image
-   src={logo}
-   alt="logo galedi corps"
-   width={500}
-   height={500}
-   class="w-full absolute object-cover"
-  />
- </div>
- <ul class="flex font-inter items-center gap-4">
-  <hr class="h-4 w-px bg-primary_onyx"/>
-  <li>About us</li>
-  <li class="flex items-center gap-0.5">Ecosystem <ChevronDown class="size-3"/></li>
-  <li class="flex items-center gap-0.5">Brands <ChevronDown class="size-3"/></li>
-  <li>Leadership</li>
-  <li>Contact</li>
-  <li>Newsroom</li>
- </ul>
- <button class="flex font-testsohne cursor-pointer bg-secondary_sage gap-px text-primary_bone_white px-2.5 py-[5px] rounded-[10px]">
-  <span class="text-base font-light">Get in touch</span>
-  <ArrowUpRight class="size-6 stroke-1" />
- </button>
-</nav>
+<header class="md:relative w-full md:max-w-[1200px] md:mx-auto flex flex-col items-center select-none font-inter sm:px-4">
+	<!-- 1. Mobile Top Bar (Clean & Unwrapped: Standalone Logo on Left, Menu Button on Right) -->
+	<div class="md:hidden group w-full flex items-center justify-end px-2 sm:px-4 py-1 gap-0.5">
+		<!-- Standalone Logo Button -->
+		<a
+			href="/"
+			class="size-11 rounded-full bg-white/90 backdrop-blur-md border border-black/5 shadow-xs flex items-center justify-center p-2.5 hover:scale-105 active:scale-95 transition-all"
+			aria-label="Home"
+		>
+			<Image
+				src={logo}
+				alt="logo galedi corps"
+				width={120}
+				height={120}
+				class="w-full h-full object-contain"
+			/>
+		</a>
+
+		<!-- Standalone Menu Trigger Button -->
+		<button
+			id="mobile-menu-open-btn"
+			type="button"
+			aria-label="Open navigation menu"
+			class="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/90 backdrop-blur-md border border-black/5 text-sm font-medium text-primary_onyx shadow-xs hover:bg-white active:scale-95 transition-all cursor-pointer"
+		>
+			<Menu class="size-4 stroke-[2]" />
+			<span>Menu</span>
+		</button>
+	</div>
+
+	<!-- 2. Desktop Floating Pill Navbar (Visible on md and above) -->
+	<nav
+		class="hidden md:flex relative z-50 bg-white/95 backdrop-blur-md rounded-full w-max mx-auto items-center gap-5 lg:gap-7 py-2.5 px-4 sm:px-5 shadow-lg border border-black/5 transition-all duration-300"
+	>
+		<!-- Brand Logo -->
+		<a href="/" class="flex items-center gap-2.5 group shrink-0">
+			<div class="relative overflow-hidden w-6 h-6 shrink-0">
+				<Image
+					src={logo}
+					alt="logo galedi corps"
+					width={500}
+					height={500}
+					class="w-full absolute object-cover group-hover:scale-105 transition-transform duration-300"
+				/>
+			</div>
+		</a>
+
+		<hr class="h-4 w-px bg-neutral-300 shrink-0" />
+
+		<!-- Desktop Navigation Links -->
+		<ul class="flex items-center gap-5 lg:gap-7 text-sm sm:text-[15px] text-neutral-700 font-normal">
+			<li>
+				<a
+					href="#about"
+					class="hover:text-secondary_olive transition-colors duration-200"
+				>
+					About us
+				</a>
+			</li>
+
+			<!-- Ecosystem Mega Menu Trigger -->
+			<li class="relative">
+				<button
+					id="nav-ecosystem-trigger"
+					type="button"
+					aria-expanded="false"
+					class="nav-dropdown-trigger flex items-center gap-1 hover:text-secondary_olive transition-colors duration-200 cursor-pointer focus:outline-hidden"
+				>
+					<span>Ecosystem</span>
+					<ChevronDown
+						id="chevron-ecosystem"
+						class="size-3.5 stroke-[2] transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+					/>
+				</button>
+			</li>
+
+			<!-- Brands Mega Menu Trigger -->
+			<li class="relative">
+				<button
+					id="nav-brands-trigger"
+					type="button"
+					aria-expanded="false"
+					class="nav-dropdown-trigger flex items-center gap-1 hover:text-secondary_olive transition-colors duration-200 cursor-pointer focus:outline-hidden"
+				>
+					<span>Brands</span>
+					<ChevronDown
+						id="chevron-brands"
+						class="size-3.5 stroke-[2] transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+					/>
+				</button>
+			</li>
+
+			<li>
+				<a
+					href="#leadership"
+					class="hover:text-secondary_olive transition-colors duration-200"
+				>
+					Leadership
+				</a>
+			</li>
+
+			<li>
+				<a
+					href="mailto:info@galedicorps.com"
+					class="hover:text-secondary_olive transition-colors duration-200"
+				>
+					Contact
+				</a>
+			</li>
+
+			<li class="hidden lg:block">
+				<a
+					href="#newsroom-section"
+					class="hover:text-secondary_olive transition-colors duration-200"
+				>
+					Newsroom
+				</a>
+			</li>
+		</ul>
+
+		<!-- Desktop CTA Button -->
+		<a
+			href="mailto:info@galedicorps.com"
+			class="flex group font-testsohne cursor-pointer bg-secondary_sage hover:bg-secondary_deep_moss gap-1 text-primary_bone_white px-3.5 py-1.5 rounded-xl shadow-xs hover:shadow-md active:scale-[0.97] transition-all duration-200 ease-out items-center shrink-0"
+		>
+			<span class="text-sm font-light group-hover:font-medium">Get in touch</span>
+			<ArrowUpRight class="size-4 stroke-[2]" />
+		</a>
+	</nav>
+
+	<!-- 3. Desktop Ecosystem Mega Menu Panel (4 Visual Cards) -->
+	<div
+		id="mega-menu-ecosystem"
+		class="mega-menu-panel pointer-events-none absolute top-full mt-2.5 w-[95vw] max-w-[1060px] rounded-3xl bg-white/98 backdrop-blur-2xl p-4 shadow-2xl border border-black/5 opacity-0 scale-[0.96] -translate-y-2 transition-all duration-250 ease-[cubic-bezier(0.23,1,0.32,1)] z-40 origin-top hidden md:block"
+	>
+		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3.5 w-full">
+			{
+				ecosystems.map((item) => (
+					<a
+						href={item.link}
+						class="group relative aspect-[4/4.2] overflow-hidden rounded-2xl bg-neutral-100 shadow-2xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 block"
+					>
+						<Image
+							src={item.image}
+							alt={item.title}
+							width={400}
+							height={420}
+							format="webp"
+							quality={90}
+							densities={[1, 2]}
+							loading="lazy"
+							decoding="async"
+							class="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
+						/>
+						<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+						<div class="absolute inset-x-0 bottom-0 p-4 flex items-end justify-between gap-2 z-10">
+							<span class="text-white font-medium text-sm sm:text-base leading-tight max-w-[170px]">
+								{item.title}
+							</span>
+							<ArrowUpRight class="size-5 stroke-[2] text-white shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+						</div>
+					</a>
+				))
+			}
+		</div>
+	</div>
+
+	<!-- 4. Desktop Brands Mega Menu Panel (9 Commercial Entities) -->
+	<div
+		id="mega-menu-brands"
+		class="mega-menu-panel pointer-events-none absolute top-full mt-2.5 w-[95vw] max-w-[960px] rounded-3xl bg-white/98 backdrop-blur-2xl p-5 sm:p-6 shadow-2xl border border-black/5 opacity-0 scale-[0.96] -translate-y-2 transition-all duration-250 ease-[cubic-bezier(0.23,1,0.32,1)] z-40 origin-top hidden md:block"
+	>
+		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 w-full">
+			{
+				brands.map((brand) => (
+					<a
+						href={brand.link}
+						class="group flex items-center gap-3.5 p-3 rounded-2xl bg-neutral-50/80 hover:bg-neutral-100/90 border border-black/5 hover:border-black/10 transition-all duration-200"
+					>
+						<div class="size-12 rounded-xl bg-white flex items-center justify-center p-2 shadow-2xs shrink-0">
+							<Image
+								src={brand.logo}
+								alt={brand.name}
+								width={100}
+								height={100}
+								format="webp"
+								class="size-full object-contain select-none"
+							/>
+						</div>
+						<div class="flex flex-col">
+							<span class="font-medium text-sm text-primary_onyx group-hover:text-secondary_olive transition-colors duration-200">
+								{brand.name}
+							</span>
+							<span class="text-xs text-neutral-500 font-light">
+								{brand.category}
+							</span>
+						</div>
+						<ArrowUpRight class="size-4 stroke-[1.5] text-neutral-400 ml-auto transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-secondary_olive" />
+					</a>
+				))
+			}
+		</div>
+	</div>
+
+	<!-- 5. Fullscreen Mobile Navigation Menu Overlay (Matching Reference Screenshot) -->
+	<div
+		id="mobile-fullscreen-menu"
+		class="fixed inset-0 z-100 bg-[#f7f3ee] text-primary_onyx flex flex-col justify-between p-6 sm:p-8 overflow-y-auto opacity-0 pointer-events-none -translate-y-3 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] md:hidden"
+	>
+		<div class="flex flex-col w-full max-w-lg mx-auto">
+			<!-- Top Bar: Close Button | Brand Logo | Action -->
+			<div class="flex items-center justify-between pb-6 border-b border-black/10">
+				<!-- Close Pill Button -->
+				<button
+					id="mobile-menu-close-btn"
+					type="button"
+					class="px-3.5 py-1.5 rounded-full bg-neutral-200/70 hover:bg-neutral-300/80 active:scale-95 text-sm font-medium text-primary_onyx transition-all cursor-pointer flex items-center gap-1"
+				>
+					<span>✕</span>
+					<span>Close</span>
+				</button>
+
+				<!-- Center Logo -->
+				<div class="relative overflow-hidden size-7">
+					<Image
+						src={logo}
+						alt="logo galedi corps"
+						width={200}
+						height={200}
+						class="w-full object-cover"
+					/>
+				</div>
+
+				<!-- Right Action -->
+				<a
+					href="mailto:info@galedicorps.com"
+					class="px-3.5 py-1.5 rounded-full bg-secondary_sage text-primary_bone_white text-xs font-medium flex items-center gap-1 active:scale-95 transition-transform"
+				>
+					<span>Contact</span>
+					<ArrowUpRight class="size-3.5 stroke-[2]" />
+				</a>
+			</div>
+
+			<!-- Editorial Menu Items List -->
+			<nav class="flex flex-col font-testsohne text-primary_onyx pt-2">
+				<!-- Home / About -->
+				<div class="border-b border-black/10">
+					<a
+						href="/"
+						class="mobile-nav-link block text-3xl sm:text-4xl font-semibold tracking-tight py-4 hover:text-secondary_olive transition-colors"
+					>
+						Home
+					</a>
+				</div>
+
+				<div class="border-b border-black/10">
+					<a
+						href="#about"
+						class="mobile-nav-link block text-3xl sm:text-4xl font-semibold tracking-tight py-4 hover:text-secondary_olive transition-colors"
+					>
+						About us
+					</a>
+				</div>
+
+				<!-- Ecosystem (+4) Accordion -->
+				<div class="border-b border-black/10">
+					<button
+						type="button"
+						class="mobile-accordion-toggle w-full flex items-center justify-between py-4 text-left group cursor-pointer focus:outline-hidden"
+						data-target="mobile-accordion-ecosystem"
+					>
+						<span class="text-3xl sm:text-4xl font-semibold tracking-tight group-hover:text-secondary_olive transition-colors">
+							Ecosystem <span class="text-lg sm:text-xl font-normal text-neutral-500">(+4)</span>
+						</span>
+						<span class="accordion-symbol text-2xl font-light text-neutral-600 transition-transform duration-300">+</span>
+					</button>
+
+					<!-- Expandable Sub-Grid -->
+					<div
+						id="mobile-accordion-ecosystem"
+						class="grid grid-rows-[0fr] transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+					>
+						<div class="overflow-hidden">
+							<div class="grid grid-cols-2 gap-y-3 gap-x-4 py-3 pb-6 text-sm font-light text-neutral-700">
+								{
+									ecosystems.map((item) => (
+										<a
+											href={item.link}
+											class="mobile-nav-link hover:text-secondary_olive transition-colors py-1 block leading-snug"
+										>
+											{item.title}
+										</a>
+									))
+								}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Brands (+9) Accordion -->
+				<div class="border-b border-black/10">
+					<button
+						type="button"
+						class="mobile-accordion-toggle w-full flex items-center justify-between py-4 text-left group cursor-pointer focus:outline-hidden"
+						data-target="mobile-accordion-brands"
+					>
+						<span class="text-3xl sm:text-4xl font-semibold tracking-tight group-hover:text-secondary_olive transition-colors">
+							Our Brands <span class="text-lg sm:text-xl font-normal text-neutral-500">(+9)</span>
+						</span>
+						<span class="accordion-symbol text-2xl font-light text-neutral-600 transition-transform duration-300">+</span>
+					</button>
+
+					<!-- Expandable Sub-Grid -->
+					<div
+						id="mobile-accordion-brands"
+						class="grid grid-rows-[0fr] transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+					>
+						<div class="overflow-hidden">
+							<div class="grid grid-cols-2 gap-y-3 gap-x-4 py-3 pb-6 text-sm font-light text-neutral-700">
+								{
+									brands.map((brand) => (
+										<a
+											href={brand.link}
+											class="mobile-nav-link hover:text-secondary_olive transition-colors py-1 block leading-snug"
+										>
+											{brand.name}
+										</a>
+									))
+								}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Vision & Mission -->
+				<div class="border-b border-black/10">
+					<a
+						href="#vision"
+						class="mobile-nav-link block text-3xl sm:text-4xl font-semibold tracking-tight py-4 hover:text-secondary_olive transition-colors"
+					>
+						Vision & Mission
+					</a>
+				</div>
+
+				<!-- Leadership -->
+				<div class="border-b border-black/10">
+					<a
+						href="#leadership"
+						class="mobile-nav-link block text-3xl sm:text-4xl font-semibold tracking-tight py-4 hover:text-secondary_olive transition-colors"
+					>
+						Leadership
+					</a>
+				</div>
+
+				<!-- Newsroom -->
+				<div class="border-b border-black/10">
+					<a
+						href="#newsroom-section"
+						class="mobile-nav-link block text-3xl sm:text-4xl font-semibold tracking-tight py-4 hover:text-secondary_olive transition-colors"
+					>
+						Newsroom
+					</a>
+				</div>
+
+				<!-- Contact -->
+				<div class="border-b border-black/10">
+					<a
+						href="mailto:info@galedicorps.com"
+						class="mobile-nav-link block text-3xl sm:text-4xl font-semibold tracking-tight py-4 hover:text-secondary_olive transition-colors"
+					>
+						Contact
+					</a>
+				</div>
+			</nav>
+		</div>
+
+		<!-- Footer Bottom Bar within Mobile Menu -->
+		<div class="w-full max-w-lg mx-auto pt-8 flex justify-between items-center text-xs text-neutral-500">
+			<span>© 2026 Galedi Corp</span>
+			<span>Luxury Holding</span>
+		</div>
+	</div>
+</header>
+
+<script>
+	function initNavbar() {
+		// --- 1. Desktop Mega Menus ---
+		const ecoTrigger = document.getElementById("nav-ecosystem-trigger");
+		const brandsTrigger = document.getElementById("nav-brands-trigger");
+		const ecoPanel = document.getElementById("mega-menu-ecosystem");
+		const brandsPanel = document.getElementById("mega-menu-brands");
+		const ecoChevron = document.getElementById("chevron-ecosystem");
+		const brandsChevron = document.getElementById("chevron-brands");
+
+		let activeMenu: "ecosystem" | "brands" | null = null;
+		let closeTimeout: number | null = null;
+
+		function openMenu(type: "ecosystem" | "brands") {
+			if (closeTimeout) {
+				clearTimeout(closeTimeout);
+				closeTimeout = null;
+			}
+
+			if (type === "ecosystem") {
+				closeBrands();
+				ecoPanel?.classList.remove(
+					"opacity-0",
+					"scale-[0.96]",
+					"-translate-y-2",
+					"pointer-events-none"
+				);
+				ecoPanel?.classList.add(
+					"opacity-100",
+					"scale-100",
+					"translate-y-0",
+					"pointer-events-auto"
+				);
+				ecoChevron?.classList.add("rotate-180");
+				ecoTrigger?.setAttribute("aria-expanded", "true");
+				activeMenu = "ecosystem";
+			} else {
+				closeEco();
+				brandsPanel?.classList.remove(
+					"opacity-0",
+					"scale-[0.96]",
+					"-translate-y-2",
+					"pointer-events-none"
+				);
+				brandsPanel?.classList.add(
+					"opacity-100",
+					"scale-100",
+					"translate-y-0",
+					"pointer-events-auto"
+				);
+				brandsChevron?.classList.add("rotate-180");
+				brandsTrigger?.setAttribute("aria-expanded", "true");
+				activeMenu = "brands";
+			}
+		}
+
+		function closeEco() {
+			ecoPanel?.classList.add(
+				"opacity-0",
+				"scale-[0.96]",
+				"-translate-y-2",
+				"pointer-events-none"
+			);
+			ecoPanel?.classList.remove(
+				"opacity-100",
+				"scale-100",
+				"translate-y-0",
+				"pointer-events-auto"
+			);
+			ecoChevron?.classList.remove("rotate-180");
+			ecoTrigger?.setAttribute("aria-expanded", "false");
+		}
+
+		function closeBrands() {
+			brandsPanel?.classList.add(
+				"opacity-0",
+				"scale-[0.96]",
+				"-translate-y-2",
+				"pointer-events-none"
+			);
+			brandsPanel?.classList.remove(
+				"opacity-100",
+				"scale-100",
+				"translate-y-0",
+				"pointer-events-auto"
+			);
+			brandsChevron?.classList.remove("rotate-180");
+			brandsTrigger?.setAttribute("aria-expanded", "false");
+		}
+
+		function scheduleClose() {
+			if (closeTimeout) clearTimeout(closeTimeout);
+			closeTimeout = window.setTimeout(() => {
+				closeEco();
+				closeBrands();
+				activeMenu = null;
+			}, 120);
+		}
+
+		if (ecoTrigger && brandsTrigger && ecoPanel && brandsPanel) {
+			ecoTrigger.addEventListener("mouseenter", () => openMenu("ecosystem"));
+			ecoTrigger.addEventListener("mouseleave", scheduleClose);
+			ecoTrigger.addEventListener("click", (e) => {
+				e.stopPropagation();
+				if (activeMenu === "ecosystem") {
+					closeEco();
+					activeMenu = null;
+				} else {
+					openMenu("ecosystem");
+				}
+			});
+			ecoPanel.addEventListener("mouseenter", () => {
+				if (closeTimeout) clearTimeout(closeTimeout);
+			});
+			ecoPanel.addEventListener("mouseleave", scheduleClose);
+
+			brandsTrigger.addEventListener("mouseenter", () => openMenu("brands"));
+			brandsTrigger.addEventListener("mouseleave", scheduleClose);
+			brandsTrigger.addEventListener("click", (e) => {
+				e.stopPropagation();
+				if (activeMenu === "brands") {
+					closeBrands();
+					activeMenu = null;
+				} else {
+					openMenu("brands");
+				}
+			});
+			brandsPanel.addEventListener("mouseenter", () => {
+				if (closeTimeout) clearTimeout(closeTimeout);
+			});
+			brandsPanel.addEventListener("mouseleave", scheduleClose);
+		}
+
+		// --- 2. Fullscreen Mobile Navigation Menu ---
+		const mobileMenu = document.getElementById("mobile-fullscreen-menu");
+		const openBtn = document.getElementById("mobile-menu-open-btn");
+		const closeBtn = document.getElementById("mobile-menu-close-btn");
+		const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+
+		function openMobileMenu() {
+			mobileMenu?.classList.remove(
+				"opacity-0",
+				"pointer-events-none",
+				"-translate-y-3"
+			);
+			mobileMenu?.classList.add(
+				"opacity-100",
+				"pointer-events-auto",
+				"translate-y-0"
+			);
+			document.body.style.overflow = "hidden";
+		}
+
+		function closeMobileMenu() {
+			mobileMenu?.classList.add(
+				"opacity-0",
+				"pointer-events-none",
+				"-translate-y-3"
+			);
+			mobileMenu?.classList.remove(
+				"opacity-100",
+				"pointer-events-auto",
+				"translate-y-0"
+			);
+			document.body.style.overflow = "";
+		}
+
+		openBtn?.addEventListener("click", openMobileMenu);
+		closeBtn?.addEventListener("click", closeMobileMenu);
+
+		mobileNavLinks.forEach((link) => {
+			link.addEventListener("click", () => {
+				closeMobileMenu();
+			});
+		});
+
+		// Mobile Accordion Toggles
+		const accordionToggles = document.querySelectorAll(".mobile-accordion-toggle");
+		accordionToggles.forEach((toggle) => {
+			toggle.addEventListener("click", () => {
+				const targetId = toggle.getAttribute("data-target");
+				if (!targetId) return;
+				const content = document.getElementById(targetId);
+				const symbol = toggle.querySelector(".accordion-symbol");
+
+				const isOpen = content?.classList.contains("grid-rows-[1fr]");
+
+				if (isOpen) {
+					content?.classList.remove("grid-rows-[1fr]");
+					content?.classList.add("grid-rows-[0fr]");
+					if (symbol) symbol.textContent = "+";
+				} else {
+					content?.classList.remove("grid-rows-[0fr]");
+					content?.classList.add("grid-rows-[1fr]");
+					if (symbol) symbol.textContent = "—";
+				}
+			});
+		});
+
+		// Global Close Handlers
+		document.addEventListener("click", (e) => {
+			const target = e.target as HTMLElement;
+			if (!target.closest("header")) {
+				closeEco();
+				closeBrands();
+				activeMenu = null;
+			}
+		});
+
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape") {
+				closeEco();
+				closeBrands();
+				closeMobileMenu();
+				activeMenu = null;
+			}
+		});
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initNavbar);
+	} else {
+		initNavbar();
+	}
+	document.addEventListener("astro:page-load", initNavbar);
+</script>
