@@ -258,3 +258,12 @@ html.lenis body {
 	background: #e8e1d8;
 }
 
+/* ==========================================================================
+   Zero-Frame Preloader Skip State
+   ========================================================================== */
+.preloader-skipped #geladi-preloader {
+	display: none !important;
+	pointer-events: none !important;
+	visibility: hidden !important;
+}
+
