@@ -20,6 +20,7 @@ export function initPreloader(): void {
 		preloader.style.display = "none";
 		preloader.remove();
 		startLenis();
+		window.dispatchEvent(new CustomEvent("geladi:preloader-done"));
 		return;
 	}
 
@@ -43,6 +44,7 @@ export function initPreloader(): void {
 			preloader.style.display = "none";
 			preloader.remove();
 			startLenis();
+			window.dispatchEvent(new CustomEvent("geladi:preloader-done"));
 		},
 	});
 
@@ -56,6 +58,7 @@ export function initPreloader(): void {
 			preloader.remove();
 		}
 		startLenis();
+		window.dispatchEvent(new CustomEvent("geladi:preloader-done"));
 	}, 3500);
 
 	// 1. Initial State Setup

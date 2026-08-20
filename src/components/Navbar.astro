@@ -487,6 +487,7 @@ const brands = [
 	</div>
 
 <script>
+	import gsap from "gsap";
 	import { stopLenis, startLenis } from "../scripts/lenis";
 
 	function initNavbar() {
@@ -699,6 +700,49 @@ const brands = [
 				activeMenu = null;
 			}
 		});
+
+		// --- 3. Navbar Entrance Reveal Animation ---
+		const navbar = document.getElementById("navbar-container");
+		if (navbar) {
+			const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+			if (prefersReducedMotion) {
+				gsap.set(navbar, { opacity: 1, y: 0 });
+			} else {
+				let hasRevealed = false;
+				const revealNavbar = () => {
+					if (hasRevealed) return;
+					hasRevealed = true;
+					gsap.fromTo(
+						navbar,
+						{ opacity: 0, y: -35 },
+						{ opacity: 1, y: 0, duration: 0.65, ease: "power3.out", overwrite: "auto" }
+					);
+				};
+
+				const isPreloaderActive =
+					!sessionStorage.getItem("geladi_visited") &&
+					!document.documentElement.classList.contains("preloader-skipped") &&
+					Boolean(document.getElementById("geladi-preloader"));
+
+				const hasHero = Boolean(document.getElementById("hero-heading"));
+
+				if (hasHero && isPreloaderActive) {
+					// Hide navbar initially until hero finishes
+					gsap.set(navbar, { opacity: 0, y: -35 });
+					window.addEventListener("geladi:hero-done", revealNavbar, { once: true });
+					// Fallback safety timeout
+					setTimeout(revealNavbar, 3500);
+				} else if (isPreloaderActive) {
+					// Pages without hero but with active preloader
+					gsap.set(navbar, { opacity: 0, y: -35 });
+					window.addEventListener("geladi:preloader-done", revealNavbar, { once: true });
+					setTimeout(revealNavbar, 3000);
+				} else {
+					// Direct page loads or client-side navigation
+					revealNavbar();
+				}
+			}
+		}
 	}
 
 	if (document.readyState === "loading") {

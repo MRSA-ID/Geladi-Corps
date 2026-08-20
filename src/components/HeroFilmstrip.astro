@@ -134,21 +134,28 @@ const {
 } = Astro.props;
 ---
 <!--  -->
-<section class="relative pt-20 pb-0 sm:pt-24 md:pt-48 font-testsohne overflow-hidden bg-primary_limestone  text-neutral-900 antialiased">
+<section id="hero-section" class="relative pt-20 pb-0 sm:pt-24 md:pt-48 font-testsohne overflow-hidden bg-primary_limestone text-neutral-900 antialiased">
 	<div class="pointer-events-none absolute inset-x-0 top-0 h-96 bg-radial from-neutral-200/40 via-transparent to-transparent opacity-70"></div>
 
 	<div class="relative mx-auto max-w-6xl px-4 text-center sm:px-6 lg:px-8">
-
-		<h1 class="mx-auto font-canela max-w-5xl text-5xl md:text-7xl font-bold tracking-tight text-secondary_deep_moss leading-[1.12] whitespace-pre-line">
+		<h1
+			id="hero-heading"
+			class="mx-auto font-canela max-w-5xl text-5xl md:text-7xl font-bold tracking-tight text-secondary_deep_moss leading-[1.12] whitespace-pre-line will-change-transform"
+		>
 			Synergy Driving Ecosystems, Carving Sustainable Value
 		</h1>
 
-			<p class="mx-auto mt-6 max-w-3xl text-sm sm:text-lg font-normal text-secondary_deep_moss">
-				9 commercial brands and 3 digital media platforms spanning Fragrance & Personal Care, Travel & Hospitality, Experiential Events & Industrial Creative, and Human Capital Consulting.
-			</p>
+		<p
+			id="hero-description"
+			class="mx-auto mt-6 max-w-3xl text-sm sm:text-lg font-normal text-secondary_deep_moss will-change-transform"
+		>
+			9 commercial brands and 3 digital media platforms spanning Fragrance & Personal Care, Travel & Hospitality, Experiential Events & Industrial Creative, and Human Capital Consulting.
+		</p>
 
-
-		<div class="marquee-container relative mt-4 sm:mt-8 overflow-hidden py-4 select-none">
+		<div
+			id="hero-marquee"
+			class="marquee-container relative mt-4 sm:mt-8 overflow-hidden py-4 select-none will-change-transform"
+		>
 			<div class="edge-fade-mask relative flex w-full overflow-hidden gap-12 sm:gap-16">
 				<div class="animate-marquee flex shrink-0 min-w-full items-center justify-around gap-12 sm:gap-16">
 					{logos.map((logo) => (
@@ -189,8 +196,10 @@ const {
 		</div>
 	</div>
 
-	<div class="relative mt-8 sm:mt-12 w-full pb-0">
-
+	<div
+		id="hero-filmstrip-wrapper"
+		class="relative mt-8 sm:mt-12 w-full pb-0 will-change-transform"
+	>
 		<div class="swiper-container swiper-hero-filmstrip overflow-hidden">
 			<div class="swiper-wrapper flex items-end">
 				{slides.map((slide) => (
@@ -223,8 +232,12 @@ const {
 </section>
 
 <script>
+	import gsap from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
 	import Swiper from "swiper";
 	import { Autoplay } from "swiper/modules";
+
+	gsap.registerPlugin(ScrollTrigger);
 
 	function initHeroSwiper() {
 		const swiperEl = document.querySelector(".swiper-hero-filmstrip");
@@ -267,10 +280,118 @@ const {
 		});
 	}
 
-	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initHeroSwiper);
-	} else {
-		initHeroSwiper();
+	function initHeroEntrance() {
+		const section = document.getElementById("hero-section");
+		const heading = document.getElementById("hero-heading");
+		const desc = document.getElementById("hero-description");
+		const marquee = document.getElementById("hero-marquee");
+		const filmstrip = document.getElementById("hero-filmstrip-wrapper");
+
+		if (!section || !heading || !desc) {
+			window.dispatchEvent(new CustomEvent("geladi:hero-done"));
+			return;
+		}
+
+		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (prefersReducedMotion) {
+			gsap.set([heading, desc, marquee, filmstrip], { opacity: 1, y: 0 });
+			window.dispatchEvent(new CustomEvent("geladi:hero-done"));
+			return;
+		}
+
+		let hasPlayed = false;
+
+		function playEntrance() {
+			if (hasPlayed) return;
+			hasPlayed = true;
+
+			const tl = gsap.timeline({
+				onComplete: () => {
+					window.dispatchEvent(new CustomEvent("geladi:hero-done"));
+				},
+			});
+
+			tl.fromTo(
+				heading,
+				{ opacity: 0, y: 35 },
+				{ opacity: 1, y: 0, duration: 0.75, ease: "power3.out" }
+			)
+				.fromTo(
+					desc,
+					{ opacity: 0, y: 25 },
+					{ opacity: 1, y: 0, duration: 0.65, ease: "power3.out" },
+					"-=0.45"
+				)
+				.fromTo(
+					marquee,
+					{ opacity: 0, y: 20 },
+					{ opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
+					"-=0.35"
+				)
+				.fromTo(
+					filmstrip,
+					{ opacity: 0, y: 50 },
+					{ opacity: 1, y: 0, duration: 0.85, ease: "power3.out" },
+					"-=0.4"
+				);
+		}
+
+		function setupViewportTrigger() {
+			if (hasPlayed) return;
+
+			// Check if Hero is currently in the viewport
+			const rect = section!.getBoundingClientRect();
+			const inViewport = rect.top < window.innerHeight * 0.85 && rect.bottom > 0;
+
+			if (inViewport) {
+				playEntrance();
+			} else {
+				// Wait until user scrolls into the Hero section
+				ScrollTrigger.create({
+					trigger: section,
+					start: "top 80%",
+					once: true,
+					onEnter: () => {
+						playEntrance();
+					},
+				});
+			}
+		}
+
+		const isPreloaderActive =
+			!sessionStorage.getItem("geladi_visited") &&
+			!document.documentElement.classList.contains("preloader-skipped") &&
+			Boolean(document.getElementById("geladi-preloader"));
+
+		if (!isPreloaderActive) {
+			setupViewportTrigger();
+		} else {
+			// Initially hide hero elements while preloader is running
+			gsap.set([heading, desc, marquee, filmstrip], { opacity: 0, y: 35 });
+			window.addEventListener(
+				"geladi:preloader-done",
+				() => {
+					setupViewportTrigger();
+				},
+				{ once: true }
+			);
+
+			// Safety fallback in case event is delayed
+			setTimeout(() => {
+				setupViewportTrigger();
+			}, 3200);
+		}
 	}
-	document.addEventListener("astro:page-load", initHeroSwiper);
+
+	function initHero() {
+		initHeroSwiper();
+		initHeroEntrance();
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initHero);
+	} else {
+		initHero();
+	}
+	document.addEventListener("astro:page-load", initHero);
 </script>
