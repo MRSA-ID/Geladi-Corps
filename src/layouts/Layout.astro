@@ -1,7 +1,10 @@
 ---
+import { ClientRouter } from "astro:transitions";
+import Preloader from "@components/Preloader.astro";
+import PageTransition from "@components/PageTransition.astro";
 import Navbar from "@components/Navbar.astro";
-import "../styles/global.css";
 import Footer from "@components/Footer.astro";
+import "../styles/global.css";
 
 interface Props {
 	title?: string;
@@ -10,7 +13,7 @@ interface Props {
 
 const {
 	title = "Geladi Corps | Corporate Holding & Strategic Ecosystem",
-	description = "A stacked hero with pill kicker, headline, dual CTAs, auto-scrolling logo band, and autoplay carousel of raised card images.",
+	description = "A multi-industry holding company managing 9 commercial brands and 2 digital media platforms across 5 core strategic industry sectors.",
 } = Astro.props;
 ---
 
@@ -24,29 +27,45 @@ const {
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<title>{title}</title>
+
+		<!-- Zero-FOUC Session Preloader Controller (Executes before HTML paint) -->
+		<script is:inline>
+			if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("geladi_visited")) {
+				document.documentElement.classList.add("preloader-skipped");
+			}
+		</script>
+		<style is:inline>
+			html.preloader-skipped #geladi-preloader {
+				display: none !important;
+				visibility: hidden !important;
+				pointer-events: none !important;
+			}
+		</style>
+
+		<!-- Astro Native ClientRouter for View Transitions -->
+		<ClientRouter />
 	</head>
 	<body class="min-h-screen bg-primary_limestone font-sans antialiased">
-		<div id="navbar-container" class="fixed top-3 z-50 left-0 right-0 will-change-transform pointer-events-auto">
-			<Navbar />
-		</div>
+		<!-- Initial Session Preloader -->
+		<Preloader />
+
+		<!-- Page Transition Overlay -->
+		<PageTransition />
+
+		<!-- Fixed Smart Auto-Hiding Navbar & Fullscreen Mobile Menu -->
+		<Navbar />
+
 		<slot />
+
 		<Footer />
 
 		<script>
-			import Lenis from "lenis";
 			import gsap from "gsap";
 			import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-			declare global {
-				interface Window {
-					lenis?: Lenis;
-				}
-			}
+			import { initLenis, scrollToTarget, getLenis } from "../scripts/lenis";
 
 			gsap.registerPlugin(ScrollTrigger);
 
-			let lenisInstance: Lenis | null = null;
-			let tickerCallback: ((time: number) => void) | null = null;
 			let isNavHidden = false;
 			let scrollIdleTimeout: number | null = null;
 
@@ -126,64 +145,18 @@ const {
 				}, 180);
 			}
 
-			function scrollToHash(hash: string, duration: number = 1.2) {
-				if (!hash || !lenisInstance) return false;
-				try {
-					const target = document.querySelector(hash);
-					if (target) {
-						lenisInstance.scrollTo(target as HTMLElement, {
-							offset: -80,
-							duration: duration,
-							easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-						});
-						return true;
-					}
-				} catch {
-					// Invalid selector
-				}
-				return false;
-			}
+			function initGlobalLayout() {
+				const lenis = initLenis();
 
-			function initSmoothScroll() {
-				// Clean up existing instance & ticker if already initialized
-				if (tickerCallback) {
-					gsap.ticker.remove(tickerCallback);
-					tickerCallback = null;
-				}
-				if (window.lenis) {
-					window.lenis.destroy();
-				}
-
-				lenisInstance = new Lenis({
-					duration: 1.2,
-					easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-					smoothWheel: true,
-					touchMultiplier: 1.5,
-					autoRaf: false,
-				});
-
-				window.lenis = lenisInstance;
-
-				// Synchronize Lenis scroll with GSAP ScrollTrigger & Active-Scroll Navbar Visibility
-				lenisInstance.on("scroll", ({ scroll }: { scroll: number }) => {
-					ScrollTrigger.update();
+				// Synchronize Lenis scroll with Smart Navbar Visibility
+				lenis.on("scroll", ({ scroll }: { scroll: number }) => {
 					updateNavbarVisibility(scroll);
 				});
 
-				// Drive Lenis through GSAP ticker for 100% synchronized animation loops
-				tickerCallback = (time: number) => {
-					lenisInstance?.raf(time * 1000);
-				};
-				gsap.ticker.add(tickerCallback);
-
-				// Disable lag smoothing in GSAP to prevent any jitter in scroll calculations
-				gsap.ticker.lagSmoothing(0);
-
 				// Handle Initial URL Hash Landing (e.g. user opens /brands#category-travel directly)
 				if (window.location.hash) {
-					// Slight delay to allow layout and ScrollTrigger positions to settle
 					setTimeout(() => {
-						scrollToHash(window.location.hash, 1.4);
+						scrollToTarget(window.location.hash, { offset: -80, duration: 1.4 });
 					}, 200);
 				}
 			}
@@ -191,7 +164,7 @@ const {
 			// Global Event Delegation for all Same-Page Links
 			document.addEventListener("click", (e: MouseEvent) => {
 				const anchor = (e.target as HTMLElement)?.closest("a");
-				if (!anchor || !lenisInstance) return;
+				if (!anchor) return;
 
 				const href = anchor.getAttribute("href");
 				if (!href || href === "#") return;
@@ -207,7 +180,7 @@ const {
 					const hasHash = Boolean(targetUrl.hash);
 
 					if (isSameOrigin && isSamePath && hasHash) {
-						const scrolled = scrollToHash(targetUrl.hash, 1.2);
+						const scrolled = scrollToTarget(targetUrl.hash, { offset: -80, duration: 1.2 });
 						if (scrolled) {
 							e.preventDefault();
 
@@ -230,16 +203,16 @@ const {
 			// Handle browser Back / Forward navigation between same-page hashes
 			window.addEventListener("popstate", () => {
 				if (window.location.hash) {
-					scrollToHash(window.location.hash, 1.0);
+					scrollToTarget(window.location.hash, { offset: -80, duration: 1.0 });
 				}
 			});
 
 			if (document.readyState === "loading") {
-				document.addEventListener("DOMContentLoaded", initSmoothScroll);
+				document.addEventListener("DOMContentLoaded", initGlobalLayout);
 			} else {
-				initSmoothScroll();
+				initGlobalLayout();
 			}
-			document.addEventListener("astro:page-load", initSmoothScroll);
+			document.addEventListener("astro:page-load", initGlobalLayout);
 		</script>
 	</body>
 </html>

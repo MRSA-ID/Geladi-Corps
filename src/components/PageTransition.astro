@@ -1,0 +1,43 @@
+---
+// Persistent SVG Morphing Page Transition Overlay Component
+---
+
+<div
+	id="page-transition"
+	transition:persist="page-transition"
+	class="fixed inset-0 z-[9999] pointer-events-none overflow-hidden select-none"
+	aria-hidden="true"
+>
+	<!-- Fullscreen Morphing SVG Canvas -->
+	<svg
+		id="page-transition-svg"
+		class="absolute inset-0 w-full h-full pointer-events-none will-change-transform"
+		viewBox="0 0 100 100"
+		preserveAspectRatio="none"
+		style="display: none;"
+	>
+		<path
+			id="page-transition-path"
+			fill="#1e1e1b"
+			vector-effect="non-scaling-stroke"
+			d="M 0 100 V 100 Q 50 100 100 100 V 100 z"
+		/>
+	</svg>
+
+	<!-- Subtle Center Watermark / Accent -->
+	<div
+		id="page-transition-watermark"
+		class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0"
+	>
+		<span class="font-testsohne text-6xl sm:text-8xl font-bold tracking-widest text-primary_bone_white uppercase opacity-15">
+			Galedi
+		</span>
+	</div>
+</div>
+
+<script>
+	import { initPageTransitions } from "../scripts/page-transition";
+
+	// Initialize page transitions once
+	initPageTransitions();
+</script>

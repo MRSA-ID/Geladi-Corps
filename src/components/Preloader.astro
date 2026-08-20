@@ -1,0 +1,72 @@
+---
+import { Image } from "astro:assets";
+import logo from "@assets/images/logo/logo-G-black-transparent.png";
+---
+
+<!-- Zero-frame session check script (executes before HTML renders) -->
+<script is:inline>
+	if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("geladi_visited")) {
+		document.documentElement.classList.add("preloader-skipped");
+	}
+</script>
+
+<!-- Fullscreen Initial Session Preloader -->
+<div
+	id="geladi-preloader"
+	class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-primary_onyx text-primary_bone_white font-testsohne select-none overflow-hidden"
+	aria-hidden="true"
+>
+	<!-- Background Curtain for GSAP Slide-up -->
+	<div class="preloader-curtain absolute inset-0 bg-primary_onyx z-0"></div>
+
+	<!-- Content Container -->
+	<div class="relative z-10 flex flex-col items-center gap-5 max-w-sm px-6 text-center">
+		<!-- Monogram Logo Mark -->
+		<div class="preloader-logo size-16 sm:size-20 rounded-2xl bg-white/10 p-3.5 backdrop-blur-md border border-white/15 shadow-2xl flex items-center justify-center">
+			<Image
+				src={logo}
+				alt="Galedi Corps Monogram"
+				width={120}
+				height={120}
+				class="size-full object-contain invert"
+			/>
+		</div>
+
+		<!-- Brand Typography -->
+		<div class="flex flex-col items-center gap-1">
+			<h1 class="preloader-title font-semibold text-2xl sm:text-3xl tracking-widest uppercase text-primary_bone_white">
+				Galedi Corps
+			</h1>
+			<p class="preloader-subtitle text-xs sm:text-sm font-light text-neutral-400 tracking-wider">
+				Corporate Holding & Strategic Ecosystem
+			</p>
+		</div>
+
+		<!-- Minimalist Progress Track & Bar -->
+		<div class="preloader-progress-track w-36 h-[2px] bg-white/15 rounded-full overflow-hidden mt-3 relative">
+			<div class="preloader-progress-bar h-full w-full bg-secondary_sage origin-left scale-x-0"></div>
+		</div>
+	</div>
+</div>
+
+<script>
+	import { initPreloader } from "../scripts/preloader";
+
+	// Run preloader on initial page load only
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initPreloader, { once: true });
+	} else {
+		initPreloader();
+	}
+
+	// Ensure preloader is immediately removed if re-inserted during client-side navigation
+	document.addEventListener("astro:page-load", () => {
+		if (sessionStorage.getItem("geladi_visited")) {
+			const preloader = document.getElementById("geladi-preloader");
+			if (preloader) {
+				preloader.style.display = "none";
+				preloader.remove();
+			}
+		}
+	});
+</script>
