@@ -171,3 +171,45 @@
 .swiper-filmstrip .swiper-wrapper {
 	align-items: flex-end;
 }
+
+/* ==========================================================================
+   Custom Cross-Platform Scrollbar (Chromium, Firefox, Safari, Brave, Edge)
+   ========================================================================== */
+
+/* Standard CSS for Firefox & Modern Standards */
+html {
+	scrollbar-width: thin;
+	scrollbar-color: #5f6957 #e8e1d8;
+	scrollbar-gutter: stable;
+	scroll-behavior: smooth;
+}
+
+/* WebKit / Blink (Chrome, Brave, Edge, Safari, Opera) */
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: #e8e1d8;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #5f6957;
+	border-radius: 9999px;
+	border: 2px solid #e8e1d8;
+	transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: #4d5b4b;
+}
+
+::-webkit-scrollbar-thumb:active {
+	background-color: #1e1e1b;
+}
+
+::-webkit-scrollbar-corner {
+	background: #e8e1d8;
+}
+
