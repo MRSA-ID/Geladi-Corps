@@ -124,11 +124,11 @@ const brands = [
 				</a>
 			</li>
 
-			<!-- Ecosystem Mega Menu Trigger -->
+			<!-- Ecosystem Mega Menu Trigger & Direct Link -->
 			<li class="relative">
-				<button
+				<a
+					href="/brands"
 					id="nav-ecosystem-trigger"
-					type="button"
 					aria-expanded="false"
 					class="nav-dropdown-trigger flex items-center gap-1 hover:text-secondary_olive transition-colors duration-200 cursor-pointer focus:outline-hidden"
 				>
@@ -137,14 +137,14 @@ const brands = [
 						id="chevron-ecosystem"
 						class="size-3.5 stroke-[2] transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
 					/>
-				</button>
+				</a>
 			</li>
 
-			<!-- Brands Mega Menu Trigger -->
+			<!-- Brands Mega Menu Trigger & Direct Link -->
 			<li class="relative">
-				<button
+				<a
+					href="/brands"
 					id="nav-brands-trigger"
-					type="button"
 					aria-expanded="false"
 					class="nav-dropdown-trigger flex items-center gap-1 hover:text-secondary_olive transition-colors duration-200 cursor-pointer focus:outline-hidden"
 				>
@@ -153,7 +153,7 @@ const brands = [
 						id="chevron-brands"
 						class="size-3.5 stroke-[2] transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
 					/>
-				</button>
+				</a>
 			</li>
 
 			<li>
@@ -197,7 +197,7 @@ const brands = [
 	<!-- 3. Desktop Ecosystem Mega Menu Panel (4 Visual Cards) -->
 	<div
 		id="mega-menu-ecosystem"
-		class="mega-menu-panel pointer-events-none absolute top-full mt-2.5 w-[95vw] max-w-[1060px] rounded-3xl bg-white/98 backdrop-blur-2xl p-4 shadow-2xl border border-black/5 opacity-0 scale-[0.96] -translate-y-2 transition-all duration-250 ease-[cubic-bezier(0.23,1,0.32,1)] z-40 origin-top hidden md:block"
+		class="mega-menu-panel pointer-events-none absolute top-full mt-2.5 w-[95vw] max-w-[1060px] rounded-3xl bg-white/98 backdrop-blur-2xl p-5 shadow-2xl border border-black/5 opacity-0 scale-[0.96] -translate-y-2 transition-all duration-250 ease-[cubic-bezier(0.23,1,0.32,1)] z-40 origin-top hidden md:block"
 	>
 		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3.5 w-full">
 			{
@@ -228,6 +228,18 @@ const brands = [
 					</a>
 				))
 			}
+		</div>
+
+		<!-- Ecosystem Footer Banner -->
+		<div class="mt-3.5 pt-3 border-t border-black/5 flex items-center justify-between px-2 text-xs sm:text-sm font-light text-neutral-600">
+			<span>Explore all 5 strategic industry pillars across the holding ecosystem</span>
+			<a
+				href="/brands"
+				class="font-medium text-primary_onyx hover:text-secondary_olive flex items-center gap-1 transition-colors"
+			>
+				<span>View Ecosystem Directory</span>
+				<ArrowUpRight class="size-4 stroke-[2]" />
+			</a>
 		</div>
 	</div>
 
@@ -265,6 +277,18 @@ const brands = [
 					</a>
 				))
 			}
+		</div>
+
+		<!-- Brands Footer Banner -->
+		<div class="mt-3.5 pt-3 border-t border-black/5 flex items-center justify-between px-2 text-xs sm:text-sm font-light text-neutral-600">
+			<span>Discover our 9 commercial brands, OEM perfumery & retreat services</span>
+			<a
+				href="/brands"
+				class="font-medium text-primary_onyx hover:text-secondary_olive flex items-center gap-1 transition-colors"
+			>
+				<span>Explore All 9 Brands</span>
+				<ArrowUpRight class="size-4 stroke-[2]" />
+			</a>
 		</div>
 	</div>
 </header>
@@ -331,16 +355,23 @@ const brands = [
 
 				<!-- Ecosystem (+4) Accordion -->
 				<div class="border-b border-black/10">
-					<button
-						type="button"
-						class="mobile-accordion-toggle w-full flex items-center justify-between py-4 text-left group cursor-pointer focus:outline-hidden"
-						data-target="mobile-accordion-ecosystem"
-					>
-						<span class="text-3xl sm:text-4xl font-semibold tracking-tight group-hover:text-secondary_olive transition-colors">
-							Ecosystem <span class="text-lg sm:text-xl font-normal text-neutral-500">(+4)</span>
-						</span>
-						<span class="accordion-symbol text-2xl font-light text-neutral-600 transition-transform duration-300">+</span>
-					</button>
+					<div class="w-full flex items-center justify-between py-4">
+						<a
+							href="/brands"
+							class="mobile-nav-link text-3xl sm:text-4xl font-semibold tracking-tight hover:text-secondary_olive transition-colors"
+						>
+							Ecosystem
+						</a>
+						<button
+							type="button"
+							class="mobile-accordion-toggle px-3 py-1.5 rounded-full bg-neutral-200/70 hover:bg-neutral-300/80 active:scale-95 text-xs font-semibold text-neutral-700 flex items-center gap-1.5 cursor-pointer transition-all focus:outline-hidden"
+							data-target="mobile-accordion-ecosystem"
+							aria-label="Toggle Ecosystem sub-menu"
+						>
+							<span>+4</span>
+							<span class="accordion-symbol text-base font-light text-neutral-600 transition-transform duration-300">+</span>
+						</button>
+					</div>
 
 					<!-- Expandable Sub-Grid -->
 					<div
@@ -352,7 +383,7 @@ const brands = [
 								{
 									ecosystems.map((item) => (
 										<a
-											href="/#brands"
+											href={item.link}
 											class="mobile-nav-link hover:text-secondary_olive transition-colors py-1 block leading-snug"
 										>
 											{item.title}
@@ -366,16 +397,23 @@ const brands = [
 
 				<!-- Brands (+9) Accordion -->
 				<div class="border-b border-black/10">
-					<button
-						type="button"
-						class="mobile-accordion-toggle w-full flex items-center justify-between py-4 text-left group cursor-pointer focus:outline-hidden"
-						data-target="mobile-accordion-brands"
-					>
-						<span class="text-3xl sm:text-4xl font-semibold tracking-tight group-hover:text-secondary_olive transition-colors">
-							Our Brands <span class="text-lg sm:text-xl font-normal text-neutral-500">(+9)</span>
-						</span>
-						<span class="accordion-symbol text-2xl font-light text-neutral-600 transition-transform duration-300">+</span>
-					</button>
+					<div class="w-full flex items-center justify-between py-4">
+						<a
+							href="/brands"
+							class="mobile-nav-link text-3xl sm:text-4xl font-semibold tracking-tight hover:text-secondary_olive transition-colors"
+						>
+							Our Brands
+						</a>
+						<button
+							type="button"
+							class="mobile-accordion-toggle px-3 py-1.5 rounded-full bg-neutral-200/70 hover:bg-neutral-300/80 active:scale-95 text-xs font-semibold text-neutral-700 flex items-center gap-1.5 cursor-pointer transition-all focus:outline-hidden"
+							data-target="mobile-accordion-brands"
+							aria-label="Toggle Brands sub-menu"
+						>
+							<span>+9</span>
+							<span class="accordion-symbol text-base font-light text-neutral-600 transition-transform duration-300">+</span>
+						</button>
+					</div>
 
 					<!-- Expandable Sub-Grid -->
 					<div
@@ -387,7 +425,7 @@ const brands = [
 								{
 									brands.map((brand) => (
 										<a
-											href="/#brands"
+											href={brand.link}
 											class="mobile-nav-link hover:text-secondary_olive transition-colors py-1 block leading-snug"
 										>
 											{brand.name}
@@ -552,14 +590,10 @@ const brands = [
 		if (ecoTrigger && brandsTrigger && ecoPanel && brandsPanel) {
 			ecoTrigger.addEventListener("mouseenter", () => openMenu("ecosystem"));
 			ecoTrigger.addEventListener("mouseleave", scheduleClose);
-			ecoTrigger.addEventListener("click", (e) => {
-				e.stopPropagation();
-				if (activeMenu === "ecosystem") {
-					closeEco();
-					activeMenu = null;
-				} else {
-					openMenu("ecosystem");
-				}
+			ecoTrigger.addEventListener("click", () => {
+				closeEco();
+				closeBrands();
+				activeMenu = null;
 			});
 			ecoPanel.addEventListener("mouseenter", () => {
 				if (closeTimeout) clearTimeout(closeTimeout);
@@ -568,14 +602,10 @@ const brands = [
 
 			brandsTrigger.addEventListener("mouseenter", () => openMenu("brands"));
 			brandsTrigger.addEventListener("mouseleave", scheduleClose);
-			brandsTrigger.addEventListener("click", (e) => {
-				e.stopPropagation();
-				if (activeMenu === "brands") {
-					closeBrands();
-					activeMenu = null;
-				} else {
-					openMenu("brands");
-				}
+			brandsTrigger.addEventListener("click", () => {
+				closeEco();
+				closeBrands();
+				activeMenu = null;
 			});
 			brandsPanel.addEventListener("mouseenter", () => {
 				if (closeTimeout) clearTimeout(closeTimeout);
