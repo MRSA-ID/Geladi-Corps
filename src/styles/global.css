@@ -176,21 +176,44 @@
    Custom Cross-Platform Scrollbar (Chromium, Firefox, Safari, Brave, Edge)
    ========================================================================== */
 
-/* Standard CSS for Firefox & Modern Standards */
+/* Base HTML Scroll Behavior */
 html {
-	scrollbar-width: thin;
-	scrollbar-color: #5f6957 #e8e1d8;
 	scrollbar-gutter: stable;
 	scroll-behavior: smooth;
 }
 
-/* WebKit / Blink (Chrome, Brave, Edge, Safari, Opera) */
+/* Firefox-only standard scrollbar styling (never renders arrow buttons) */
+@supports (-moz-appearance: none) {
+	html {
+		scrollbar-width: thin;
+		scrollbar-color: #5f6957 #e8e1d8;
+	}
+}
+
+/* WebKit / Blink Custom Scrollbar (Chrome, Brave, Edge, Safari, Opera) */
 ::-webkit-scrollbar {
 	width: 10px;
 	height: 10px;
 }
 
+/* Eliminate all scrollbar buttons and steppers completely */
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-button:single-button,
+::-webkit-scrollbar-button:vertical:decrement,
+::-webkit-scrollbar-button:vertical:increment,
+::-webkit-scrollbar-button:horizontal:decrement,
+::-webkit-scrollbar-button:horizontal:increment {
+	display: none !important;
+	width: 0 !important;
+	height: 0 !important;
+	background: transparent !important;
+}
+
 ::-webkit-scrollbar-track {
+	background: #e8e1d8;
+}
+
+::-webkit-scrollbar-track-piece {
 	background: #e8e1d8;
 }
 
@@ -198,6 +221,7 @@ html {
 	background-color: #5f6957;
 	border-radius: 9999px;
 	border: 2px solid #e8e1d8;
+	background-clip: padding-box;
 	transition: background-color 0.2s ease;
 }
 
