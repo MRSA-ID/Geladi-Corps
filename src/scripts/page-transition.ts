@@ -260,12 +260,5 @@ export function initPageTransitions(): void {
 
 		startLenis();
 		ScrollTrigger.refresh();
-
-		// Handle hash scroll after page transition
-		if (window.location.hash) {
-			setTimeout(() => {
-				scrollToTarget(window.location.hash, { offset: -80, duration: 1.2 });
-			}, 150);
-		}
 	});
 }

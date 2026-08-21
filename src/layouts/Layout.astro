@@ -4,6 +4,8 @@ import Preloader from "@components/Preloader.astro";
 import PageTransition from "@components/PageTransition.astro";
 import Navbar from "@components/Navbar.astro";
 import Footer from "@components/Footer.astro";
+import SonnerToaster from "@components/ui/SonnerToaster";
+import "sonner/dist/styles.css";
 import "../styles/global.css";
 
 interface Props {
@@ -22,8 +24,12 @@ const {
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<!-- Favicon Suite & Webmanifest -->
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<title>{title}</title>
@@ -58,6 +64,7 @@ const {
 		<slot />
 
 		<Footer />
+		<SonnerToaster client:load />
 
 		<script>
 			import gsap from "gsap";
@@ -145,6 +152,18 @@ const {
 				}, 180);
 			}
 
+			function handleInitialHashScroll() {
+				if (window.location.hash) {
+					// Wait for page transition wave to clear before scrolling to target
+					setTimeout(() => {
+						const targetEl = document.querySelector(window.location.hash);
+						if (targetEl) {
+							scrollToTarget(targetEl as HTMLElement, { offset: -90, duration: 1.3 });
+						}
+					}, 400);
+				}
+			}
+
 			function initGlobalLayout() {
 				const lenis = initLenis();
 
@@ -153,65 +172,69 @@ const {
 					updateNavbarVisibility(scroll);
 				});
 
-				// Handle Initial URL Hash Landing (e.g. user opens /brands#category-travel directly)
-				if (window.location.hash) {
-					setTimeout(() => {
-						scrollToTarget(window.location.hash, { offset: -80, duration: 1.4 });
-					}, 200);
-				}
+				// Handle initial URL hash landing
+				handleInitialHashScroll();
 			}
 
-			// Global Event Delegation for all Same-Page Links
-			document.addEventListener("click", (e: MouseEvent) => {
-				const anchor = (e.target as HTMLElement)?.closest("a");
-				if (!anchor) return;
+			// Capture-Phase Global Event Delegation for all Same-Page Hash Links (Prevents Astro router interference)
+			document.addEventListener(
+				"click",
+				(e: MouseEvent) => {
+					const anchor = (e.target as HTMLElement)?.closest("a");
+					if (!anchor) return;
 
-				const href = anchor.getAttribute("href");
-				if (!href || href === "#") return;
+					const href = anchor.getAttribute("href");
+					if (!href || href === "#") return;
 
-				try {
-					const targetUrl = new URL(anchor.href, window.location.href);
-					const currentUrl = new URL(window.location.href);
+					try {
+						const targetUrl = new URL(anchor.href, window.location.href);
+						const currentUrl = new URL(window.location.href);
 
-					// Check if target is on the exact same page with a hash
-					const isSameOrigin = targetUrl.origin === currentUrl.origin;
-					const isSamePath =
-						targetUrl.pathname.replace(/\/$/, "") === currentUrl.pathname.replace(/\/$/, "");
-					const hasHash = Boolean(targetUrl.hash);
+						// Check if target is on the exact same page with a hash
+						const isSameOrigin = targetUrl.origin === currentUrl.origin;
+						const isSamePath =
+							targetUrl.pathname.replace(/\/$/, "") === currentUrl.pathname.replace(/\/$/, "");
+						const hasHash = Boolean(targetUrl.hash);
 
-					if (isSameOrigin && isSamePath && hasHash) {
-						const scrolled = scrollToTarget(targetUrl.hash, { offset: -80, duration: 1.2 });
-						if (scrolled) {
-							e.preventDefault();
+						if (isSameOrigin && isSamePath && hasHash) {
+							const hashTarget = targetUrl.hash;
+							const targetElement = document.querySelector(hashTarget);
 
-							// Close mobile menu if open
-							const mobileMenu = document.getElementById("mobile-fullscreen-menu");
-							if (mobileMenu && !mobileMenu.classList.contains("opacity-0")) {
-								const closeBtn = document.getElementById("mobile-menu-close-btn");
-								closeBtn?.click();
+							if (targetElement) {
+								e.preventDefault();
+								e.stopImmediatePropagation();
+
+								// Close mobile menu if open
+								const mobileMenu = document.getElementById("mobile-fullscreen-menu");
+								if (mobileMenu && !mobileMenu.classList.contains("opacity-0")) {
+									const closeBtn = document.getElementById("mobile-menu-close-btn");
+									closeBtn?.click();
+								}
+
+								// Smoothly scroll using Lenis
+								scrollToTarget(targetElement as HTMLElement, { offset: -90, duration: 1.2 });
+
+								// Update URL hash in history without triggering browser jump
+								window.history.pushState(null, "", hashTarget);
 							}
-
-							// Update URL hash in history without triggering browser jump
-							window.history.pushState(null, "", targetUrl.hash);
 						}
+					} catch {
+						// Fallback for non-standard URLs
 					}
-				} catch {
-					// Fallback for non-standard URLs
-				}
-			});
+				},
+				{ capture: true }
+			);
 
 			// Handle browser Back / Forward navigation between same-page hashes
 			window.addEventListener("popstate", () => {
 				if (window.location.hash) {
-					scrollToTarget(window.location.hash, { offset: -80, duration: 1.0 });
+					const targetEl = document.querySelector(window.location.hash);
+					if (targetEl) {
+						scrollToTarget(targetEl as HTMLElement, { offset: -90, duration: 1.0 });
+					}
 				}
 			});
 
-			if (document.readyState === "loading") {
-				document.addEventListener("DOMContentLoaded", initGlobalLayout);
-			} else {
-				initGlobalLayout();
-			}
 			document.addEventListener("astro:page-load", initGlobalLayout);
 		</script>
 	</body>
