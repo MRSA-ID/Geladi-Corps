@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { ArrowUpRight } from "@lucide/astro";
+import OfficeMap from "@components/OfficeMap";
 ---
 
 <Layout
@@ -41,14 +42,19 @@ import { ArrowUpRight } from "@lucide/astro";
 				<!-- Left Column: Institutional Information & Solutions -->
 				<div class="lg:col-span-4 flex flex-col gap-10">
 					<!-- 1. Office Location -->
-					<div class="flex flex-col gap-1.5">
-						<h3 class="text-xs font-semibold uppercase tracking-widest text-neutral-400">
-							Office Location
-						</h3>
-						<p class="text-base sm:text-lg font-normal text-primary_onyx leading-relaxed">
-							Jl. KH. Wahid Hasyim No. 77, <br />
-							Menteng, Jakarta Pusat 10350, Indonesia
-						</p>
+					<div class="flex flex-col gap-3.5">
+						<div class="flex flex-col gap-1.5">
+							<h3 class="text-xs font-semibold uppercase tracking-widest text-neutral-400">
+								Office Location
+							</h3>
+							<p class="text-base sm:text-lg font-normal text-primary_onyx leading-relaxed">
+								Jl. KH. Wahid Hasyim No. 77, <br />
+								Menteng, Jakarta Pusat 10350, Indonesia
+							</p>
+						</div>
+
+						<!-- Mapcn Interactive Map Preview -->
+						<OfficeMap client:visible />
 					</div>
 
 					<!-- 2. Office Time -->
