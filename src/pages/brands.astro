@@ -288,6 +288,22 @@ const categories: EcosystemCategory[] = [
 ];
 ---
 
+<style>
+	/* Zero-FOUC initial hidden state before brands hero reveals */
+	#hero-brands:not(.brands-hero-revealed) .brands-hero-title,
+	#hero-brands:not(.brands-hero-revealed) .brands-hero-desc {
+		opacity: 0;
+	}
+
+	/* Clean static document state once revealed */
+	#hero-brands.brands-hero-revealed .brands-hero-title,
+	#hero-brands.brands-hero-revealed .brands-hero-desc {
+		opacity: 1;
+		transform: none !important;
+		filter: none !important;
+	}
+</style>
+
 <Layout
 	title="Our Brands & Ecosystem | Galedi Corps"
 	description="Explore the comprehensive brand portfolio and multi-industry ecosystem of Galedi Corps across fragrance, travel, events, consulting, and media."
@@ -325,12 +341,12 @@ const categories: EcosystemCategory[] = [
 			<div class="flex flex-col gap-6 relative z-20 pointer-events-auto">
 				<div class="flex flex-col gap-8 items-center justify-center">
 					<div class="text-center">
-						<h1 class="text-5xl sm:text-7xl md:text-8xl lg:text-[96px] font-semibold text-primary_onyx tracking-tight leading-[0.98]">
+						<h1 class="brands-hero-title text-5xl sm:text-7xl md:text-8xl lg:text-[96px] font-semibold text-primary_onyx tracking-tight leading-[0.98] backface-hidden transform-[translateZ(0)]">
 							Our Ecosystem <br class="hidden sm:inline" />& Brands
 						</h1>
 					</div>
 					<div class="lg:pl-4 text-center">
-						<p class="text-base max-w-2xl sm:text-lg md:text-xl text-neutral-600 font-light leading-relaxed">
+						<p class="brands-hero-desc text-base max-w-2xl sm:text-lg md:text-xl text-neutral-600 font-light leading-relaxed backface-hidden transform-[translateZ(0)]">
 							A multi-industry holding group managing 9 commercial brands and 2 digital media platforms across 5 core strategic industry sectors.
 						</p>
 					</div>
@@ -638,9 +654,83 @@ const categories: EcosystemCategory[] = [
 		ScrollTrigger.refresh();
 	}
 
+	function initBrandsHeroEntrance() {
+		const hero = document.getElementById("hero-brands");
+		if (!hero) return;
+
+		const title = hero.querySelector(".brands-hero-title");
+		const desc = hero.querySelector(".brands-hero-desc");
+
+		const elements = [title, desc].filter(Boolean) as HTMLElement[];
+		if (!elements.length) return;
+
+		gsap.killTweensOf(elements);
+
+		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (prefersReducedMotion) {
+			hero.classList.add("brands-hero-revealed");
+			elements.forEach((el) => {
+				el.style.filter = "none";
+				el.style.transform = "none";
+				el.style.opacity = "1";
+			});
+			return;
+		}
+
+		// Calculate precise start delay: wait for page transition curtain if active, else clean settling delay
+		const svgTransition = document.getElementById("page-transition-svg");
+		const isPageTransitionActive = svgTransition && svgTransition.style.display !== "none";
+		const startDelay = isPageTransitionActive ? 0.45 : 0.12;
+
+		const tl = gsap.timeline({
+			delay: startDelay,
+			onComplete: () => {
+				hero.classList.add("brands-hero-revealed");
+				elements.forEach((el) => {
+					el.style.filter = "none";
+					el.style.transform = "none";
+				});
+			},
+		});
+
+		if (title) {
+			tl.fromTo(
+				title,
+				{ opacity: 0, y: 35, filter: "blur(12px)", force3D: true },
+				{
+					opacity: 1,
+					y: 0,
+					filter: "blur(0px)",
+					duration: 1.15,
+					ease: "power3.out",
+					force3D: true,
+					clearProps: "transform,filter",
+				}
+			);
+		}
+
+		if (desc) {
+			tl.fromTo(
+				desc,
+				{ opacity: 0, y: 25, filter: "blur(10px)", force3D: true },
+				{
+					opacity: 1,
+					y: 0,
+					filter: "blur(0px)",
+					duration: 1.05,
+					ease: "power3.out",
+					force3D: true,
+					clearProps: "transform,filter",
+				},
+				"-=0.75"
+			);
+		}
+	}
+
 	function initAll() {
 		initImageTrail();
 		initGSAPPinningStack();
+		initBrandsHeroEntrance();
 	}
 
 	if (document.readyState === "loading") {
