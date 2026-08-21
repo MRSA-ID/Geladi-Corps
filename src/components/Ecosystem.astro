@@ -5,95 +5,146 @@ import background2 from "@assets/images/eyewear_lifestyle.jpg";
 ---
 
 <style>
-	/* Zero-FOUC hidden state before ecosystem reveals */
-	#ecosystem:not(.ecosystem-revealed) .ecosystem-item {
+	/* Zero-FOUC hidden state before each card reveals */
+	.ecosystem-item:not(.ecosystem-item-revealed) .ecosystem-card-title,
+	.ecosystem-item:not(.ecosystem-item-revealed) .ecosystem-card-desc,
+	.ecosystem-item:not(.ecosystem-item-revealed) .ecosystem-pill {
+		opacity: 0;
+	}
+
+	.ecosystem-item:not(.ecosystem-item-revealed).ecosystem-image-card {
 		opacity: 0;
 	}
 
 	/* Clean static document state once revealed */
-	#ecosystem.ecosystem-revealed .ecosystem-item {
+	.ecosystem-item.ecosystem-item-revealed .ecosystem-card-title,
+	.ecosystem-item.ecosystem-item-revealed .ecosystem-card-desc,
+	.ecosystem-item.ecosystem-item-revealed .ecosystem-pill {
 		opacity: 1;
-		transform: none !important;
+	}
+
+	.ecosystem-item.ecosystem-item-revealed.ecosystem-image-card {
+		opacity: 1;
 	}
 </style>
 
 <section id="ecosystem" class="font-testsohne py-40 px-5 w-full min-h-screen overflow-hidden">
 	<div class="w-full grid grid-cols-1 md:grid-cols-3 gap-5">
 		<!-- Card 1: Title Card -->
-		<div class="ecosystem-item bg-secondary_terracotta h-full rounded-[10px] p-5 backface-hidden transform-[translateZ(0)]">
-			<h2 class="font-semibold text-7xl text-primary_limestone leading-snug">Our <br/> Ecosystem</h2>
+		<div class="ecosystem-item ecosystem-card relative overflow-hidden h-full min-h-[300px] rounded-[10px] p-5 backface-hidden transform-[translateZ(0)]">
+			<!-- Colored Background Slide-Up Layer -->
+			<div class="ecosystem-card-bg absolute inset-0 bg-secondary_terracotta rounded-[10px] backface-hidden transform-[translateZ(0)]"></div>
+
+			<!-- Content -->
+			<div class="relative z-10">
+				<h2 class="ecosystem-card-title font-semibold text-7xl text-primary_limestone leading-snug backface-hidden transform-[translateZ(0)]">
+					Our <br/> Ecosystem
+				</h2>
+			</div>
 		</div>
 
-		<!-- Item 2: Image 1 -->
-		<Image
-			src={background1}
-			alt="background galedi corps lifestyle parfume"
-			width={1000}
-			height={667}
-			quality={75}
-			format="avif"
-			class="ecosystem-item md:col-span-2 h-[450px] w-full object-cover object-[50%_75%] rounded-[10px] backface-hidden transform-[translateZ(0)]"
-		/>
+		<!-- Item 2: Image 1 Card -->
+		<div class="ecosystem-item ecosystem-image-card md:col-span-2 h-[450px] w-full overflow-hidden rounded-[10px] backface-hidden transform-[translateZ(0)]">
+			<Image
+				src={background1}
+				alt="background galedi corps lifestyle parfume"
+				width={1000}
+				height={667}
+				quality={75}
+				format="avif"
+				class="ecosystem-image-inner h-full w-full object-cover object-[50%_75%] select-none backface-hidden transform-[translateZ(0)]"
+			/>
+		</div>
 
 		<!-- Card 3: Lifestyle, Fragrance & Personal Care -->
-		<div class="ecosystem-item bg-[#4E84B7] h-full min-h-[450px] rounded-[10px] p-5 grid grid-rows-[0.5fr_1fr_0.5fr] text-primary_limestone gap-2.5 backface-hidden transform-[translateZ(0)]">
-			<h2 class="font-semibold text-3xl">Lifestyle, Fragrance & <br/> Personal Care</h2>
-			<p class="font-semibold text-2xl text-justify tracking-wider">From personal fragrance, personal care and ambient scent to wellness products, international markets, and fragrance media</p>
-			<div class="font-inter grid grid-cols-3 gap-2.5 place-content-center">
-				<span class="text-center w-full py-1.25 text-[#4E84B7] bg-primary_bone_white rounded-full h-max">fragrance</span>
-				<span class="text-center w-full py-1.25 text-[#4E84B7] bg-primary_bone_white rounded-full h-max">personal care</span>
-				<span class="text-center w-full py-1.25 text-[#4E84B7] bg-primary_bone_white rounded-full h-max">international</span>
-				<span class="text-center w-full py-1.25 text-[#4E84B7] bg-primary_bone_white rounded-full h-max col-end-4">scent branding</span>
+		<div class="ecosystem-item ecosystem-card relative overflow-hidden h-full min-h-[450px] rounded-[10px] p-5 grid grid-rows-[0.5fr_1fr_0.5fr] text-primary_limestone gap-2.5 backface-hidden transform-[translateZ(0)]">
+			<!-- Colored Background Slide-Up Layer -->
+			<div class="ecosystem-card-bg absolute inset-0 bg-[#4E84B7] rounded-[10px] backface-hidden transform-[translateZ(0)]"></div>
+
+			<h2 class="ecosystem-card-title relative z-10 font-semibold text-3xl backface-hidden transform-[translateZ(0)]">
+				Lifestyle, Fragrance & <br/> Personal Care
+			</h2>
+			<p class="ecosystem-card-desc relative z-10 font-semibold text-2xl text-justify tracking-wider backface-hidden transform-[translateZ(0)]">
+				From personal fragrance, personal care and ambient scent to wellness products, international markets, and fragrance media
+			</p>
+			<div class="relative z-10 font-inter grid grid-cols-3 gap-2.5 place-content-center">
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#4E84B7] bg-primary_bone_white rounded-full h-max backface-hidden transform-[translateZ(0)]">fragrance</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#4E84B7] bg-primary_bone_white rounded-full h-max backface-hidden transform-[translateZ(0)]">personal care</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#4E84B7] bg-primary_bone_white rounded-full h-max backface-hidden transform-[translateZ(0)]">international</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#4E84B7] bg-primary_bone_white rounded-full h-max col-end-4 backface-hidden transform-[translateZ(0)]">scent branding</span>
 			</div>
 		</div>
 
 		<!-- Card 4: Travel & Hospitality -->
-		<div class="ecosystem-item bg-[#594EB7] h-full min-h-[450px] rounded-[10px] p-5 grid grid-rows-[0.5fr_1fr_0.5fr] text-primary_limestone gap-2.5 backface-hidden transform-[translateZ(0)]">
-			<h2 class="font-semibold text-3xl">Travel & Hospitality</h2>
-			<p class="font-semibold text-2xl text-justify tracking-wider">From leisure and corporate travel to pilgrimage, hospitality, and digital platforms for travelers.</p>
-			<div class="font-inter grid grid-cols-3 gap-2.5 place-content-center">
-				<span class="text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max">leisure travel</span>
-				<span class="text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max">corporate travel</span>
-				<span class="text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max">hospitality</span>
-				<span class="text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max col-end-3">travel experiences</span>
-				<span class="text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max col-end-4">digital</span>
+		<div class="ecosystem-item ecosystem-card relative overflow-hidden h-full min-h-[450px] rounded-[10px] p-5 grid grid-rows-[0.5fr_1fr_0.5fr] text-primary_limestone gap-2.5 backface-hidden transform-[translateZ(0)]">
+			<!-- Colored Background Slide-Up Layer -->
+			<div class="ecosystem-card-bg absolute inset-0 bg-[#594EB7] rounded-[10px] backface-hidden transform-[translateZ(0)]"></div>
+
+			<h2 class="ecosystem-card-title relative z-10 font-semibold text-3xl backface-hidden transform-[translateZ(0)]">
+				Travel & Hospitality
+			</h2>
+			<p class="ecosystem-card-desc relative z-10 font-semibold text-2xl text-justify tracking-wider backface-hidden transform-[translateZ(0)]">
+				From leisure and corporate travel to pilgrimage, hospitality, and digital platforms for travelers.
+			</p>
+			<div class="relative z-10 font-inter grid grid-cols-3 gap-2.5 place-content-center">
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max backface-hidden transform-[translateZ(0)]">leisure travel</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max backface-hidden transform-[translateZ(0)]">corporate travel</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max backface-hidden transform-[translateZ(0)]">hospitality</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max col-end-3 backface-hidden transform-[translateZ(0)]">travel experiences</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#594EB7] bg-primary_bone_white rounded-full h-max col-end-4 backface-hidden transform-[translateZ(0)]">digital</span>
 			</div>
 		</div>
 
 		<!-- Card 5: Events & Industrial Creative -->
-		<div class="ecosystem-item bg-[#EB642A] h-full min-h-[450px] rounded-[10px] p-5 grid grid-rows-[0.5fr_1fr_0.5fr] text-primary_limestone gap-2.5 backface-hidden transform-[translateZ(0)]">
-			<h2 class="font-semibold text-3xl">Events & Industrial <br/> Creative</h2>
-			<p class="font-semibold text-2xl text-justify tracking-wider">From MICE and exhibitions to custom packaging, printing, and physical brand experiences.</p>
+		<div class="ecosystem-item ecosystem-card relative overflow-hidden h-full min-h-[450px] rounded-[10px] p-5 grid grid-rows-[0.5fr_1fr_0.5fr] text-primary_limestone gap-2.5 backface-hidden transform-[translateZ(0)]">
+			<!-- Colored Background Slide-Up Layer -->
+			<div class="ecosystem-card-bg absolute inset-0 bg-[#EB642A] rounded-[10px] backface-hidden transform-[translateZ(0)]"></div>
+
+			<h2 class="ecosystem-card-title relative z-10 font-semibold text-3xl backface-hidden transform-[translateZ(0)]">
+				Events & Industrial <br/> Creative
+			</h2>
+			<p class="ecosystem-card-desc relative z-10 font-semibold text-2xl text-justify tracking-wider backface-hidden transform-[translateZ(0)]">
+				From MICE and exhibitions to custom packaging, printing, and physical brand experiences.
+			</p>
 			<div class="font-inter grid grid-cols-3 gap-2.5 place-content-center">
-				<span class="text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max">mice</span>
-				<span class="text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max">packaging</span>
-				<span class="text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max">events</span>
-				<span class="text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max">exhibitions</span>
-				<span class="text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max">creative production</span>
-				<span class="text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max">print</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max backface-hidden transform-[translateZ(0)]">mice</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max backface-hidden transform-[translateZ(0)]">packaging</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max backface-hidden transform-[translateZ(0)]">events</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max backface-hidden transform-[translateZ(0)]">exhibitions</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max backface-hidden transform-[translateZ(0)]">creative production</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-[#EB642A] bg-primary_bone_white rounded-full h-max backface-hidden transform-[translateZ(0)]">print</span>
 			</div>
 		</div>
 
-		<!-- Item 6: Image 2 -->
-		<Image
-			src={background2}
-			alt="background galedi corps lifestyle eyewear"
-			width={1200}
-			height={1000}
-			quality={75}
-			format="avif"
-			class="ecosystem-item md:col-span-2 h-[450px] w-full object-cover rounded-[10px] backface-hidden transform-[translateZ(0)]"
-		/>
+		<!-- Item 6: Image 2 Card -->
+		<div class="ecosystem-item ecosystem-image-card md:col-span-2 h-[450px] w-full overflow-hidden rounded-[10px] backface-hidden transform-[translateZ(0)]">
+			<Image
+				src={background2}
+				alt="background galedi corps lifestyle eyewear"
+				width={1200}
+				height={1000}
+				quality={75}
+				format="avif"
+				class="ecosystem-image-inner h-full w-full object-cover select-none backface-hidden transform-[translateZ(0)]"
+			/>
+		</div>
 
 		<!-- Card 7: Human Capital & Strategic Consulting -->
-		<div class="ecosystem-item bg-[#EBE52A] h-full min-h-[450px] rounded-[10px] p-5 grid grid-rows-[0.5fr_1fr_0.5fr] text-digital-neutrals-800 gap-2.5 backface-hidden transform-[translateZ(0)]">
-			<h2 class="font-semibold text-3xl">Human Capital & Strategic Consulting</h2>
-			<p class="font-semibold text-2xl text-justify tracking-wider">Through HR consulting, corporate training, and human development for organizations and individuals</p>
-			<div class="font-inter grid grid-cols-3 gap-2.5 place-content-center">
-				<span class="text-center w-full py-1.25 text-primary_bone_white bg-digital-neutrals-700 rounded-full h-max col-start-2">corporate training</span>
-				<span class="text-center w-full py-1.25 text-primary_bone_white bg-digital-neutrals-700 rounded-full h-max col-start-3">hr consulting</span>
-				<span class="text-center w-full py-1.25 text-primary_bone_white bg-digital-neutrals-700 rounded-full h-max">human development</span>
-				<span class="text-center w-full py-1.25 text-primary_bone_white bg-digital-neutrals-700 rounded-full h-max col-start-2 col-span-2">organization development</span>
+		<div class="ecosystem-item ecosystem-card relative overflow-hidden h-full min-h-[450px] rounded-[10px] p-5 grid grid-rows-[0.5fr_1fr_0.5fr] text-digital-neutrals-800 gap-2.5 backface-hidden transform-[translateZ(0)]">
+			<!-- Colored Background Slide-Up Layer -->
+			<div class="ecosystem-card-bg absolute inset-0 bg-[#EBE52A] rounded-[10px] backface-hidden transform-[translateZ(0)]"></div>
+
+			<h2 class="ecosystem-card-title relative z-10 font-semibold text-3xl backface-hidden transform-[translateZ(0)]">
+				Human Capital & Strategic Consulting
+			</h2>
+			<p class="ecosystem-card-desc relative z-10 font-semibold text-2xl text-justify tracking-wider backface-hidden transform-[translateZ(0)]">
+				Through HR consulting, corporate training, and human development for organizations and individuals
+			</p>
+			<div class="relative z-10 font-inter grid grid-cols-3 gap-2.5 place-content-center">
+				<span class="ecosystem-pill text-center w-full py-1.25 text-primary_bone_white bg-digital-neutrals-700 rounded-full h-max col-start-2 backface-hidden transform-[translateZ(0)]">corporate training</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-primary_bone_white bg-digital-neutrals-700 rounded-full h-max col-start-3 backface-hidden transform-[translateZ(0)]">hr consulting</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-primary_bone_white bg-digital-neutrals-700 rounded-full h-max backface-hidden transform-[translateZ(0)]">human development</span>
+				<span class="ecosystem-pill text-center w-full py-1.25 text-primary_bone_white bg-digital-neutrals-700 rounded-full h-max col-start-2 col-span-2 backface-hidden transform-[translateZ(0)]">organization development</span>
 			</div>
 		</div>
 	</div>
@@ -112,52 +163,149 @@ import background2 from "@assets/images/eyewear_lifestyle.jpg";
 		const items = section.querySelectorAll(".ecosystem-item");
 		if (!items.length) return;
 
-		// Abort any existing tweens on these elements
+		// Abort existing tweens and triggers
 		gsap.killTweensOf(items);
+		ScrollTrigger.getAll().forEach((trigger) => {
+			if (trigger.vars.id?.startsWith("ecosystem-item-")) {
+				trigger.kill();
+			}
+		});
 
 		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 		if (prefersReducedMotion) {
-			section.classList.add("ecosystem-revealed");
-			gsap.set(items, { opacity: 1, y: 0, scale: 1 });
+			items.forEach((item) => item.classList.add("ecosystem-item-revealed"));
+			gsap.set(items, { opacity: 1 });
 			return;
 		}
 
-		let hasPlayed = false;
+		items.forEach((item, idx) => {
+			const isImageCard = item.classList.contains("ecosystem-image-card");
 
-		function playEcosystemEntrance() {
-			if (hasPlayed) return;
-			hasPlayed = true;
-
-			gsap.fromTo(
-				items,
-				{
-					opacity: 0,
-					y: 45,
-					scale: 0.985,
-					force3D: true,
-				},
-				{
-					opacity: 1,
-					y: 0,
-					scale: 1,
-					duration: 1.15,
-					delay: 0.2,
-					stagger: 0.14,
-					ease: "power3.out",
-					force3D: true,
-					onComplete: () => {
-						section!.classList.add("ecosystem-revealed");
+			if (isImageCard) {
+				const img = item.querySelector(".ecosystem-image-inner");
+				const tl = gsap.timeline({
+					scrollTrigger: {
+						id: `ecosystem-item-${idx}`,
+						trigger: item,
+						start: "top 50%",
+						once: true,
 					},
-					clearProps: "transform",
-				}
-			);
-		}
+					onComplete: () => {
+						item.classList.add("ecosystem-item-revealed");
+					},
+				});
 
-		ScrollTrigger.create({
-			trigger: section,
-			start: "top 70%",
-			once: true,
-			onEnter: playEcosystemEntrance,
+				tl.fromTo(
+					item,
+					{ opacity: 0, y: 60, force3D: true },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 1.15,
+						ease: "power3.out",
+						force3D: true,
+						clearProps: "transform",
+					}
+				);
+
+				if (img) {
+					tl.fromTo(
+						img,
+						{ scale: 1.12, force3D: true },
+						{
+							scale: 1.0,
+							duration: 1.35,
+							ease: "power3.out",
+							force3D: true,
+							clearProps: "transform",
+						},
+						0
+					);
+				}
+			} else {
+				// Colored Bento Card: The background color layer slides up from 100% to 0%
+				const cardBg = item.querySelector(".ecosystem-card-bg");
+				const title = item.querySelector(".ecosystem-card-title");
+				const desc = item.querySelector(".ecosystem-card-desc");
+				const pills = item.querySelectorAll(".ecosystem-pill");
+
+				if (cardBg) {
+					gsap.set(cardBg, { yPercent: 100, force3D: true });
+				}
+				if (title) {
+					gsap.set(title, { opacity: 0, y: 30, force3D: true });
+				}
+				if (desc) {
+					gsap.set(desc, { opacity: 0, y: 25, force3D: true });
+				}
+				if (pills.length) {
+					gsap.set(pills, { opacity: 0, y: 20, force3D: true });
+				}
+
+				const tl = gsap.timeline({
+					scrollTrigger: {
+						id: `ecosystem-item-${idx}`,
+						trigger: item,
+						start: "top 50%",
+						once: true,
+					},
+					onComplete: () => {
+						item.classList.add("ecosystem-item-revealed");
+					},
+				});
+
+				if (cardBg) {
+					tl.to(cardBg, {
+						yPercent: 0,
+						duration: 1.15,
+						ease: "power3.out",
+						force3D: true,
+					});
+				}
+
+				if (title) {
+					tl.to(
+						title,
+						{
+							opacity: 1,
+							y: 0,
+							duration: 0.85,
+							ease: "power3.out",
+							force3D: true,
+						},
+						"-=0.6"
+					);
+				}
+
+				if (desc) {
+					tl.to(
+						desc,
+						{
+							opacity: 1,
+							y: 0,
+							duration: 0.85,
+							ease: "power3.out",
+							force3D: true,
+						},
+						"-=0.65"
+					);
+				}
+
+				if (pills.length) {
+					tl.to(
+						pills,
+						{
+							opacity: 1,
+							y: 0,
+							duration: 0.75,
+							stagger: 0.06,
+							ease: "power3.out",
+							force3D: true,
+						},
+						"-=0.65"
+					);
+				}
+			}
 		});
 	}
 
