@@ -1,22 +1,150 @@
 ---
 import { Dot } from "@lucide/astro";
 import MissionCards from "./MissionCards";
-
 ---
 
-<section id="vision" class="flex flex-col gap-44 bg-primary_limestone py-32 px-5 font-testsohne">
- <div class="grid grid-cols-1 md:grid-cols-2 w-full text-primary_onyx gap-14 md:gap-1 "> 
-  <div class="flex flex-col gap-2.5 max-w-[500px] w-full">
-   <div class="flex bg-secondary_sage px-[15px] py-[7px] text-primary_bone_white items-center w-max gap-0.5 rounded-[20px]">
-    <Dot class="size-6 stroke-10" />
-    <span class="text-2xl">Our Vision & Mission</span>
-   </div>
-   <h2 class="text-5xl font-semibold">Building businesses for long-term value</h2>
-  </div>
-  <div class="place-self-center max-w-[720px]">
-   <p class="text-3xl font-semibold leading-snug text-justify">To be a leading multi-industry holding group that builds lasting value through cross-industry collaboration, practical innovation, and world-class operational standards.</p>
-  </div>
- </div>
+<style>
+	/* Zero-FOUC hidden state before vision section reveals */
+	#vision:not(.vision-revealed) .vision-badge,
+	#vision:not(.vision-revealed) .vision-title,
+	#vision:not(.vision-revealed) .vision-desc,
+	#vision:not(.vision-revealed) .vision-cards-wrapper {
+		opacity: 0;
+	}
 
- <MissionCards client:visible />
+	/* Clean static document state once revealed */
+	#vision.vision-revealed .vision-badge,
+	#vision.vision-revealed .vision-title,
+	#vision.vision-revealed .vision-desc,
+	#vision.vision-revealed .vision-cards-wrapper {
+		opacity: 1;
+		transform: none !important;
+	}
+</style>
+
+<section id="vision" class="flex flex-col gap-44 bg-primary_limestone py-32 px-5 font-testsohne overflow-hidden">
+	<div class="grid grid-cols-1 md:grid-cols-2 w-full text-primary_onyx gap-14 md:gap-1"> 
+		<div class="flex flex-col gap-2.5 max-w-[500px] w-full">
+			<div class="vision-badge flex bg-secondary_sage px-[15px] py-[7px] text-primary_bone_white items-center w-max gap-0.5 rounded-[20px] backface-hidden transform-[translateZ(0)]">
+				<Dot class="size-6 stroke-10" />
+				<span class="text-2xl">Our Vision & Mission</span>
+			</div>
+			<h2 class="vision-title text-5xl font-semibold backface-hidden transform-[translateZ(0)]">
+				Building businesses for long-term value
+			</h2>
+		</div>
+		<div class="place-self-center max-w-[720px]">
+			<p class="vision-desc text-3xl font-semibold leading-snug text-justify backface-hidden transform-[translateZ(0)]">
+				To be a leading multi-industry holding group that builds lasting value through cross-industry collaboration, practical innovation, and world-class operational standards.
+			</p>
+		</div>
+	</div>
+
+	<div class="vision-cards-wrapper w-full backface-hidden transform-[translateZ(0)]">
+		<MissionCards client:visible />
+	</div>
 </section>
+
+<script>
+	import gsap from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	function initVisionAnimations() {
+		const section = document.getElementById("vision");
+		if (!section) return;
+
+		const badge = section.querySelector(".vision-badge");
+		const title = section.querySelector(".vision-title");
+		const desc = section.querySelector(".vision-desc");
+		const cardsWrapper = section.querySelector(".vision-cards-wrapper");
+
+		if (!badge || !title || !desc || !cardsWrapper) return;
+
+		// Kill existing tweens to prevent overlapping animations
+		gsap.killTweensOf([badge, title, desc, cardsWrapper]);
+
+		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (prefersReducedMotion) {
+			section.classList.add("vision-revealed");
+			gsap.set([badge, title, desc, cardsWrapper], { opacity: 1, y: 0 });
+			return;
+		}
+
+		let hasPlayed = false;
+
+		function playVisionEntrance() {
+			if (hasPlayed) return;
+			hasPlayed = true;
+
+			const tl = gsap.timeline({
+				onComplete: () => {
+					section!.classList.add("vision-revealed");
+				},
+			});
+
+			tl.fromTo(
+				badge,
+				{ opacity: 0, y: 30, force3D: true },
+				{
+					opacity: 1,
+					y: 0,
+					duration: 0.9,
+					ease: "power3.out",
+					force3D: true,
+					clearProps: "transform",
+				}
+			)
+				.fromTo(
+					title,
+					{ opacity: 0, y: 35, force3D: true },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 1.05,
+						ease: "power3.out",
+						force3D: true,
+						clearProps: "transform",
+					},
+					"-=0.75"
+				)
+				.fromTo(
+					desc,
+					{ opacity: 0, y: 30, force3D: true },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 1.1,
+						ease: "power3.out",
+						force3D: true,
+						clearProps: "transform",
+					},
+					"-=0.8"
+				)
+				.fromTo(
+					cardsWrapper,
+					{ opacity: 0, y: 45, force3D: true },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 1.2,
+						ease: "power3.out",
+						force3D: true,
+						clearProps: "transform",
+					},
+					"-=0.7"
+				);
+		}
+
+		ScrollTrigger.create({
+			trigger: section,
+			start: "top 75%",
+			once: true,
+			onEnter: playVisionEntrance,
+		});
+	}
+
+	// In Astro with ClientRouter, astro:page-load handles initial load + page transitions cleanly
+	document.addEventListener("astro:page-load", initVisionAnimations);
+</script>
