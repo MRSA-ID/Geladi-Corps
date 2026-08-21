@@ -60,6 +60,27 @@ const newsMedia: NewsItem[] = [
 ];
 ---
 
+<style>
+	/* Zero-FOUC hidden state before newsroom header reveals */
+	#newsroom:not(.news-revealed) .news-header-title,
+	#newsroom:not(.news-revealed) .news-header-logo {
+		opacity: 0;
+	}
+
+	/* Zero-FOUC hidden state for individual news items until scrolled into view */
+	.news-container-item:not(.news-item-revealed) {
+		opacity: 0;
+	}
+
+	/* Clean static document state once revealed */
+	#newsroom.news-revealed .news-header-title,
+	#newsroom.news-revealed .news-header-logo,
+	.news-container-item.news-item-revealed {
+		opacity: 1;
+		transform: none !important;
+	}
+</style>
+
 <section
 	id="newsroom"
 	class="relative bg-white font-testsohne min-h-screen py-24 sm:py-32 px-2.5 sm:px-8 lg:px-12 overflow-hidden"
@@ -78,7 +99,7 @@ const newsMedia: NewsItem[] = [
 			class="w-full flex flex-col md:flex-row md:items-center justify-between gap-8 pb-9 sm:pb-24"
 		>
 			<h1
-				class="font-semibold text-5xl sm:text-6xl md:text-7xl text-primary_onyx tracking-tight"
+				class="news-header-title font-semibold text-5xl sm:text-6xl md:text-7xl text-primary_onyx tracking-tight backface-hidden transform-[translateZ(0)]"
 			>
 				Newsroom
 			</h1>
@@ -95,7 +116,7 @@ const newsMedia: NewsItem[] = [
 							densities={[1, 2]}
 							loading="lazy"
 							decoding="async"
-							class="size-[140px] sm:size-[150px] object-contain select-none"
+							class="news-header-logo size-[140px] sm:size-[150px] object-contain select-none backface-hidden transform-[translateZ(0)]"
 						/>
 					))
 				}
@@ -111,7 +132,7 @@ const newsMedia: NewsItem[] = [
 						href={media.link}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="news-container-item group block w-full border-t border-primary_onyx pt-8 pb-12 sm:pb-16 transition-colors duration-300 lg:cursor-none select-none"
+						class="news-container-item group block w-full border-t border-primary_onyx pt-8 pb-12 sm:pb-16 transition-colors duration-300 lg:cursor-none select-none backface-hidden transform-[translateZ(0)]"
 					>
 						<div class="w-full grid grid-cols-1 lg:grid-cols-[0.75fr_1fr_0.25fr] gap-6 sm:gap-8 lg:gap-[25px] items-start">
 							{/* Thumbnail Image Container */}
@@ -135,7 +156,7 @@ const newsMedia: NewsItem[] = [
 
 							{/* News Info & Partner Brand Logo */}
 							<div class="font-normal flex flex-col justify-between h-full min-h-[220px] lg:min-h-[480px] py-1">
-								<h2 class="text-2xl sm:text-3xl lg:text-4xl text-primary_onyx leading-snug font-normal transition-colors duration-300 ">
+								<h2 class="text-2xl sm:text-3xl lg:text-4xl text-primary_onyx leading-snug font-normal transition-colors duration-300">
 									{media.title}
 								</h2>
 								<div class="flex gap-4 items-center mt-auto pt-6">
@@ -169,6 +190,114 @@ const newsMedia: NewsItem[] = [
 </section>
 
 <script>
+	import gsap from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	function initNewsEntrance() {
+		const section = document.getElementById("newsroom");
+		if (!section) return;
+
+		const heading = section.querySelector(".news-header-title");
+		const logos = section.querySelectorAll(".news-header-logo");
+		const newsItems = section.querySelectorAll(".news-container-item");
+
+		if (!heading || !newsItems.length) return;
+
+		// Abort existing tweens and triggers
+		gsap.killTweensOf([heading, ...Array.from(logos), ...Array.from(newsItems)]);
+		ScrollTrigger.getAll().forEach((trigger) => {
+			if (trigger.vars.id?.startsWith("news-")) {
+				trigger.kill();
+			}
+		});
+
+		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (prefersReducedMotion) {
+			section.classList.add("news-revealed");
+			newsItems.forEach((item) => item.classList.add("news-item-revealed"));
+			gsap.set([heading, ...Array.from(logos), ...Array.from(newsItems)], { opacity: 1, y: 0 });
+			return;
+		}
+
+		// 1. Header Entrance Timeline (start: top 50%)
+		let headerPlayed = false;
+		function playHeaderEntrance() {
+			if (headerPlayed) return;
+			headerPlayed = true;
+
+			const tl = gsap.timeline({
+				onComplete: () => {
+					section!.classList.add("news-revealed");
+				},
+			});
+
+			tl.fromTo(
+				heading,
+				{ opacity: 0, y: 40, force3D: true },
+				{
+					opacity: 1,
+					y: 0,
+					duration: 1.1,
+					ease: "power3.out",
+					force3D: true,
+					clearProps: "transform",
+				}
+			);
+
+			if (logos.length) {
+				tl.fromTo(
+					logos,
+					{ opacity: 0, y: 25, force3D: true },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 0.95,
+						stagger: 0.1,
+						ease: "power3.out",
+						force3D: true,
+						clearProps: "transform",
+					},
+					"-=0.8"
+				);
+			}
+		}
+
+		ScrollTrigger.create({
+			id: "news-header-trigger",
+			trigger: section,
+			start: "top 50%",
+			once: true,
+			onEnter: playHeaderEntrance,
+		});
+
+		// 2. Individual News Item ScrollTrigger Reveals (revealed on scroll per item)
+		newsItems.forEach((item, idx) => {
+			gsap.fromTo(
+				item,
+				{ opacity: 0, y: 50, force3D: true },
+				{
+					opacity: 1,
+					y: 0,
+					duration: 1.15,
+					ease: "power3.out",
+					force3D: true,
+					clearProps: "transform",
+					scrollTrigger: {
+						id: `news-item-${idx}`,
+						trigger: item,
+						start: "top 80%",
+						once: true,
+						onEnter: () => {
+							item.classList.add("news-item-revealed");
+						},
+					},
+				}
+			);
+		});
+	}
+
 	function initNewsCursor() {
 		// Only enable custom floating cursor on devices with fine pointer and hover capability
 		if (
@@ -244,10 +373,11 @@ const newsMedia: NewsItem[] = [
 		}
 	}
 
-	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initNewsCursor);
-	} else {
+	function initNews() {
+		initNewsEntrance();
 		initNewsCursor();
 	}
-	document.addEventListener("astro:page-load", initNewsCursor);
+
+	// In Astro with ClientRouter, astro:page-load handles initial load + page transitions cleanly
+	document.addEventListener("astro:page-load", initNews);
 </script>
