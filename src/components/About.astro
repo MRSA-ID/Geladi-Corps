@@ -3,56 +3,175 @@ import { Dot } from "@lucide/astro";
 import ValuesCards from "./ValuesCards";
 ---
 
-<section id="about" class="bg-primary_onyx min-h-max text-primary_bone_white font-testsohne w-full items-center justify-center py-40 px-5">
+<section id="about" class="bg-primary_onyx min-h-max text-primary_bone_white font-testsohne w-full items-center justify-center py-40 px-5 overflow-hidden">
 	<div class="grid grid-rows-[0.25fr_1fr] md:grid-rows-none md:grid-cols-[0.25fr_1fr] gap-7 md:gap-25">
-		<div class="flex items-center h-max gap-0.5">
+		<!-- About Kicker -->
+		<div class="about-kicker flex items-center h-max gap-0.5 will-change-transform">
 			<Dot class="size-6 stroke-10" />
 			<span class="text-2xl">About us</span>
 		</div>
-		<div class="flex flex-col gap-6 max-w-[1029px] w-full justify-self-center">
-			<h2 class="italic text-3xl">Built to bring good businesses together</h2>
-			<p class="text-2xl font-light text-justify leading-relaxed">
+
+		<!-- About Main Content Column -->
+		<div class="about-content-col flex flex-col gap-6 max-w-[1029px] w-full justify-self-center">
+			<h2 class="about-title italic text-3xl will-change-transform">
+				Built to bring good businesses together
+			</h2>
+			<p class="about-desc text-2xl font-light text-justify leading-relaxed will-change-transform">
 				Galedicorps is a multi-industry holding company focused on building and managing strong, market-leading businesses. Our portfolio spans 9 commercial brands and 3 digital media platforms across four core sectors.
 			</p>
-			<div class="w-full grid grid-cols-2 md:grid-cols-4 gap-2.5">
-				<div class="flex flex-col gap-5">
-					<div class="text-[64px]">
-						<span>9</span>
+
+			<!-- Metrics Stat Grid -->
+			<div class="about-stats-grid w-full grid grid-cols-2 md:grid-cols-4 gap-2.5 pt-2">
+				<!-- Metric 1: Active Brands -->
+				<div class="about-stat-card flex flex-col gap-5 will-change-transform">
+					<div class="text-[64px] font-semibold flex items-baseline leading-none">
+						<span class="about-counter-val tabular-nums" data-target="9" data-decimals="0">0</span>
 						<span>+</span>
 					</div>
-					<span class="text-xl">Active Brands</span>
+					<span class="text-xl font-normal text-neutral-300">Active Brands</span>
 				</div>
-				<div class="flex flex-col gap-5">
-					<div class="text-[64px]">
-						<span>3</span>
+
+				<!-- Metric 2: Media Platforms -->
+				<div class="about-stat-card flex flex-col gap-5 will-change-transform">
+					<div class="text-[64px] font-semibold flex items-baseline leading-none">
+						<span class="about-counter-val tabular-nums" data-target="3" data-decimals="0">0</span>
 						<span>+</span>
 					</div>
-					<span class="text-xl">Media Platforms</span>
+					<span class="text-xl font-normal text-neutral-300">Media Platforms</span>
 				</div>
-				<div class="flex flex-col gap-5">
-					<div class="text-[64px]">
-						<span>4</span>
+
+				<!-- Metric 3: Core Strategic Business -->
+				<div class="about-stat-card flex flex-col gap-5 will-change-transform">
+					<div class="text-[64px] font-semibold flex items-baseline leading-none">
+						<span class="about-counter-val tabular-nums" data-target="4" data-decimals="0">0</span>
 						<span>+</span>
 					</div>
-					<span class="text-xl">Core Strategic business</span>
+					<span class="text-xl font-normal text-neutral-300">Core Strategic business</span>
 				</div>
-				<div class="flex flex-col gap-5">
-					<div class="text-[64px]">
-						<span>99.4</span>
+
+				<!-- Metric 4: Satisfaction Index -->
+				<div class="about-stat-card flex flex-col gap-5 will-change-transform">
+					<div class="text-[64px] font-semibold flex items-baseline leading-none">
+						<span class="about-counter-val tabular-nums" data-target="99.4" data-decimals="1">0</span>
 						<span>%</span>
 					</div>
-					<span class="text-xl">Satisfaction Index</span>
+					<span class="text-xl font-normal text-neutral-300">Satisfaction Index</span>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<!-- our values -->
-	<div class="flex flex-col pt-28">
-		<div class="flex items-center pb-[52px] h-max gap-0.5 justify-self-center">
+	<!-- Our Values Section -->
+	<div class="about-values-wrapper flex flex-col pt-28 will-change-transform">
+		<div class="about-values-kicker flex items-center pb-[52px] h-max gap-0.5 justify-self-center will-change-transform">
 			<Dot class="size-6 stroke-10" />
 			<span class="text-2xl">Our Values</span>
 		</div>
-		<ValuesCards client:visible />
+		<div class="about-values-cards will-change-transform">
+			<ValuesCards client:visible />
+		</div>
 	</div>
 </section>
+
+<script>
+	import gsap from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	function initAboutAnimations() {
+		const section = document.getElementById("about");
+		if (!section) return;
+
+		const kicker = section.querySelector(".about-kicker");
+		const title = section.querySelector(".about-title");
+		const desc = section.querySelector(".about-desc");
+		const statCards = section.querySelectorAll(".about-stat-card");
+		const counterVals = section.querySelectorAll<HTMLElement>(".about-counter-val");
+		const valuesWrapper = section.querySelector(".about-values-wrapper");
+		const valuesKicker = section.querySelector(".about-values-kicker");
+		const valuesCards = section.querySelector(".about-values-cards");
+
+		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+		if (prefersReducedMotion) {
+			counterVals.forEach((el) => {
+				const target = el.getAttribute("data-target") || "0";
+				el.textContent = target;
+			});
+			gsap.set([kicker, title, desc, statCards, valuesKicker, valuesCards], { opacity: 1, y: 0 });
+			return;
+		}
+
+		// 1. Initial State
+		gsap.set([kicker, title, desc], { opacity: 0, y: 30 });
+		gsap.set(statCards, { opacity: 0, y: 35 });
+		gsap.set([valuesKicker, valuesCards], { opacity: 0, y: 35 });
+
+		// 2. Main About Content & Stat Cards ScrollTrigger Timeline
+		const mainTl = gsap.timeline({
+			scrollTrigger: {
+				trigger: section,
+				start: "top 75%",
+				once: true,
+			},
+		});
+
+		mainTl
+			.to(kicker, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" })
+			.to(title, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, "-=0.45")
+			.to(desc, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, "-=0.45")
+			.to(
+				statCards,
+				{
+					opacity: 1,
+					y: 0,
+					duration: 0.7,
+					stagger: 0.12,
+					ease: "power3.out",
+					onStart: () => {
+						// Trigger numeric count-up animations
+						counterVals.forEach((el) => {
+							const target = parseFloat(el.getAttribute("data-target") || "0");
+							const decimals = parseInt(el.getAttribute("data-decimals") || "0", 10);
+							const countObj = { val: 0 };
+							const duration = target > 50 ? 1.6 : target > 5 ? 1.4 : 1.2;
+
+							gsap.to(countObj, {
+								val: target,
+								duration: duration,
+								ease: "power2.out",
+								onUpdate: () => {
+									el.textContent =
+										decimals > 0
+											? countObj.val.toFixed(decimals)
+											: Math.round(countObj.val).toString();
+								},
+							});
+						});
+					},
+				},
+				"-=0.3"
+			);
+
+		// 3. Our Values ScrollTrigger Timeline
+		if (valuesWrapper) {
+			gsap.timeline({
+				scrollTrigger: {
+					trigger: valuesWrapper,
+					start: "top 80%",
+					once: true,
+				},
+			})
+				.to(valuesKicker, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" })
+				.to(valuesCards, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.4");
+		}
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initAboutAnimations);
+	} else {
+		initAboutAnimations();
+	}
+	document.addEventListener("astro:page-load", initAboutAnimations);
+</script>
