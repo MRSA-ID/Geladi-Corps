@@ -35,17 +35,32 @@ const teamMembers: TeamMember[] = [
 ];
 ---
 
+<style>
+	/* Zero-FOUC hidden state before leadership section reveals */
+	#leadership:not(.team-revealed) .team-heading,
+	#leadership:not(.team-revealed) .team-cards-wrapper {
+		opacity: 0;
+	}
+
+	/* Clean static document state once revealed */
+	#leadership.team-revealed .team-heading,
+	#leadership.team-revealed .team-cards-wrapper {
+		opacity: 1;
+		transform: none !important;
+	}
+</style>
+
 <section id="leadership" class="bg-primary_limestone py-20 sm:py-28 md:py-32 px-5 font-testsohne overflow-hidden">
 	<div class="w-full flex flex-col gap-10 sm:gap-14">
 		<!-- Section Header -->
 		<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-			<h2 class="font-canela text-5xl sm:text-6xl md:text-7xl text-secondary_olive font-normal tracking-tight">
+			<h2 class="team-heading font-canela text-5xl sm:text-6xl md:text-7xl text-secondary_olive font-normal tracking-tight backface-hidden transform-[translateZ(0)]">
 				Leadership & Governance
 			</h2>
 		</div>
 
-		<!-- Swiper Team Carousel -->
-		<div class="relative w-full">
+		<!-- Swiper Team Carousel Wrapper -->
+		<div class="team-cards-wrapper relative w-full backface-hidden transform-[translateZ(0)]">
 			<div class="swiper-container swiper-team overflow-hidden">
 				<div class="swiper-wrapper flex items-stretch">
 					{teamMembers.map((member) => (
@@ -89,6 +104,10 @@ const teamMembers: TeamMember[] = [
 <script>
 	import Swiper from "swiper";
 	import { Navigation, Autoplay } from "swiper/modules";
+	import gsap from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+	gsap.registerPlugin(ScrollTrigger);
 
 	function initTeamSwiper() {
 		const swiperEl = document.querySelector(".swiper-team");
@@ -126,10 +145,76 @@ const teamMembers: TeamMember[] = [
 		});
 	}
 
-	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initTeamSwiper);
-	} else {
-		initTeamSwiper();
+	function initTeamEntrance() {
+		const section = document.getElementById("leadership");
+		if (!section) return;
+
+		const heading = section.querySelector(".team-heading");
+		const cardsWrapper = section.querySelector(".team-cards-wrapper");
+		if (!heading || !cardsWrapper) return;
+
+		// Abort any existing tweens on these elements
+		gsap.killTweensOf([heading, cardsWrapper]);
+
+		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (prefersReducedMotion) {
+			section.classList.add("team-revealed");
+			gsap.set([heading, cardsWrapper], { opacity: 1, y: 0, scale: 1 });
+			return;
+		}
+
+		let hasPlayed = false;
+
+		function playTeamEntrance() {
+			if (hasPlayed) return;
+			hasPlayed = true;
+
+			const tl = gsap.timeline({
+				onComplete: () => {
+					section!.classList.add("team-revealed");
+				},
+			});
+
+			tl.fromTo(
+				heading,
+				{ opacity: 0, y: 40, force3D: true },
+				{
+					opacity: 1,
+					y: 0,
+					duration: 1.1,
+					ease: "power3.out",
+					force3D: true,
+					clearProps: "transform",
+				}
+			).fromTo(
+				cardsWrapper,
+				{ opacity: 0, y: 50, scale: 0.98, force3D: true },
+				{
+					opacity: 1,
+					y: 0,
+					scale: 1,
+					duration: 1.2,
+					ease: "power3.out",
+					force3D: true,
+					clearProps: "transform",
+				},
+				"-=0.75"
+			);
+		}
+
+		ScrollTrigger.create({
+			trigger: section,
+			start: "top 75%",
+			once: true,
+			onEnter: playTeamEntrance,
+		});
 	}
-	document.addEventListener("astro:page-load", initTeamSwiper);
+
+	function initTeam() {
+		initTeamSwiper();
+		initTeamEntrance();
+	}
+
+	// In Astro with ClientRouter, astro:page-load handles initial load + page transitions cleanly
+	document.addEventListener("astro:page-load", initTeam);
 </script>
