@@ -733,10 +733,5 @@ const categories: EcosystemCategory[] = [
 		initBrandsHeroEntrance();
 	}
 
-	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initAll);
-	} else {
-		initAll();
-	}
 	document.addEventListener("astro:page-load", initAll);
 </script>

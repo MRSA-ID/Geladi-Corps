@@ -16,6 +16,7 @@ import ContactForm from "@components/ContactForm";
 
 	#connect-main:not(.connect-revealed) .connect-header-divider {
 		transform: scaleX(0);
+		opacity: 0;
 	}
 
 	/* Clean static document state once revealed */
@@ -30,7 +31,8 @@ import ContactForm from "@components/ContactForm";
 	}
 
 	#connect-main.connect-revealed .connect-header-divider {
-		transform: scaleX(1);
+		transform: scaleX(1) !important;
+		opacity: 1 !important;
 	}
 </style>
 
@@ -67,7 +69,7 @@ import ContactForm from "@components/ContactForm";
 				</div>
 
 				<!-- Animated Bottom Border Divider Line -->
-				<div class="connect-header-divider absolute bottom-0 left-0 right-0 h-px bg-black/10 origin-left scale-x-0 backface-hidden transform-[translateZ(0)]"></div>
+				<div class="connect-header-divider absolute bottom-0 left-0 right-0 w-full h-[1px] bg-black/15 origin-left backface-hidden transform-[translateZ(0)] pointer-events-none"></div>
 			</div>
 
 			<!-- Two-Column Editorial Content & Form Grid -->
@@ -109,6 +111,9 @@ import ContactForm from "@components/ContactForm";
 						<div class="flex flex-col gap-1 text-base sm:text-lg font-normal text-primary_onyx">
 							<a href="mailto:info@galedicorps.com" class="hover:text-secondary_olive transition-colors w-max">
 								info@galedicorps.com
+							</a>
+							<a href="tel:+6281381795665" class="hover:text-secondary_olive transition-colors w-max">
+								+62 813-8179-5665
 							</a>
 						</div>
 					</div>
@@ -174,6 +179,8 @@ import ContactForm from "@components/ContactForm";
 <script>
 	import gsap from "gsap";
 
+	let activeConnectTimeline: gsap.core.Timeline | null = null;
+
 	function initConnectEntrance() {
 		const main = document.getElementById("connect-main");
 		if (!main) return;
@@ -188,15 +195,24 @@ import ContactForm from "@components/ContactForm";
 		const elements = [indicator, headline, narrative, divider, leftCol, rightForm].filter(Boolean) as HTMLElement[];
 		if (!elements.length) return;
 
+		if (activeConnectTimeline) {
+			activeConnectTimeline.kill();
+			activeConnectTimeline = null;
+		}
 		gsap.killTweensOf(elements);
 
 		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 		if (prefersReducedMotion) {
 			main.classList.add("connect-revealed");
 			elements.forEach((el) => {
-				el.style.filter = "none";
-				el.style.transform = "none";
-				el.style.opacity = "1";
+				if (el === divider) {
+					el.style.transform = "scaleX(1)";
+					el.style.opacity = "1";
+				} else {
+					el.style.filter = "none";
+					el.style.transform = "none";
+					el.style.opacity = "1";
+				}
 			});
 			return;
 		}
@@ -211,11 +227,18 @@ import ContactForm from "@components/ContactForm";
 			onComplete: () => {
 				main.classList.add("connect-revealed");
 				elements.forEach((el) => {
-					el.style.filter = "none";
-					el.style.transform = "none";
+					if (el === divider) {
+						el.style.transform = "scaleX(1)";
+						el.style.opacity = "1";
+					} else {
+						el.style.filter = "none";
+						el.style.transform = "none";
+					}
 				});
+				activeConnectTimeline = null;
 			},
 		});
+		activeConnectTimeline = tl;
 
 		if (indicator) {
 			tl.fromTo(
@@ -270,13 +293,13 @@ import ContactForm from "@components/ContactForm";
 		if (divider) {
 			tl.fromTo(
 				divider,
-				{ scaleX: 0, force3D: true },
+				{ scaleX: 0, opacity: 0, transformOrigin: "left center", force3D: true },
 				{
 					scaleX: 1,
+					opacity: 1,
 					duration: 1.15,
 					ease: "power3.inOut",
 					force3D: true,
-					clearProps: "transform",
 				},
 				"-=0.75"
 			);
