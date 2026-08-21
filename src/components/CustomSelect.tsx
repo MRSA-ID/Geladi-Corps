@@ -42,6 +42,8 @@ interface CustomSelectProps {
 	required?: boolean;
 	placeholder?: string;
 	options?: OptionItem[];
+	value?: string;
+	onChange?: (val: string) => void;
 }
 
 export default function CustomSelect({
@@ -49,11 +51,14 @@ export default function CustomSelect({
 	required = true,
 	placeholder = "Select an inquiry or service type",
 	options = DEFAULT_OPTIONS,
+	value: controlledValue,
+	onChange: controlledOnChange,
 }: CustomSelectProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [selectedValue, setSelectedValue] = useState<string>("");
+	const [internalValue, setInternalValue] = useState<string>("");
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
+	const selectedValue = controlledValue !== undefined ? controlledValue : internalValue;
 	const selectedOption = options.find((opt) => opt.value === selectedValue);
 
 	// Synchronize initial selection from URL search params or hash
@@ -65,37 +70,46 @@ export default function CustomSelect({
 				params.get("type") || window.location.hash.replace("#", "")
 			).toLowerCase();
 
+			let matched = "";
 			if (typeParam === "partnership" || typeParam === "partnerships") {
-				setSelectedValue("partnership");
+				matched = "partnership";
 			} else if (
 				typeParam === "inquiries" ||
 				typeParam === "inquiry" ||
 				typeParam === "business" ||
 				typeParam === "mice"
 			) {
-				setSelectedValue("mice");
+				matched = "mice";
 			} else if (
 				typeParam === "scent" ||
 				typeParam === "perfume" ||
 				typeParam === "fragrance"
 			) {
-				setSelectedValue("scent");
+				matched = "scent";
 			} else if (
 				typeParam === "events" ||
 				typeParam === "packaging" ||
 				typeParam === "creative"
 			) {
-				setSelectedValue("events");
+				matched = "events";
 			} else if (
 				typeParam === "hr" ||
 				typeParam === "training" ||
 				typeParam === "consulting"
 			) {
-				setSelectedValue("hr");
+				matched = "hr";
 			} else if (typeParam === "media" || typeParam === "press") {
-				setSelectedValue("media");
+				matched = "media";
 			} else if (typeParam === "general" || typeParam === "contact") {
-				setSelectedValue("general");
+				matched = "general";
+			}
+
+			if (matched) {
+				if (controlledOnChange) {
+					controlledOnChange(matched);
+				} else {
+					setInternalValue(matched);
+				}
 			}
 		}
 
@@ -107,7 +121,7 @@ export default function CustomSelect({
 			window.removeEventListener("popstate", syncFromUrl);
 			document.removeEventListener("astro:page-load", syncFromUrl);
 		};
-	}, []);
+	}, [controlledOnChange]);
 
 	// Click outside & Escape key listeners
 	useEffect(() => {
@@ -138,7 +152,11 @@ export default function CustomSelect({
 	}, [isOpen]);
 
 	function handleSelect(option: OptionItem) {
-		setSelectedValue(option.value);
+		if (controlledOnChange) {
+			controlledOnChange(option.value);
+		} else {
+			setInternalValue(option.value);
+		}
 		setIsOpen(false);
 	}
 

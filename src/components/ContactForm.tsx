@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
-import { ArrowUpRight, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { ArrowUpRight, Loader2, AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 import CustomSelect from "./CustomSelect";
 
 interface FormValues {
@@ -20,20 +21,20 @@ interface FormErrors {
 	message?: string;
 }
 
-export default function ContactForm() {
-	const [values, setValues] = useState<FormValues>({
-		name: "",
-		email: "",
-		company: "",
-		phone: "",
-		inquiry_type: "",
-		message: "",
-	});
+const INITIAL_VALUES: FormValues = {
+	name: "",
+	email: "",
+	company: "",
+	phone: "",
+	inquiry_type: "",
+	message: "",
+};
 
+export default function ContactForm() {
+	const [values, setValues] = useState<FormValues>(INITIAL_VALUES);
 	const [errors, setErrors] = useState<FormErrors>({});
 	const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [isSubmitted, setIsSubmitted] = useState(false);
 
 	const formRef = useRef<HTMLFormElement>(null);
 
@@ -173,55 +174,107 @@ export default function ContactForm() {
 			return;
 		}
 
-		// Proceed with submission simulation
+		// Prepare payload for PHP backend
+		const payload = {
+			name: values.name.trim(),
+			email: values.email.trim(),
+			company: values.company.trim(),
+			phone: values.phone.trim(),
+			inquiry_type: inquiryValue,
+			message: values.message.trim(),
+		};
+
 		setIsSubmitting(true);
+
+		const isLocalhost =
+			typeof window !== "undefined" &&
+			(window.location.hostname === "localhost" ||
+				window.location.hostname === "127.0.0.1" ||
+				window.location.hostname.endsWith(".local"));
+
 		try {
-			await new Promise((resolve) => setTimeout(resolve, 1200));
-			setIsSubmitted(true);
-		} catch {
-			// Handle error if needed
+			const response = await fetch("/api/send-mail.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"Accept": "application/json",
+				},
+				body: JSON.stringify(payload),
+			});
+
+			const result = await response.json().catch(() => null);
+
+			if (response.ok && result?.success) {
+				// Reset form to empty defaults
+				setValues(INITIAL_VALUES);
+				setErrors({});
+				setTouched({});
+
+				// Trigger Emil Kowalski Sonner Success Toast
+				toast.success("Message Received Successfully", {
+					description:
+						"Thank you for reaching out to Galedi Corps. Our partnership team will review your inquiry and get back to you shortly.",
+					duration: 5000,
+				});
+			} else if (isLocalhost) {
+				// In local development simulate successful submission & reset form
+				console.info(
+					"%c📨 [Galedi Corps - Local Dev Mode]: Form payload received successfully!",
+					"color: #5c634d; font-weight: bold; font-size: 13px;",
+					payload
+				);
+				await new Promise((resolve) => setTimeout(resolve, 600));
+
+				// Reset form inputs to default empty state
+				setValues(INITIAL_VALUES);
+				setErrors({});
+				setTouched({});
+
+				// Trigger Emil Kowalski Sonner Success Toast
+				toast.success("Message Received Successfully", {
+					description:
+						"Thank you for reaching out to Galedi Corps. Our partnership team will review your inquiry and get back to you shortly.",
+					duration: 5000,
+				});
+			} else {
+				const errorMsg =
+					result?.error ||
+					"Unable to send message at this moment. Please email info@galedicorps.com directly.";
+
+				toast.error("Unable to Send Message", {
+					description: errorMsg,
+					duration: 5000,
+				});
+			}
+		} catch (err) {
+			if (isLocalhost) {
+				console.info(
+					"%c📨 [Galedi Corps - Local Dev Mode]: Form simulated successfully! (When uploaded to Hostinger, send-mail.php will execute and send email to info@galedicorps.com)",
+					"color: #5c634d; font-weight: bold; font-size: 13px;",
+					payload
+				);
+				await new Promise((resolve) => setTimeout(resolve, 600));
+
+				setValues(INITIAL_VALUES);
+				setErrors({});
+				setTouched({});
+
+				toast.success("Message Received Successfully", {
+					description:
+						"Thank you for reaching out to Galedi Corps. Our partnership team will review your inquiry and get back to you shortly.",
+					duration: 5000,
+				});
+			} else {
+				console.warn("Mailer endpoint network error:", err);
+				toast.error("Network Error", {
+					description:
+						"Unable to connect to the mail server. Please ensure the site is uploaded to Hostinger, or contact info@galedicorps.com directly.",
+					duration: 5000,
+				});
+			}
 		} finally {
 			setIsSubmitting(false);
 		}
-	}
-
-	function handleReset() {
-		setValues({
-			name: "",
-			email: "",
-			company: "",
-			phone: "",
-			inquiry_type: "",
-			message: "",
-		});
-		setErrors({});
-		setTouched({});
-		setIsSubmitted(false);
-	}
-
-	if (isSubmitted) {
-		return (
-			<div className="p-8 sm:p-12 rounded-2xl bg-primary_bone_white border border-black/10 flex flex-col items-center justify-center text-center gap-6 shadow-xs animate-in fade-in zoom-in-95 duration-500">
-				<div className="size-16 rounded-full bg-secondary_olive/20 text-secondary_olive flex items-center justify-center shadow-xs">
-					<CheckCircle2 className="size-9 stroke-[2.2]" />
-				</div>
-				<div className="flex flex-col gap-2 max-w-md">
-					<h3 className="text-2xl sm:text-3xl font-semibold text-primary_onyx tracking-tight">
-						Message Received
-					</h3>
-					<p className="text-sm sm:text-base text-neutral-600 font-light leading-relaxed">
-						Thank you for reaching out to Galedi Corps. Our partnership and strategic consulting team will review your inquiry and get back to you shortly.
-					</p>
-				</div>
-				<button
-					type="button"
-					onClick={handleReset}
-					className="mt-2 px-8 py-3 rounded-full bg-primary_onyx text-primary_bone_white text-sm font-medium hover:bg-neutral-800 active:scale-95 transition-all duration-200 cursor-pointer shadow-xs"
-				>
-					Send Another Message
-				</button>
-			</div>
-		);
 	}
 
 	return (
@@ -358,7 +411,10 @@ export default function ContactForm() {
 				<label className="text-sm sm:text-base text-neutral-600 font-light">
 					Inquiry Type <span className="text-secondary_terracotta">*</span>
 				</label>
-				<CustomSelect />
+				<CustomSelect
+					value={values.inquiry_type}
+					onChange={handleCustomSelectChange}
+				/>
 				{errors.inquiry_type && (
 					<div className="flex items-center gap-1.5 text-xs text-secondary_terracotta pt-1 animate-in fade-in slide-in-from-top-1 duration-200">
 						<AlertCircle className="size-3.5 shrink-0" />
@@ -410,7 +466,7 @@ export default function ContactForm() {
 			</div>
 
 			{/* Submit Button */}
-			<div className="pt-4">
+			<div className="pt-2">
 				<button
 					type="submit"
 					disabled={isSubmitting}
