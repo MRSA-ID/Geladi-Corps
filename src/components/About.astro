@@ -62,7 +62,7 @@ import ValuesCards from "./ValuesCards";
 	</div>
 
 	<!-- Our Values Section -->
-	<div class="about-values-wrapper flex flex-col pt-28 will-change-transform">
+	<div id="values" class="about-values-wrapper flex flex-col pt-28 will-change-transform scroll-mt-24">
 		<div class="about-values-kicker flex items-center pb-[52px] h-max gap-0.5 justify-self-center will-change-transform">
 			<Dot class="size-6 stroke-10" />
 			<span class="text-2xl">Our Values</span>
@@ -108,70 +108,98 @@ import ValuesCards from "./ValuesCards";
 		gsap.set(statCards, { opacity: 0, y: 35 });
 		gsap.set([valuesKicker, valuesCards], { opacity: 0, y: 35 });
 
-		// 2. Main About Content & Stat Cards ScrollTrigger Timeline
-		const mainTl = gsap.timeline({
-			scrollTrigger: {
-				trigger: section,
-				start: "top 50%",
-				once: true,
-			},
-		});
+		// 2. Main About Content & Stat Cards Animation
+		let mainPlayed = false;
+		function playMainAbout() {
+			if (mainPlayed) return;
+			mainPlayed = true;
 
-		mainTl
-			.to(kicker, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" })
-			.to(title, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, "-=0.45")
-			.to(desc, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, "-=0.45")
-			.to(
-				statCards,
-				{
-					opacity: 1,
-					y: 0,
-					duration: 0.7,
-					stagger: 0.12,
-					ease: "power3.out",
-					onStart: () => {
-						// Trigger numeric count-up animations
-						counterVals.forEach((el) => {
-							const target = parseFloat(el.getAttribute("data-target") || "0");
-							const decimals = parseInt(el.getAttribute("data-decimals") || "0", 10);
-							const countObj = { val: 0 };
-							const duration = target > 50 ? 1.6 : target > 5 ? 1.4 : 1.2;
+			const mainTl = gsap.timeline();
+			mainTl
+				.to(kicker, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" })
+				.to(title, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, "-=0.45")
+				.to(desc, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, "-=0.45")
+				.to(
+					statCards,
+					{
+						opacity: 1,
+						y: 0,
+						duration: 0.7,
+						stagger: 0.12,
+						ease: "power3.out",
+						onStart: () => {
+							// Trigger numeric count-up animations
+							counterVals.forEach((el) => {
+								const target = parseFloat(el.getAttribute("data-target") || "0");
+								const decimals = parseInt(el.getAttribute("data-decimals") || "0", 10);
+								const countObj = { val: 0 };
+								const duration = target > 50 ? 1.6 : target > 5 ? 1.4 : 1.2;
 
-							gsap.to(countObj, {
-								val: target,
-								duration: duration,
-								ease: "power2.out",
-								onUpdate: () => {
-									el.textContent =
-										decimals > 0
-											? countObj.val.toFixed(decimals)
-											: Math.round(countObj.val).toString();
-								},
+								gsap.to(countObj, {
+									val: target,
+									duration: duration,
+									ease: "power2.out",
+									onUpdate: () => {
+										el.textContent =
+											decimals > 0
+												? countObj.val.toFixed(decimals)
+												: Math.round(countObj.val).toString();
+									},
+								});
 							});
-						});
+						},
 					},
-				},
-				"-=0.3"
-			);
+					"-=0.3"
+				);
+		}
 
-		// 3. Our Values ScrollTrigger Timeline
-		if (valuesWrapper) {
-			gsap.timeline({
-				scrollTrigger: {
-					trigger: valuesWrapper,
-					start: "top 40%",
-					once: true,
+		const sectionRect = section.getBoundingClientRect();
+		if (sectionRect.top < window.innerHeight * 0.9) {
+			playMainAbout();
+		} else {
+			ScrollTrigger.create({
+				trigger: section,
+				start: "top 70%",
+				once: true,
+				onEnter: playMainAbout,
+				onRefresh: (self) => {
+					if (self.progress > 0 || (self.trigger && self.trigger.getBoundingClientRect().top < window.innerHeight * 0.9)) {
+						playMainAbout();
+					}
 				},
-			})
-				.to(valuesKicker, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" })
-				.to(valuesCards, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.4");
+			});
+		}
+
+		// 3. Our Values Animation
+		if (valuesWrapper) {
+			let valuesPlayed = false;
+			function playValues() {
+				if (valuesPlayed) return;
+				valuesPlayed = true;
+
+				gsap.timeline()
+					.to(valuesKicker, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" })
+					.to(valuesCards, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.4");
+			}
+
+			const valuesRect = valuesWrapper.getBoundingClientRect();
+			if (valuesRect.top < window.innerHeight * 0.9) {
+				playValues();
+			} else {
+				ScrollTrigger.create({
+					trigger: valuesWrapper,
+					start: "top 70%",
+					once: true,
+					onEnter: playValues,
+					onRefresh: (self) => {
+						if (self.progress > 0 || (self.trigger && self.trigger.getBoundingClientRect().top < window.innerHeight * 0.9)) {
+							playValues();
+						}
+					},
+				});
+			}
 		}
 	}
 
-	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initAboutAnimations);
-	} else {
-		initAboutAnimations();
-	}
 	document.addEventListener("astro:page-load", initAboutAnimations);
 </script>

@@ -221,7 +221,7 @@ const newsMedia: NewsItem[] = [
 			return;
 		}
 
-		// 1. Header Entrance Timeline (start: top 50%)
+		// 1. Header Entrance Timeline
 		let headerPlayed = false;
 		function playHeaderEntrance() {
 			if (headerPlayed) return;
@@ -264,37 +264,70 @@ const newsMedia: NewsItem[] = [
 			}
 		}
 
-		ScrollTrigger.create({
-			id: "news-header-trigger",
-			trigger: section,
-			start: "top 50%",
-			once: true,
-			onEnter: playHeaderEntrance,
-		});
+		// Check if news header is already in view or scrolled past on initial mount
+		const sectionRect = section.getBoundingClientRect();
+		if (sectionRect.top < window.innerHeight * 0.9) {
+			playHeaderEntrance();
+		} else {
+			ScrollTrigger.create({
+				id: "news-header-trigger",
+				trigger: section,
+				start: "top 70%",
+				once: true,
+				onEnter: playHeaderEntrance,
+				onRefresh: (self) => {
+					if (self.progress > 0 || (self.trigger && self.trigger.getBoundingClientRect().top < window.innerHeight * 0.9)) {
+						playHeaderEntrance();
+					}
+				},
+			});
+		}
 
 		// 2. Individual News Item ScrollTrigger Reveals (revealed on scroll per item)
 		newsItems.forEach((item, idx) => {
-			gsap.fromTo(
-				item,
-				{ opacity: 0, y: 50, force3D: true },
-				{
-					opacity: 1,
-					y: 0,
-					duration: 1.15,
-					ease: "power3.out",
-					force3D: true,
-					clearProps: "transform",
-					scrollTrigger: {
-						id: `news-item-${idx}`,
-						trigger: item,
-						start: "top 80%",
-						once: true,
-						onEnter: () => {
-							item.classList.add("news-item-revealed");
+			const itemRect = item.getBoundingClientRect();
+			if (itemRect.top < window.innerHeight * 0.95) {
+				item.classList.add("news-item-revealed");
+				gsap.fromTo(
+					item,
+					{ opacity: 0, y: 35, force3D: true },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 0.85,
+						ease: "power3.out",
+						force3D: true,
+						clearProps: "transform",
+					}
+				);
+			} else {
+				gsap.fromTo(
+					item,
+					{ opacity: 0, y: 50, force3D: true },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 1.15,
+						ease: "power3.out",
+						force3D: true,
+						clearProps: "transform",
+						scrollTrigger: {
+							id: `news-item-${idx}`,
+							trigger: item,
+							start: "top 85%",
+							once: true,
+							onEnter: () => {
+								item.classList.add("news-item-revealed");
+							},
+							onRefresh: (self) => {
+								if (self.progress > 0 || item.getBoundingClientRect().top < window.innerHeight * 0.95) {
+									item.classList.add("news-item-revealed");
+								}
+							},
 						},
-					},
-				}
-			);
+					}
+				);
+			}
 		});
 	}
 

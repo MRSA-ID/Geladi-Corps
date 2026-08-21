@@ -202,12 +202,22 @@ const teamMembers: TeamMember[] = [
 			);
 		}
 
-		ScrollTrigger.create({
-			trigger: section,
-			start: "top 75%",
-			once: true,
-			onEnter: playTeamEntrance,
-		});
+		const sectionRect = section.getBoundingClientRect();
+		if (sectionRect.top < window.innerHeight * 0.9) {
+			playTeamEntrance();
+		} else {
+			ScrollTrigger.create({
+				trigger: section,
+				start: "top 75%",
+				once: true,
+				onEnter: playTeamEntrance,
+				onRefresh: (self) => {
+					if (self.progress > 0 || (self.trigger && self.trigger.getBoundingClientRect().top < window.innerHeight * 0.9)) {
+						playTeamEntrance();
+					}
+				},
+			});
+		}
 	}
 
 	function initTeam() {

@@ -183,44 +183,63 @@ import background2 from "@assets/images/eyewear_lifestyle.jpg";
 
 			if (isImageCard) {
 				const img = item.querySelector(".ecosystem-image-inner");
-				const tl = gsap.timeline({
-					scrollTrigger: {
-						id: `ecosystem-item-${idx}`,
-						trigger: item,
-						start: "top 50%",
-						once: true,
-					},
-					onComplete: () => {
-						item.classList.add("ecosystem-item-revealed");
-					},
-				});
+				let hasPlayed = false;
 
-				tl.fromTo(
-					item,
-					{ opacity: 0, y: 60, force3D: true },
-					{
-						opacity: 1,
-						y: 0,
-						duration: 1.15,
-						ease: "power3.out",
-						force3D: true,
-						clearProps: "transform",
-					}
-				);
+				function playImageCard() {
+					if (hasPlayed) return;
+					hasPlayed = true;
 
-				if (img) {
+					const tl = gsap.timeline({
+						onComplete: () => {
+							item.classList.add("ecosystem-item-revealed");
+						},
+					});
+
 					tl.fromTo(
-						img,
-						{ scale: 1.12, force3D: true },
+						item,
+						{ opacity: 0, y: 50, force3D: true },
 						{
-							scale: 1.0,
-							duration: 1.35,
+							opacity: 1,
+							y: 0,
+							duration: 1.15,
 							ease: "power3.out",
 							force3D: true,
 							clearProps: "transform",
-						},
-						0
+						}
 					);
+
+					if (img) {
+						tl.fromTo(
+							img,
+							{ scale: 1.12, force3D: true },
+							{
+								scale: 1.0,
+								duration: 1.35,
+								ease: "power3.out",
+								force3D: true,
+								clearProps: "transform",
+							},
+							0
+						);
+					}
+				}
+
+				const rect = item.getBoundingClientRect();
+				if (rect.top < window.innerHeight * 0.95) {
+					playImageCard();
+				} else {
+					ScrollTrigger.create({
+						id: `ecosystem-item-${idx}`,
+						trigger: item,
+						start: "top 75%",
+						once: true,
+						onEnter: playImageCard,
+						onRefresh: (self) => {
+							if (self.progress > 0 || item.getBoundingClientRect().top < window.innerHeight * 0.95) {
+								playImageCard();
+							}
+						},
+					});
 				}
 			} else {
 				// Colored Bento Card: The background color layer slides up from 100% to 0%
@@ -242,68 +261,86 @@ import background2 from "@assets/images/eyewear_lifestyle.jpg";
 					gsap.set(pills, { opacity: 0, y: 20, force3D: true });
 				}
 
-				const tl = gsap.timeline({
-					scrollTrigger: {
+				let hasPlayed = false;
+				function playBentoCard() {
+					if (hasPlayed) return;
+					hasPlayed = true;
+
+					const tl = gsap.timeline({
+						onComplete: () => {
+							item.classList.add("ecosystem-item-revealed");
+						},
+					});
+
+					if (cardBg) {
+						tl.to(cardBg, {
+							yPercent: 0,
+							duration: 1.15,
+							ease: "power3.out",
+							force3D: true,
+						});
+					}
+
+					if (title) {
+						tl.to(
+							title,
+							{
+								opacity: 1,
+								y: 0,
+								duration: 0.85,
+								ease: "power3.out",
+								force3D: true,
+							},
+							"-=0.6"
+						);
+					}
+
+					if (desc) {
+						tl.to(
+							desc,
+							{
+								opacity: 1,
+								y: 0,
+								duration: 0.85,
+								ease: "power3.out",
+								force3D: true,
+							},
+							"-=0.65"
+						);
+					}
+
+					if (pills.length) {
+						tl.to(
+							pills,
+							{
+								opacity: 1,
+								y: 0,
+								duration: 0.75,
+								stagger: 0.06,
+								ease: "power3.out",
+								force3D: true,
+							},
+							"-=0.65"
+						);
+					}
+				}
+
+				const rect = item.getBoundingClientRect();
+				if (rect.top < window.innerHeight * 0.95) {
+					playBentoCard();
+				} else {
+					ScrollTrigger.create({
 						id: `ecosystem-item-${idx}`,
 						trigger: item,
-						start: "top 50%",
+						start: "top 75%",
 						once: true,
-					},
-					onComplete: () => {
-						item.classList.add("ecosystem-item-revealed");
-					},
-				});
-
-				if (cardBg) {
-					tl.to(cardBg, {
-						yPercent: 0,
-						duration: 1.15,
-						ease: "power3.out",
-						force3D: true,
+						onEnter: playBentoCard,
+						onRefresh: (self) => {
+							if (self.progress > 0 || item.getBoundingClientRect().top < window.innerHeight * 0.95) {
+								playBentoCard();
+							}
+						},
 					});
-				}
-
-				if (title) {
-					tl.to(
-						title,
-						{
-							opacity: 1,
-							y: 0,
-							duration: 0.85,
-							ease: "power3.out",
-							force3D: true,
-						},
-						"-=0.6"
-					);
-				}
-
-				if (desc) {
-					tl.to(
-						desc,
-						{
-							opacity: 1,
-							y: 0,
-							duration: 0.85,
-							ease: "power3.out",
-							force3D: true,
-						},
-						"-=0.65"
-					);
-				}
-
-				if (pills.length) {
-					tl.to(
-						pills,
-						{
-							opacity: 1,
-							y: 0,
-							duration: 0.75,
-							stagger: 0.06,
-							ease: "power3.out",
-							force3D: true,
-						},
-						"-=0.65"
-					);
 				}
 			}
 		});

@@ -188,13 +188,23 @@ const brands: BrandItem[] = [
 					);
 				}
 
-				ScrollTrigger.create({
-					id: "brands-left-reveal",
-					trigger: section,
-					start: "top 10%",
-					once: true,
-					onEnter: playLeftColumnEntrance,
-				});
+				const sectionRect = section.getBoundingClientRect();
+				if (sectionRect.top < window.innerHeight * 0.9) {
+					playLeftColumnEntrance();
+				} else {
+					ScrollTrigger.create({
+						id: "brands-left-reveal",
+						trigger: section,
+						start: "top 70%",
+						once: true,
+						onEnter: playLeftColumnEntrance,
+						onRefresh: (self) => {
+							if (self.progress > 0 || (self.trigger && self.trigger.getBoundingClientRect().top < window.innerHeight * 0.9)) {
+								playLeftColumnEntrance();
+							}
+						},
+					});
+				}
 			}
 		}
 

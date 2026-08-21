@@ -137,12 +137,22 @@ import MissionCards from "./MissionCards";
 				);
 		}
 
-		ScrollTrigger.create({
-			trigger: section,
-			start: "top 75%",
-			once: true,
-			onEnter: playVisionEntrance,
-		});
+		const sectionRect = section.getBoundingClientRect();
+		if (sectionRect.top < window.innerHeight * 0.9) {
+			playVisionEntrance();
+		} else {
+			ScrollTrigger.create({
+				trigger: section,
+				start: "top 75%",
+				once: true,
+				onEnter: playVisionEntrance,
+				onRefresh: (self) => {
+					if (self.progress > 0 || (self.trigger && self.trigger.getBoundingClientRect().top < window.innerHeight * 0.9)) {
+						playVisionEntrance();
+					}
+				},
+			});
+		}
 	}
 
 	// In Astro with ClientRouter, astro:page-load handles initial load + page transitions cleanly
