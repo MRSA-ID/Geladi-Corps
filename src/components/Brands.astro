@@ -25,6 +25,21 @@ const brands: BrandItem[] = [
 ];
 ---
 
+<style>
+	/* Zero-FOUC hidden state before left sticky column reveals */
+	#brands-section:not(.brands-revealed) .brands-title,
+	#brands-section:not(.brands-revealed) .brands-desc {
+		opacity: 0;
+	}
+
+	/* Clean static document state once revealed */
+	#brands-section.brands-revealed .brands-title,
+	#brands-section.brands-revealed .brands-desc {
+		opacity: 1;
+		transform: none !important;
+	}
+</style>
+
 <section
 	id="brands-section"
 	class="relative brands-section font-testsohne bg-primary_limestone px-5 sm:px-8 lg:px-12 py-16 sm:py-24"
@@ -37,12 +52,12 @@ const brands: BrandItem[] = [
 			class="brands-left-pinned lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-center self-start flex flex-col gap-6 max-w-[500px] py-8 lg:py-0"
 		>
 			<h2
-				class="font-testsohne font-semibold text-5xl sm:text-6xl md:text-7xl text-digital-neutrals-700 leading-[1.08] tracking-tight"
+				class="brands-title font-testsohne font-semibold text-5xl sm:text-6xl md:text-7xl text-digital-neutrals-700 leading-[1.08] tracking-tight backface-hidden transform-[translateZ(0)]"
 			>
 				Our Brands
 			</h2>
 			<p
-				class="font-normal text-lg sm:text-xl md:text-2xl text-primary_onyx/85 leading-relaxed text-justify"
+				class="brands-desc font-normal text-lg sm:text-xl md:text-2xl text-primary_onyx/85 leading-relaxed text-justify backface-hidden transform-[translateZ(0)]"
 			>
 				A curated portfolio of high-growth enterprises spanning Personal Care, Lifestyle & Fragrance, Travel & Hospitality, Experiential Events, and Human Capital Consulting.
 			</p>
@@ -99,12 +114,16 @@ const brands: BrandItem[] = [
 		const section = document.querySelector("#brands-section") as HTMLElement;
 		if (!section) return;
 
+		const title = section.querySelector(".brands-title");
+		const desc = section.querySelector(".brands-desc");
+
 		ScrollTrigger.getAll().forEach((trigger) => {
 			if (trigger.vars.id?.startsWith("brands-")) {
 				trigger.kill();
 			}
 		});
 
+		// 1. Background Color Scrub
 		gsap.fromTo(
 			section,
 			{ backgroundColor: "#e8e1d8" },
@@ -122,13 +141,66 @@ const brands: BrandItem[] = [
 			}
 		);
 
+		// 2. Left Sticky Column Entrance Reveal
+		if (title && desc) {
+			gsap.killTweensOf([title, desc]);
+
+			const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+			if (prefersReducedMotion) {
+				section.classList.add("brands-revealed");
+				gsap.set([title, desc], { opacity: 1, y: 0 });
+			} else {
+				let hasPlayed = false;
+
+				function playLeftColumnEntrance() {
+					if (hasPlayed) return;
+					hasPlayed = true;
+
+					const tl = gsap.timeline({
+						onComplete: () => {
+							section.classList.add("brands-revealed");
+						},
+					});
+
+					tl.fromTo(
+						title,
+						{ opacity: 0, y: 40, force3D: true },
+						{
+							opacity: 1,
+							y: 0,
+							duration: 1.1,
+							ease: "power3.out",
+							force3D: true,
+							clearProps: "transform",
+						}
+					).fromTo(
+						desc,
+						{ opacity: 0, y: 30, force3D: true },
+						{
+							opacity: 1,
+							y: 0,
+							duration: 1.05,
+							ease: "power3.out",
+							force3D: true,
+							clearProps: "transform",
+						},
+						"-=0.8"
+					);
+				}
+
+				ScrollTrigger.create({
+					id: "brands-left-reveal",
+					trigger: section,
+					start: "top 10%",
+					once: true,
+					onEnter: playLeftColumnEntrance,
+				});
+			}
+		}
+
 		ScrollTrigger.refresh();
 	}
 
-	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initBrandsScroll);
-	} else {
-		initBrandsScroll();
-	}
+	// In Astro with ClientRouter, astro:page-load handles initial load + page transitions cleanly
 	document.addEventListener("astro:page-load", initBrandsScroll);
 </script>
