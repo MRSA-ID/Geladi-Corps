@@ -1,19 +1,49 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { ArrowUpRight } from "@lucide/astro";
 import OfficeMap from "@components/OfficeMap";
+import ContactForm from "@components/ContactForm";
 ---
+
+<style>
+	/* Zero-FOUC hidden state before connect page reveals (pure opacity to eliminate CSS-JS filter fighting) */
+	#connect-main:not(.connect-revealed) .connect-indicator,
+	#connect-main:not(.connect-revealed) .connect-headline,
+	#connect-main:not(.connect-revealed) .connect-narrative,
+	#connect-main:not(.connect-revealed) .connect-left-col,
+	#connect-main:not(.connect-revealed) .connect-right-form {
+		opacity: 0;
+	}
+
+	#connect-main:not(.connect-revealed) .connect-header-divider {
+		transform: scaleX(0);
+	}
+
+	/* Clean static document state once revealed */
+	#connect-main.connect-revealed .connect-indicator,
+	#connect-main.connect-revealed .connect-headline,
+	#connect-main.connect-revealed .connect-narrative,
+	#connect-main.connect-revealed .connect-left-col,
+	#connect-main.connect-revealed .connect-right-form {
+		opacity: 1;
+		transform: none !important;
+		filter: none !important;
+	}
+
+	#connect-main.connect-revealed .connect-header-divider {
+		transform: scaleX(1);
+	}
+</style>
 
 <Layout
 	title="Contact Us | Galedi Corps"
 	description="Connect with Galedi Corps for general inquiries, strategic brand partnerships, and enterprise business solutions."
 >
-	<main class="min-h-screen bg-white text-primary_onyx pt-28 sm:pt-36 pb-28 px-5 sm:px-10 lg:px-16 font-testsohne">
+	<main id="connect-main" class="min-h-screen bg-white text-primary_onyx pt-28 sm:pt-36 pb-28 px-5 sm:px-10 lg:px-16 font-testsohne">
 		<div class="max-w-[1400px] mx-auto">
 			<!-- Top Header: Indicator Bar, Massive Headline & Narrative -->
-			<div class="flex flex-col gap-6 pb-16 sm:pb-24 border-b border-black/10">
+			<div class="connect-header relative flex flex-col gap-6 pb-16 sm:pb-24">
 				<!-- Graphic Bar Indicator + Label (Matching Reference) -->
-				<div class="flex items-center gap-2">
+				<div class="connect-indicator flex items-center gap-2 backface-hidden transform-[translateZ(0)]">
 					<div class="flex items-center gap-1">
 						<span class="w-7 h-2.5 bg-neutral-400 rounded-xs"></span>
 						<span class="w-3.5 h-2.5 bg-neutral-400 rounded-xs"></span>
@@ -25,22 +55,25 @@ import OfficeMap from "@components/OfficeMap";
 				<!-- Headline + Right Narrative Grid -->
 				<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end justify-between">
 					<div class="lg:col-span-8">
-						<h1 class="text-6xl sm:text-7xl md:text-8xl lg:text-[104px] font-semibold text-primary_onyx tracking-tight leading-[0.98]">
+						<h1 class="connect-headline text-6xl sm:text-7xl md:text-8xl lg:text-[104px] font-semibold text-primary_onyx tracking-tight leading-[0.98] backface-hidden transform-[translateZ(0)]">
 							Contact Us
 						</h1>
 					</div>
 					<div class="lg:col-span-4 lg:pl-4">
-						<p class="text-base sm:text-lg md:text-xl text-neutral-600 font-light leading-relaxed">
+						<p class="connect-narrative text-base sm:text-lg md:text-xl text-neutral-600 font-light leading-relaxed backface-hidden transform-[translateZ(0)]">
 							Explore ideas, strategies, and creative insights that help brands grow and digital experiences stand out across our holding ecosystem.
 						</p>
 					</div>
 				</div>
+
+				<!-- Animated Bottom Border Divider Line -->
+				<div class="connect-header-divider absolute bottom-0 left-0 right-0 h-px bg-black/10 origin-left scale-x-0 backface-hidden transform-[translateZ(0)]"></div>
 			</div>
 
 			<!-- Two-Column Editorial Content & Form Grid -->
 			<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 pt-16 sm:pt-20 items-start">
 				<!-- Left Column: Institutional Information & Solutions -->
-				<div class="lg:col-span-4 flex flex-col gap-10">
+				<div class="connect-left-col lg:col-span-4 flex flex-col gap-10 backface-hidden transform-[translateZ(0)]">
 					<!-- 1. Office Location -->
 					<div class="flex flex-col gap-3.5">
 						<div class="flex flex-col gap-1.5">
@@ -76,12 +109,6 @@ import OfficeMap from "@components/OfficeMap";
 						<div class="flex flex-col gap-1 text-base sm:text-lg font-normal text-primary_onyx">
 							<a href="mailto:info@galedicorps.com" class="hover:text-secondary_olive transition-colors w-max">
 								info@galedicorps.com
-							</a>
-							<a href="mailto:media@galedicorps.com" class="text-sm text-neutral-600 hover:text-secondary_olive transition-colors w-max">
-								Press: media@galedicorps.com
-							</a>
-							<a href="mailto:careers@galedicorps.com" class="text-sm text-neutral-600 hover:text-secondary_olive transition-colors w-max">
-								Careers: careers@galedicorps.com
 							</a>
 						</div>
 					</div>
@@ -135,93 +162,9 @@ import OfficeMap from "@components/OfficeMap";
 					</div>
 				</div>
 
-				<!-- Right Column: Minimalist Line-Underlined Form -->
-				<div class="lg:col-span-8">
-					<form class="flex flex-col gap-10 sm:gap-12">
-						<!-- Row 1: Name & Email -->
-						<div class="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
-							<div class="flex flex-col gap-2">
-								<label class="text-sm sm:text-base text-neutral-600 font-light">Enter your name *</label>
-								<input
-									type="text"
-									required
-									placeholder="e.g. Amanda Putri"
-									class="w-full bg-transparent border-0 border-b border-black/20 pb-3 pt-1 text-base sm:text-lg text-primary_onyx placeholder:text-neutral-300 focus:outline-hidden focus:border-primary_onyx transition-colors duration-200"
-								/>
-							</div>
-							<div class="flex flex-col gap-2">
-								<label class="text-sm sm:text-base text-neutral-600 font-light">Email address *</label>
-								<input
-									type="email"
-									required
-									placeholder="amanda@example.com"
-									class="w-full bg-transparent border-0 border-b border-black/20 pb-3 pt-1 text-base sm:text-lg text-primary_onyx placeholder:text-neutral-300 focus:outline-hidden focus:border-primary_onyx transition-colors duration-200"
-								/>
-							</div>
-						</div>
-
-						<!-- Row 2: Company & Phone -->
-						<div class="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
-							<div class="flex flex-col gap-2">
-								<label class="text-sm sm:text-base text-neutral-600 font-light">Company name</label>
-								<input
-									type="text"
-									placeholder="Company or Brand Name"
-									class="w-full bg-transparent border-0 border-b border-black/20 pb-3 pt-1 text-base sm:text-lg text-primary_onyx placeholder:text-neutral-300 focus:outline-hidden focus:border-primary_onyx transition-colors duration-200"
-								/>
-							</div>
-							<div class="flex flex-col gap-2">
-								<label class="text-sm sm:text-base text-neutral-600 font-light">Phone number</label>
-								<input
-									type="tel"
-									placeholder="+62 812-xxxx-xxxx"
-									class="w-full bg-transparent border-0 border-b border-black/20 pb-3 pt-1 text-base sm:text-lg text-primary_onyx placeholder:text-neutral-300 focus:outline-hidden focus:border-primary_onyx transition-colors duration-200"
-								/>
-							</div>
-						</div>
-
-						<!-- Row 3: Inquiry Type -->
-						<div class="flex flex-col gap-2">
-							<label class="text-sm sm:text-base text-neutral-600 font-light">Inquiry Type *</label>
-							<select
-								id="inquiry-type-select"
-								name="inquiry_type"
-								required
-								class="w-full bg-transparent border-0 border-b border-black/20 pb-3 pt-1 text-base sm:text-lg text-primary_onyx focus:outline-hidden focus:border-primary_onyx transition-colors duration-200 cursor-pointer"
-							>
-								<option value="" disabled selected>Select an inquiry or service type</option>
-								<option value="general">General Corporate Inquiry</option>
-								<option value="partnership">Strategic Brand Partnership & Incubation</option>
-								<option value="mice">Corporate Travel & MICE Retreats (Meetcation / Safeeya)</option>
-								<option value="scent">OEM Perfumery & Ambient Scenting (Saka / Arkaloka)</option>
-								<option value="events">Event Production & Custom Packaging (Nirmala / Dusantara)</option>
-								<option value="hr">Human Capital Consulting & Training (8ounce)</option>
-								<option value="media">Media & Editorial Collaboration (Whiff Media)</option>
-							</select>
-						</div>
-
-						<!-- Row 4: Your Message -->
-						<div class="flex flex-col gap-2">
-							<label class="text-sm sm:text-base text-neutral-600 font-light">Your message *</label>
-							<textarea
-								rows="4"
-								required
-								placeholder="Type your message, inquiry, or partnership details here..."
-								class="w-full bg-transparent border-0 border-b border-black/20 pb-3 pt-1 text-base sm:text-lg text-primary_onyx placeholder:text-neutral-300 focus:outline-hidden focus:border-primary_onyx transition-colors duration-200 resize-none"
-							></textarea>
-						</div>
-
-						<!-- Submit Button -->
-						<div class="pt-4">
-							<button
-								type="submit"
-								class="w-full sm:w-max px-10 py-4 rounded-full bg-primary_onyx hover:bg-neutral-800 text-primary_bone_white font-medium text-base sm:text-lg flex items-center justify-center gap-3 shadow-lg hover:shadow-xl active:scale-[0.98] transition-all duration-200 cursor-pointer group"
-							>
-								<span>Send Message</span>
-								<ArrowUpRight class="size-5 stroke-[2] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-							</button>
-						</div>
-					</form>
+				<!-- Right Column: Minimalist Line-Underlined Form with Contextual Validation -->
+				<div class="connect-right-form lg:col-span-8 backface-hidden transform-[translateZ(0)]">
+					<ContactForm client:load />
 				</div>
 			</div>
 		</div>
@@ -229,26 +172,150 @@ import OfficeMap from "@components/OfficeMap";
 </Layout>
 
 <script>
-	function initInquiryAutoSelect() {
-		const select = document.querySelector("#inquiry-type-select") as HTMLSelectElement | null;
-		if (!select) return;
+	import gsap from "gsap";
 
-		const params = new URLSearchParams(window.location.search);
-		const typeParam = (params.get("type") || window.location.hash.replace("#", "")).toLowerCase();
+	function initConnectEntrance() {
+		const main = document.getElementById("connect-main");
+		if (!main) return;
 
-		if (typeParam === "partnership" || typeParam === "partnerships") {
-			select.value = "partnership";
-		} else if (typeParam === "inquiries" || typeParam === "inquiry" || typeParam === "business" || typeParam === "mice") {
-			select.value = "mice";
-		} else if (typeParam === "general" || typeParam === "contact") {
-			select.value = "general";
+		const indicator = main.querySelector(".connect-indicator");
+		const headline = main.querySelector(".connect-headline");
+		const narrative = main.querySelector(".connect-narrative");
+		const divider = main.querySelector(".connect-header-divider");
+		const leftCol = main.querySelector(".connect-left-col");
+		const rightForm = main.querySelector(".connect-right-form");
+
+		const elements = [indicator, headline, narrative, divider, leftCol, rightForm].filter(Boolean) as HTMLElement[];
+		if (!elements.length) return;
+
+		gsap.killTweensOf(elements);
+
+		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (prefersReducedMotion) {
+			main.classList.add("connect-revealed");
+			elements.forEach((el) => {
+				el.style.filter = "none";
+				el.style.transform = "none";
+				el.style.opacity = "1";
+			});
+			return;
+		}
+
+		// Calculate precise start delay: wait for page transition curtain if active, else clean settling delay
+		const svgTransition = document.getElementById("page-transition-svg");
+		const isPageTransitionActive = svgTransition && svgTransition.style.display !== "none";
+		const startDelay = isPageTransitionActive ? 0.45 : 0.12;
+
+		const tl = gsap.timeline({
+			delay: startDelay,
+			onComplete: () => {
+				main.classList.add("connect-revealed");
+				elements.forEach((el) => {
+					el.style.filter = "none";
+					el.style.transform = "none";
+				});
+			},
+		});
+
+		if (indicator) {
+			tl.fromTo(
+				indicator,
+				{ opacity: 0, y: 20, filter: "blur(8px)", force3D: true },
+				{
+					opacity: 1,
+					y: 0,
+					filter: "blur(0px)",
+					duration: 0.85,
+					ease: "power3.out",
+					force3D: true,
+					clearProps: "transform,filter",
+				}
+			);
+		}
+
+		if (headline) {
+			tl.fromTo(
+				headline,
+				{ opacity: 0, y: 35, filter: "blur(12px)", force3D: true },
+				{
+					opacity: 1,
+					y: 0,
+					filter: "blur(0px)",
+					duration: 1.15,
+					ease: "power3.out",
+					force3D: true,
+					clearProps: "transform,filter",
+				},
+				"-=0.65"
+			);
+		}
+
+		if (narrative) {
+			tl.fromTo(
+				narrative,
+				{ opacity: 0, y: 25, filter: "blur(10px)", force3D: true },
+				{
+					opacity: 1,
+					y: 0,
+					filter: "blur(0px)",
+					duration: 1.05,
+					ease: "power3.out",
+					force3D: true,
+					clearProps: "transform,filter",
+				},
+				"-=0.80"
+			);
+		}
+
+		if (divider) {
+			tl.fromTo(
+				divider,
+				{ scaleX: 0, force3D: true },
+				{
+					scaleX: 1,
+					duration: 1.15,
+					ease: "power3.inOut",
+					force3D: true,
+					clearProps: "transform",
+				},
+				"-=0.75"
+			);
+		}
+
+		if (leftCol) {
+			tl.fromTo(
+				leftCol,
+				{ opacity: 0, y: 40, filter: "blur(10px)", force3D: true },
+				{
+					opacity: 1,
+					y: 0,
+					filter: "blur(0px)",
+					duration: 1.15,
+					ease: "power3.out",
+					force3D: true,
+					clearProps: "transform,filter",
+				},
+				"-=0.70"
+			);
+		}
+
+		if (rightForm) {
+			tl.fromTo(
+				rightForm,
+				{ opacity: 0, y: 45, filter: "blur(10px)", force3D: true },
+				{
+					opacity: 1,
+					y: 0,
+					filter: "blur(0px)",
+					duration: 1.2,
+					ease: "power3.out",
+					force3D: true,
+					clearProps: "transform,filter",
+				},
+				"-=0.85"
+			);
 		}
 	}
 
-	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initInquiryAutoSelect);
-	} else {
-		initInquiryAutoSelect();
-	}
-	document.addEventListener("astro:page-load", initInquiryAutoSelect);
+	document.addEventListener("astro:page-load", initConnectEntrance);
 </script>
