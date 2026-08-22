@@ -308,7 +308,7 @@ const {
 		const filmstrip = document.getElementById("hero-filmstrip-wrapper");
 
 		if (!section || !heading || !desc) {
-			window.dispatchEvent(new CustomEvent("geladi:hero-done"));
+			window.dispatchEvent(new CustomEvent("galedi:hero-done"));
 			return;
 		}
 
@@ -319,7 +319,7 @@ const {
 		if (prefersReducedMotion) {
 			section.classList.add("hero-revealed");
 			gsap.set([heading, desc, marquee, filmstrip], { opacity: 1, y: 0, filter: "none" });
-			window.dispatchEvent(new CustomEvent("geladi:hero-done"));
+			window.dispatchEvent(new CustomEvent("galedi:hero-done"));
 			return;
 		}
 
@@ -332,7 +332,7 @@ const {
 			const tl = gsap.timeline({
 				onComplete: () => {
 					section!.classList.add("hero-revealed");
-					window.dispatchEvent(new CustomEvent("geladi:hero-done"));
+					window.dispatchEvent(new CustomEvent("galedi:hero-done"));
 				},
 			});
 
@@ -429,9 +429,9 @@ const {
 		}
 
 		const isPreloaderActive =
-			!sessionStorage.getItem("geladi_visited") &&
+			!sessionStorage.getItem("galedi_visited") &&
 			!document.documentElement.classList.contains("preloader-skipped") &&
-			Boolean(document.getElementById("geladi-preloader"));
+			Boolean(document.getElementById("galedi-preloader"));
 
 		if (!isPreloaderActive) {
 			setupViewportTrigger();
@@ -449,10 +449,10 @@ const {
 				setupViewportTrigger();
 			};
 
-			window.addEventListener("geladi:preloader-done", onPreloaderDone, { once: true });
+			window.addEventListener("galedi:preloader-done", onPreloaderDone, { once: true });
 
 			fallbackTimer = window.setTimeout(() => {
-				window.removeEventListener("geladi:preloader-done", onPreloaderDone);
+				window.removeEventListener("galedi:preloader-done", onPreloaderDone);
 				setupViewportTrigger();
 			}, 3200);
 		}

@@ -1,10 +1,15 @@
 ---
 import { getImage } from "astro:assets";
 import backgroundCta from "@assets/images/background_olive.avif";
-import GeladiCorps from "@assets/GeladiCorps.svg";
+import GalediCorps from "@assets/GalediCorps.svg";
 import { ChevronRight, Mail, MapPin, Phone } from "@lucide/astro";
 
-const optimizedBg = await getImage({ src: backgroundCta });
+const optimizedBg = await getImage({
+	src: backgroundCta,
+	format: "webp",
+	quality: 85,
+	width: 1920,
+});
 ---
 
 <footer class="bg-white px-1.5 sm:px-8 py-8 flex flex-col gap-12 sm:gap-16 font-testsohne overflow-hidden">
@@ -228,9 +233,9 @@ const optimizedBg = await getImage({ src: backgroundCta });
 	<!-- Big Brand Logo with Natural Alphabet Stagger Reveal and Dynamic Proximity Wave -->
 	<div class="w-full flex flex-col items-center justify-center gap-8">
 		<div
-			class="geladicorps-logo-wrapper w-full flex justify-center py-4 select-none cursor-pointer"
+			class="galedicorps-logo-wrapper w-full flex justify-center py-4 select-none cursor-pointer"
 		>
-			<GeladiCorps class="w-full h-auto text-primary_onyx" />
+			<GalediCorps class="w-full h-auto text-primary_onyx" />
 		</div>
 		<div
 			id="footer-bottom-bar"
@@ -385,9 +390,9 @@ const optimizedBg = await getImage({ src: backgroundCta });
 			});
 		}
 
-		// 4. GeladiCorps SVG Logo Alphabet Reveal & Dynamic Proximity Wave
+		// 4. GalediCorps SVG Logo Alphabet Reveal & Dynamic Proximity Wave
 		const logoWrapper = document.querySelector(
-			".geladicorps-logo-wrapper"
+			".galedicorps-logo-wrapper"
 		) as HTMLElement;
 		if (!logoWrapper) return;
 

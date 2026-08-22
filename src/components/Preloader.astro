@@ -1,17 +1,17 @@
 ---
-// Zero-FOUC Initial Session Preloader with Minimalist Counter (0-100%) & Unified GeladiCorps.svg Reveal
+// Zero-FOUC Initial Session Preloader with Minimalist Counter (0-100%) & Unified GalediCorps.svg Reveal
 ---
 
 <!-- Zero-frame session check script (executes before HTML renders) -->
 <script is:inline>
-	if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("geladi_visited")) {
+	if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("galedi_visited")) {
 		document.documentElement.classList.add("preloader-skipped");
 	}
 </script>
 
 <!-- Fullscreen Initial Session Preloader -->
 <div
-	id="geladi-preloader"
+	id="galedi-preloader"
 	class="fixed inset-0 z-[9999] flex flex-col items-center justify-center select-none overflow-hidden"
 	aria-hidden="true"
 >
@@ -48,7 +48,7 @@
 			</span>
 		</div>
 
-		<!-- 2. Centered Geladi Corps SVG Wordmark Container (Masked for unified bottom reveal) -->
+		<!-- 2. Centered Galedi Corps SVG Wordmark Container (Masked for unified bottom reveal) -->
 		<div
 			id="preloader-wordmark-container"
 			class="flex flex-col items-center justify-center w-[440px] sm:w-[580px] md:w-[700px] lg:w-[820px] overflow-hidden py-4 opacity-0 pointer-events-none"
@@ -101,8 +101,8 @@
 
 	// Ensure preloader is immediately removed if re-inserted during client-side navigation
 	document.addEventListener("astro:page-load", () => {
-		if (sessionStorage.getItem("geladi_visited")) {
-			const preloader = document.getElementById("geladi-preloader");
+		if (sessionStorage.getItem("galedi_visited")) {
+			const preloader = document.getElementById("galedi-preloader");
 			if (preloader) {
 				preloader.style.display = "none";
 				preloader.remove();

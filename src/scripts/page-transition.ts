@@ -38,10 +38,30 @@ function closeActiveMenus(): void {
 	const ecoChevron = document.getElementById("chevron-ecosystem");
 	const brandsChevron = document.getElementById("chevron-brands");
 
-	ecoPanel?.classList.add("opacity-0", "scale-[0.96]", "-translate-y-2", "pointer-events-none");
-	ecoPanel?.classList.remove("opacity-100", "scale-100", "translate-y-0", "pointer-events-auto");
-	brandsPanel?.classList.add("opacity-0", "scale-[0.96]", "-translate-y-2", "pointer-events-none");
-	brandsPanel?.classList.remove("opacity-100", "scale-100", "translate-y-0", "pointer-events-auto");
+	ecoPanel?.classList.add(
+		"opacity-0",
+		"scale-[0.96]",
+		"-translate-y-2",
+		"pointer-events-none",
+	);
+	ecoPanel?.classList.remove(
+		"opacity-100",
+		"scale-100",
+		"translate-y-0",
+		"pointer-events-auto",
+	);
+	brandsPanel?.classList.add(
+		"opacity-0",
+		"scale-[0.96]",
+		"-translate-y-2",
+		"pointer-events-none",
+	);
+	brandsPanel?.classList.remove(
+		"opacity-100",
+		"scale-100",
+		"translate-y-0",
+		"pointer-events-auto",
+	);
 	ecoChevron?.classList.remove("rotate-180");
 	brandsChevron?.classList.remove("rotate-180");
 }
@@ -123,7 +143,7 @@ export function playPageLeave(): Promise<void> {
 					duration: 0.15,
 					ease: "power1.out",
 				},
-				"-=0.15"
+				"-=0.15",
 			);
 	});
 }
@@ -170,7 +190,7 @@ export function playPageEnter(): Promise<void> {
 					duration: 0.28,
 					ease: "power2.in",
 				},
-				"-=0.05"
+				"-=0.05",
 			)
 			.to(path, {
 				attr: { d: PATHS.enterEnd },
@@ -217,7 +237,9 @@ export function initPageTransitions(): void {
 			}
 		}
 
-		const watermarkTextEl = document.getElementById("page-transition-watermark-text");
+		const watermarkTextEl = document.getElementById(
+			"page-transition-watermark-text",
+		);
 		if (watermarkTextEl) {
 			watermarkTextEl.textContent = watermarkLabel;
 		}
@@ -233,9 +255,10 @@ export function initPageTransitions(): void {
 
 	// 2. Before Swap: Strip preloader from incoming DOM and ensure SVG overlay remains fully covered
 	document.addEventListener("astro:before-swap", (event: any) => {
-		if (sessionStorage.getItem("geladi_visited")) {
+		if (sessionStorage.getItem("galedi_visited")) {
 			event.newDocument?.documentElement?.classList?.add("preloader-skipped");
-			const incomingPreloader = event.newDocument?.getElementById("geladi-preloader");
+			const incomingPreloader =
+				event.newDocument?.getElementById("galedi-preloader");
 			if (incomingPreloader) {
 				incomingPreloader.remove();
 			}
@@ -243,7 +266,12 @@ export function initPageTransitions(): void {
 
 		const svg = document.getElementById("page-transition-svg");
 		const path = document.getElementById("page-transition-path");
-		if (isTransitioning && svg && path && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		if (
+			isTransitioning &&
+			svg &&
+			path &&
+			!window.matchMedia("(prefers-reduced-motion: reduce)").matches
+		) {
 			svg.style.display = "block";
 			gsap.set(path, { attr: { d: PATHS.leaveFull } });
 		}

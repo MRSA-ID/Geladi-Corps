@@ -1,26 +1,28 @@
 import gsap from "gsap";
 import { startLenis, stopLenis } from "./lenis";
 
-const SESSION_STORAGE_KEY = "geladi_visited";
+const SESSION_STORAGE_KEY = "galedi_visited";
 const PRELOADER_SKIPPED_CLASS = "preloader-skipped";
 
 /**
  * Initialize and run the initial session preloader
  */
 export function initPreloader(): void {
-	const preloader = document.getElementById("geladi-preloader");
+	const preloader = document.getElementById("galedi-preloader");
 	if (!preloader) return;
 
 	// Check if already visited in this browser session
 	const hasVisited = Boolean(sessionStorage.getItem(SESSION_STORAGE_KEY));
-	const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	const prefersReducedMotion = window.matchMedia(
+		"(prefers-reduced-motion: reduce)",
+	).matches;
 
 	if (hasVisited || prefersReducedMotion) {
 		document.documentElement.classList.add(PRELOADER_SKIPPED_CLASS);
 		preloader.style.display = "none";
 		preloader.remove();
 		startLenis();
-		window.dispatchEvent(new CustomEvent("geladi:preloader-done"));
+		window.dispatchEvent(new CustomEvent("galedi:preloader-done"));
 		return;
 	}
 
@@ -29,9 +31,13 @@ export function initPreloader(): void {
 	stopLenis();
 	document.body.style.overflow = "hidden";
 
-	const counterContainer = document.getElementById("preloader-counter-container");
+	const counterContainer = document.getElementById(
+		"preloader-counter-container",
+	);
 	const counterVal = document.getElementById("preloader-counter-val");
-	const wordmarkContainer = document.getElementById("preloader-wordmark-container");
+	const wordmarkContainer = document.getElementById(
+		"preloader-wordmark-container",
+	);
 	const wordmarkSvg = document.getElementById("preloader-wordmark-svg");
 	const chars = gsap.utils.toArray<SVGPathElement>(".preloader-char");
 	const curtainPath = document.getElementById("preloader-curtain-path");
@@ -44,7 +50,7 @@ export function initPreloader(): void {
 			preloader.style.display = "none";
 			preloader.remove();
 			startLenis();
-			window.dispatchEvent(new CustomEvent("geladi:preloader-done"));
+			window.dispatchEvent(new CustomEvent("galedi:preloader-done"));
 		},
 	});
 
@@ -58,7 +64,7 @@ export function initPreloader(): void {
 			preloader.remove();
 		}
 		startLenis();
-		window.dispatchEvent(new CustomEvent("geladi:preloader-done"));
+		window.dispatchEvent(new CustomEvent("galedi:preloader-done"));
 	}, 3500);
 
 	// 1. Initial State Setup
@@ -101,10 +107,11 @@ export function initPreloader(): void {
 			duration: 0.75,
 			ease: "power2.inOut",
 			onUpdate: () => {
-				if (counterVal) counterVal.textContent = Math.round(progressObj.val).toString();
+				if (counterVal)
+					counterVal.textContent = Math.round(progressObj.val).toString();
 			},
 		},
-		"-=0.15"
+		"-=0.15",
 	);
 
 	// 4. Progress Counter Exit (to bottom offset)
@@ -116,19 +123,18 @@ export function initPreloader(): void {
 	});
 
 	// 5. Step-by-Step Alphabet Reveal from Bottom Offset (G ➔ E ➔ L ➔ A ➔ D ➔ I ➔ C ➔ O ➔ R ➔ P ➔ S)
-	tl.set(wordmarkContainer, { opacity: 1 })
-		.to(
-			chars,
-			{
-				opacity: 1,
-				y: 0,
-				scale: 1,
-				duration: 0.42,
-				stagger: 0.045,
-				ease: "power3.out",
-			},
-			"-=0.05"
-		);
+	tl.set(wordmarkContainer, { opacity: 1 }).to(
+		chars,
+		{
+			opacity: 1,
+			y: 0,
+			scale: 1,
+			duration: 0.42,
+			stagger: 0.045,
+			ease: "power3.out",
+		},
+		"-=0.05",
+	);
 
 	// 6. Step-by-Step Wordmark Exit (Glides up and dissolves)
 	tl.to(
@@ -141,7 +147,7 @@ export function initPreloader(): void {
 			stagger: 0.015,
 			ease: "power2.in",
 		},
-		"+=0.25"
+		"+=0.25",
 	);
 
 	// 7. Liquid SVG Morphing Wave Curtain Exit
@@ -152,7 +158,7 @@ export function initPreloader(): void {
 			duration: 0.32,
 			ease: "power2.in",
 		},
-		"-=0.1"
+		"-=0.1",
 	).to(curtainPath, {
 		attr: { d: "M 0 0 V 0 Q 50 0 100 0 V 0 z" },
 		duration: 0.28,

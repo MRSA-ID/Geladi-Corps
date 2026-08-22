@@ -266,7 +266,7 @@ html.lenis body {
 /* ==========================================================================
    Zero-Frame Preloader Skip State
    ========================================================================== */
-.preloader-skipped #geladi-preloader {
+.preloader-skipped #galedi-preloader {
 	display: none !important;
 	pointer-events: none !important;
 	visibility: hidden !important;
@@ -274,7 +274,7 @@ html.lenis body {
 
 @theme inline {
 	--font-heading: var(--font-sans);
-	--font-sans: 'Geist Variable', sans-serif;
+	--font-sans: "Geist Variable", sans-serif;
 	--color-sidebar-ring: var(--sidebar-ring);
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -385,31 +385,31 @@ html.lenis body {
 }
 
 @layer base {
-  .maplibregl-popup-content {
-    @apply bg-transparent! shadow-none! p-0! rounded-none!;
+	.maplibregl-popup-content {
+		@apply bg-transparent! shadow-none! p-0! rounded-none!;
 	}
-  .maplibregl-popup-tip {
-    @apply hidden!;
+	.maplibregl-popup-tip {
+		@apply hidden!;
 	}
-  .maplibregl-ctrl-attrib {
-    @apply bg-background! text-muted-foreground! border-border! rounded-md! border! shadow-sm!;
+	.maplibregl-ctrl-attrib {
+		@apply bg-background! text-muted-foreground! border-border! rounded-md! border! shadow-sm!;
 	}
-  .maplibregl-ctrl-attrib a {
-    @apply text-muted-foreground!;
+	.maplibregl-ctrl-attrib a {
+		@apply text-muted-foreground!;
 	}
-  .maplibregl-ctrl-attrib a:hover {
-    @apply text-foreground!;
+	.maplibregl-ctrl-attrib a:hover {
+		@apply text-foreground!;
 	}
-  .maplibregl-ctrl-attrib-button {
-    @apply bg-transparent! dark:invert;
+	.maplibregl-ctrl-attrib-button {
+		@apply bg-transparent! dark:invert;
 	}
-  * {
-    @apply border-border outline-ring/50;
+	* {
+		@apply border-border outline-ring/50;
 	}
-  body {
-    @apply bg-background text-foreground;
+	body {
+		@apply bg-background text-foreground;
 	}
-  html {
-    @apply font-sans;
+	html {
+		@apply font-sans;
 	}
 }

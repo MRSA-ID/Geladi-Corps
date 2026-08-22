@@ -14,7 +14,7 @@ interface Props {
 }
 
 const {
-	title = "Geladi Corps | Corporate Holding & Strategic Ecosystem",
+	title = "Galedi Corps | Corporate Holding & Strategic Ecosystem",
 	description = "A multi-industry holding company managing 9 commercial brands and 2 digital media platforms across 5 core strategic industry sectors.",
 } = Astro.props;
 ---
@@ -36,12 +36,12 @@ const {
 
 		<!-- Zero-FOUC Session Preloader Controller (Executes before HTML paint) -->
 		<script is:inline>
-			if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("geladi_visited")) {
+			if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("galedi_visited")) {
 				document.documentElement.classList.add("preloader-skipped");
 			}
 		</script>
 		<style is:inline>
-			html.preloader-skipped #geladi-preloader {
+			html.preloader-skipped #galedi-preloader {
 				display: none !important;
 				visibility: hidden !important;
 				pointer-events: none !important;

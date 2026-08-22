@@ -717,22 +717,22 @@ const brands = [
 				};
 
 				const isPreloaderActive =
-					!sessionStorage.getItem("geladi_visited") &&
+					!sessionStorage.getItem("galedi_visited") &&
 					!document.documentElement.classList.contains("preloader-skipped") &&
-					Boolean(document.getElementById("geladi-preloader"));
+					Boolean(document.getElementById("galedi-preloader"));
 
 				const hasHero = Boolean(document.getElementById("hero-heading"));
 
 				if (hasHero && isPreloaderActive) {
 					// Hide navbar initially until hero finishes
 					gsap.set(navbar, { opacity: 0, y: -35 });
-					window.addEventListener("geladi:hero-done", revealNavbar, { once: true });
+					window.addEventListener("galedi:hero-done", revealNavbar, { once: true });
 					// Fallback safety timeout
 					setTimeout(revealNavbar, 3500);
 				} else if (isPreloaderActive) {
 					// Pages without hero but with active preloader
 					gsap.set(navbar, { opacity: 0, y: -35 });
-					window.addEventListener("geladi:preloader-done", revealNavbar, { once: true });
+					window.addEventListener("galedi:preloader-done", revealNavbar, { once: true });
 					setTimeout(revealNavbar, 3000);
 				} else {
 					// Direct page loads or client-side navigation
